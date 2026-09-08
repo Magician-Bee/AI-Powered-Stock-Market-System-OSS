@@ -90,7 +90,7 @@ jobs:
         run: test -s "${OTEL_ARTIFACT}/collector-traces.json"
 
       - name: Upload Collector evidence off host
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: stock-ai-otel-trace-${{ github.sha }}
           path: ${{ runner.temp }}/stock-ai-otel/artifact
@@ -150,7 +150,7 @@ jobs:
           PY
 
       - name: Upload clean-runner OTEL evidence
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: stock-ai-otel-verification-${{ github.sha }}
           path: ${{ runner.temp }}/stock-ai-otel/verification

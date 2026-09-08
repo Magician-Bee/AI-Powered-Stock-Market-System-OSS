@@ -74,7 +74,7 @@ jobs:
           PY
 
       - name: Upload baseline and candidate evidence
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: stock-ai-api-load-gate-${{ github.sha }}
           path: ${{ runner.temp }}/stock-ai-load/evidence
@@ -83,7 +83,7 @@ jobs:
 
       - name: Upload server diagnostics on failure
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: stock-ai-api-load-diagnostics-${{ github.sha }}
           path: |
