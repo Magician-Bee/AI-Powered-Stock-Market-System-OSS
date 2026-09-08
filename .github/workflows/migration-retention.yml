@@ -43,7 +43,7 @@ jobs:
             --allow-migration-retention-drill
 
       - name: Upload retained migration backups off host
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: stock-ai-migration-retention-${{ github.sha }}
           path: ${{ runner.temp }}/stock-ai-migration/off-host-artifact
@@ -105,7 +105,7 @@ jobs:
           PY
 
       - name: Upload clean-runner migration evidence
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: stock-ai-migration-verification-${{ github.sha }}
           path: ${{ runner.temp }}/stock-ai-migration/clean-verification

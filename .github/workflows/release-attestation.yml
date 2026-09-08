@@ -67,7 +67,7 @@ jobs:
           PY
 
       - name: Upload signed release package
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: stock-ai-signed-release-${{ github.sha }}
           path: ${{ runner.temp }}/stock-ai-release
@@ -137,7 +137,7 @@ jobs:
             --output "${VERIFY_DIR}/release-attestation-gate.json"
 
       - name: Upload clean-runner verification
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: stock-ai-release-verification-${{ github.sha }}
           path: ${{ runner.temp }}/stock-ai-release-verification

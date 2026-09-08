@@ -43,7 +43,7 @@ jobs:
             --allow-retention-archive-drill
 
       - name: Upload critical archive off host
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: stock-ai-critical-retention-${{ github.sha }}
           path: |
@@ -111,7 +111,7 @@ jobs:
           PY
 
       - name: Upload clean-runner restore evidence
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: stock-ai-critical-retention-restore-${{ github.sha }}
           path: |
