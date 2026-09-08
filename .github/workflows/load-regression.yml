@@ -1,0 +1,93 @@
+name: Hosted API load regression
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: load-regression-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  stock-ai-api-load-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install project
+        run: python -m pip install -e .
+
+      - name: Start isolated Stock AI API
+        env:
+          OPEN_STOCK_AI_SQLITE_PATH: ${{ runner.temp }}/stock-ai-load/open-stock-ai.sqlite
+          STOCK_AI_AGENT_DATA_ROOT: ${{ runner.temp }}/stock-ai-load/agent-runtime
+          STOCK_AI_MARKET_DATA_DB: ${{ runner.temp }}/stock-ai-load/market-data.sqlite
+          STOCK_AI_AGENT_BACKGROUND_PAUSED: "1"
+          STOCK_AI_BUILD_COMMIT: ${{ github.sha }}
+          STOCK_AI_INSTANCE_ID: github-hosted-load-gate
+        run: |
+          mkdir -p "${RUNNER_TEMP}/stock-ai-load"
+          nohup python -m uvicorn stock_ai.main:app --host 127.0.0.1 --port 8765 >"${RUNNER_TEMP}/stock-ai-load/server.log" 2>&1 &
+          echo "$!" >"${RUNNER_TEMP}/stock-ai-load/server.pid"
+          for attempt in $(seq 1 60); do
+            if curl --fail --silent --show-error http://127.0.0.1:8765/health >"${RUNNER_TEMP}/stock-ai-load/health.json"; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat "${RUNNER_TEMP}/stock-ai-load/server.log"
+          exit 1
+
+      - name: Run p95 and p99 load regression gate
+        run: |
+          python scripts/run_hosted_load_gate.py \
+            --url http://127.0.0.1:8765/health \
+            --output-dir "${RUNNER_TEMP}/stock-ai-load/evidence" \
+            --commit-sha "${GITHUB_SHA}" \
+            --duration 15 \
+            --rps 20 \
+            --concurrency 8
+
+      - name: Verify retained receipt independently
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          from open_stock_ai.governance import verify_hosted_load_gate_receipt
+
+          receipt = json.loads(
+              (Path(os.environ["RUNNER_TEMP"]) / "stock-ai-load/evidence/load-gate-receipt.json").read_text()
+          )
+          if not receipt["passed"] or not verify_hosted_load_gate_receipt(receipt):
+              raise SystemExit("retained hosted load gate receipt failed verification")
+          PY
+
+      - name: Upload baseline and candidate evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: stock-ai-api-load-gate-${{ github.sha }}
+          path: ${{ runner.temp }}/stock-ai-load/evidence
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload server diagnostics on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: stock-ai-api-load-diagnostics-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/stock-ai-load/server.log
+            ${{ runner.temp }}/stock-ai-load/health.json
+          if-no-files-found: ignore
+          retention-days: 7

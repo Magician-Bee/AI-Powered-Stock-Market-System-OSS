@@ -1,0 +1,503 @@
+# Universe and Watchlist Audit
+
+- Baseline commit: `94e8cb2d65c9f5d8f8de04717847d77c513cee27`
+- Generated at: `2026-07-29T19:18:01.417729+00:00`
+- Scope: Production `src/` and `config/`; vendored UI files excluded.
+- Matches: **484**
+
+## Purpose
+
+Find fixed lists, implicit watchlists, batch defaults, and fallback symbol selection.
+
+## Classification notes
+
+- Names used only for generic collection types are informational.
+- Any Production path that chooses symbols without an approved Universe source is a defect.
+- Empty Universe is a valid, required runtime state.
+
+## Inventory
+
+- `src/open_stock_ai/agent_runtime/context_broker.py:169` — `preferred_names = {`
+- `src/open_stock_ai/agent_runtime/context_broker.py:170` — `"market.analyze_universe",`
+- `src/open_stock_ai/agent_runtime/context_broker.py:173` — `"market.scan_watchlist",`
+- `src/open_stock_ai/agent_runtime/context_broker.py:188` — `if str(item.get("name") or "") in preferred_names`
+- `src/open_stock_ai/agent_runtime/orchestrator.py:276` — `For Market Radar, result must match the supplied MarketRadarResult schema and cover every supplied Universe symbol.`
+- `src/open_stock_ai/agent_runtime/orchestrator.py:2882` — `"market.scan_watchlist": "掃描自選清單候選標的",`
+- `src/open_stock_ai/agent_runtime/orchestrator.py:2883` — `"market.analyze_universe": "比較候選股票與風險",`
+- `src/open_stock_ai/agent_runtime/routing.py:82` — `if _contains_any(lowered, ("股票", "股價", "市場", "market", "stock", "universe", "symbol")):`
+- `src/open_stock_ai/agent_workspace.py:7` — `from .types import MissingSymbolError, StockDecision, StockRequest, SymbolContext, UniverseSnapshot`
+- `src/open_stock_ai/agent_workspace.py:21` — `"/api/open-stock-ai/agent/watchlist",`
+- `src/open_stock_ai/agent_workspace.py:47` — `"A blocked research gate may still produce a watchlist candidate, but it may not create an order.",`
+- `src/open_stock_ai/agent_workspace.py:115` — `def build_agent_watchlist(`
+- `src/open_stock_ai/agent_workspace.py:122` — `requests = list(engine.pipeline.batch_requests)[: max(1, min(limit, 100))]`
+- `src/open_stock_ai/agent_workspace.py:138` — `"schema_version": "open_stock_ai.agent_watchlist.v1",`
+- `src/open_stock_ai/agent_workspace.py:142` — `"universe": asdict(`
+- `src/open_stock_ai/agent_workspace.py:143` — `UniverseSnapshot(`
+- `src/open_stock_ai/agent_workspace.py:144` — `source="user_watchlist" if requests else "none",`
+- `src/open_stock_ai/analysis_contracts.py:28` — `universe_source: str = "none"`
+- `src/open_stock_ai/api.py:14` — `build_agent_watchlist,`
+- `src/open_stock_ai/api.py:80` — `@router.get("/agent/watchlist")`
+- `src/open_stock_ai/api.py:81` — `def agent_watchlist(`
+- `src/open_stock_ai/api.py:85` — `return build_agent_watchlist(horizon=horizon, limit=max(1, min(limit, 100)))`
+- `src/open_stock_ai/config/settings.py:34` — `watchlist: tuple[dict[str, str], ...] = ()`
+- `src/open_stock_ai/config/settings.py:47` — `watchlist = _watchlist(config.get("watchlist"))`
+- `src/open_stock_ai/config/settings.py:93` — `watchlist=watchlist,`
+- `src/open_stock_ai/config/settings.py:128` — `def _watchlist(value: Any) -> tuple[dict[str, str], ...]:`
+- `src/open_stock_ai/external_sources/qlib_source.py:153` — `preferred = self._select_workflow(sample_workflows, signal)`
+- `src/open_stock_ai/external_sources/qlib_source.py:161` — `"selected_workflow": preferred,`
+- `src/open_stock_ai/external_sources/qlib_source.py:242` — `preferred_models = {"LightGBM", "XGBoost", "CatBoostModel", "LSTM", "Transformer"}`
+- `src/open_stock_ai/external_sources/qlib_source.py:244` — `preferred_models = {"LinearModel", "XGBoost", "LightGBM"}`
+- `src/open_stock_ai/external_sources/qlib_source.py:246` — `preferred_models = {"LightGBM", "LinearModel", "CatBoostModel"}`
+- `src/open_stock_ai/external_sources/qlib_source.py:248` — `if workflow.get("model") in preferred_models:`
+- `src/open_stock_ai/external_sources/registry.py:101` — `A normal Git checkout is preferred. Portable/vendored distributions can instead`
+- `src/open_stock_ai/main.py:79` — `batch_requests=_batch_requests(settings),`
+- `src/open_stock_ai/main.py:89` — `def _batch_requests(settings: OpenStockAISettings) -> tuple[StockRequest, ...]:`
+- `src/open_stock_ai/main.py:91` — `for item in settings.watchlist:`
+- `src/open_stock_ai/pipeline.py:34` — `batch_requests: tuple[StockRequest, ...] = field(default_factory=tuple)`
+- `src/open_stock_ai/pipeline.py:156` — `# orders merely because an Agent refreshed the watchlist.`
+- `src/open_stock_ai/pipeline.py:159` — `for request in self.batch_requests`
+- `src/open_stock_ai/runtime.py:19` — `watchlist = tuple(`
+- `src/open_stock_ai/runtime.py:21` — `for item in settings.watchlist`
+- `src/open_stock_ai/runtime.py:42` — `watchlist,`
+- `src/open_stock_ai/storage/migrations.py:117` — `(10, "neutral_universes_model_invocations_provenance_and_validation"),`
+- `src/open_stock_ai/storage/migrations.py:961` — `create table if not exists user_watchlists (`
+- `src/open_stock_ai/storage/migrations.py:962` — `watchlist_id text primary key,`
+- `src/open_stock_ai/storage/migrations.py:971` — `create table if not exists user_watchlist_symbols (`
+- `src/open_stock_ai/storage/migrations.py:972` — `watchlist_id text not null references user_watchlists(watchlist_id) on delete cascade,`
+- `src/open_stock_ai/storage/migrations.py:976` — `primary key (watchlist_id, symbol)`
+- `src/open_stock_ai/storage/migrations.py:979` — `create table if not exists universe_snapshots (`
+- `src/open_stock_ai/storage/migrations.py:980` — `universe_id text primary key,`
+- `src/open_stock_ai/storage/migrations.py:993` — `universe_id text references universe_snapshots(universe_id) on delete set null,`
+- `src/open_stock_ai/storage/migrations.py:1021` — `universe_source text not null,`
+- `src/open_stock_ai/storage/migrations.py:2850` — `create index if not exists idx_user_watchlists_user_updated`
+- `src/open_stock_ai/storage/migrations.py:2851` — `on user_watchlists(user_id, updated_at desc);`
+- `src/open_stock_ai/storage/migrations.py:2852` — `create index if not exists idx_universe_snapshots_source_created`
+- `src/open_stock_ai/storage/migrations.py:2853` — `on universe_snapshots(source, created_at desc);`
+- `src/open_stock_ai/types.py:13` — `UniverseSource = Literal[`
+- `src/open_stock_ai/types.py:14` — `"user_watchlist",`
+- `src/open_stock_ai/types.py:67` — `class UniverseRequest:`
+- `src/open_stock_ai/types.py:68` — `source: UniverseSource`
+- `src/open_stock_ai/types.py:72` — `schema_version: str = "open_stock_ai.universe_request.v1"`
+- `src/open_stock_ai/types.py:85` — `raise ValueError(f"UniverseRequest contains invalid symbols: {', '.join(invalid)}")`
+- `src/open_stock_ai/types.py:87` — `raise ValueError("UniverseRequest limit must be between 1 and 5000")`
+- `src/open_stock_ai/types.py:93` — `class UniverseSnapshot:`
+- `src/open_stock_ai/types.py:94` — `source: UniverseSource | Literal["none"]`
+- `src/open_stock_ai/types.py:98` — `schema_version: str = "open_stock_ai.universe_snapshot.v1"`
+- `src/open_stock_ai/types.py:105` — `def empty(cls) -> "UniverseSnapshot":`
+- `src/stock_ai/agent_api.py:13` — `from open_stock_ai.types import UniverseRequest`
+- `src/stock_ai/agent_api.py:28` — `from .universe import (`
+- `src/stock_ai/agent_api.py:29` — `UniverseResolutionError,`
+- `src/stock_ai/agent_api.py:30` — `resolve_universe,`
+- `src/stock_ai/agent_api.py:31` — `universe_payload,`
+- `src/stock_ai/agent_api.py:32` — `universe_source_options,`
+- `src/stock_ai/agent_api.py:51` — `universe_source: Literal[`
+- `src/stock_ai/agent_api.py:52` — `"user_watchlist",`
+- `src/stock_ai/agent_api.py:442` — `universe = await asyncio.to_thread(`
+- `src/stock_ai/agent_api.py:443` — `resolve_universe,`
+- `src/stock_ai/agent_api.py:444` — `UniverseRequest(`
+- `src/stock_ai/agent_api.py:445` — `source=request.universe_source,`
+- `src/stock_ai/agent_api.py:451` — `except (UniverseResolutionError, ValueError) as exc:`
+- `src/stock_ai/agent_api.py:452` — `if not supplied_symbols and request.universe_source in {`
+- `src/stock_ai/agent_api.py:459` — `"code": "universe_required",`
+- `src/stock_ai/agent_api.py:460` — `"message": "Market Radar requires a resolvable Universe; no default symbols were selected.",`
+- `src/stock_ai/agent_api.py:461` — `"universe": {`
+- `src/stock_ai/agent_api.py:471` — `"code": "universe_resolution_failed",`
+- `src/stock_ai/agent_api.py:473` — `"universe_source": request.universe_source,`
+- `src/stock_ai/agent_api.py:476` — `symbols = list(universe.symbols)`
+- `src/stock_ai/agent_api.py:481` — `"code": "universe_required",`
+- `src/stock_ai/agent_api.py:482` — `"message": "Market Radar requires a non-empty resolved Universe; no default symbols were selected.",`
+- `src/stock_ai/agent_api.py:483` — `"universe": {`
+- `src/stock_ai/agent_api.py:484` — `"source": universe.source,`
+- `src/stock_ai/agent_api.py:491` — `"[MARKET_RADAR_TASK] Analyze every symbol in the supplied Market Radar Universe. "`
+- `src/stock_ai/agent_api.py:492` — `"First call market.analyze_universe with exactly the supplied symbols. Then return "`
+- `src/stock_ai/agent_api.py:493` — `"structured_result matching stock_ai.market_radar_result.v1. Every Universe symbol must have "`
+- `src/stock_ai/agent_api.py:498` — `f"Universe symbols={json.dumps(symbols, ensure_ascii=False)}; "`
+- `src/stock_ai/agent_api.py:499` — `f"Universe source={universe.source}; filters={json.dumps(universe.filters, ensure_ascii=False)}; "`
+- `src/stock_ai/agent_api.py:513` — `"universe_source": universe.source,`
+- `src/stock_ai/agent_api.py:514` — `"universe_filters": universe.filters,`
+- `src/stock_ai/agent_api.py:515` — `"universe_created_at": universe.created_at,`
+- `src/stock_ai/agent_api.py:523` — `"universe": universe_payload(universe),`
+- `src/stock_ai/agent_api.py:527` — `@router.get("/market-radar/universe-options")`
+- `src/stock_ai/agent_api.py:528` — `async def get_market_radar_universe_options() -> dict:`
+- `src/stock_ai/agent_api.py:529` — `return await asyncio.to_thread(universe_source_options)`
+- `src/stock_ai/agent_api.py:588` — `universe_source = str(metadata.get("universe_source") or "explicit_symbols")`
+- `src/stock_ai/agent_api.py:612` — `universe_source=universe_source,`
+- `src/stock_ai/agent_api.py:657` — `"universe_source": universe_source,`
+- `src/stock_ai/agent_general_tools.py:314` — `"preferred_domains": {`
+- `src/stock_ai/agent_general_tools.py:790` — `preferred_domains = [`
+- `src/stock_ai/agent_general_tools.py:792` — `for value in arguments.get("preferred_domains") or []`
+- `src/stock_ai/agent_general_tools.py:797` — `if preferred_domains:`
+- `src/stock_ai/agent_general_tools.py:800` — `if _host_matches(str(item.get("url") or ""), preferred_domains)`
+- `src/stock_ai/agent_tools.py:12` — `build_agent_watchlist,`
+- `src/stock_ai/agent_tools.py:90` — `name="market.scan_watchlist",`
+- `src/stock_ai/agent_tools.py:91` — `description="Run the real OpenStockAIEngine over the configured watchlist and rank candidates.",`
+- `src/stock_ai/agent_tools.py:118` — `name="market.analyze_universe",`
+- `src/stock_ai/agent_tools.py:120` — `"Analyze every symbol in one explicitly resolved Market Radar Universe and return "`
+- `src/stock_ai/agent_tools.py:179` — `"stocks and ETFs. Returns official listing metadata and universe synchronization status."`
+- `src/stock_ai/agent_tools.py:310` — `if name == "market.scan_watchlist":`
+- `src/stock_ai/agent_tools.py:312` — `build_agent_watchlist,`
+- `src/stock_ai/agent_tools.py:316` — `return _compact_watchlist(result)`
+- `src/stock_ai/agent_tools.py:326` — `if name == "market.analyze_universe":`
+- `src/stock_ai/agent_tools.py:334` — `raise ValueError("market.analyze_universe requires at least one explicit symbol")`
+- `src/stock_ai/agent_tools.py:336` — `raise ValueError("market.analyze_universe accepts at most 20 symbols per run")`
+- `src/stock_ai/agent_tools.py:364` — `"schema_version": "stock_ai.market_universe_observation.v1",`
+- `src/stock_ai/agent_tools.py:401` — `"universe_sync": status,`
+- `src/stock_ai/agent_tools.py:508` — `def _compact_watchlist(result: dict[str, Any]) -> dict[str, Any]:`
+- `src/stock_ai/agent_trading_api.py:420` — `universe_source="explicit_symbols",`
+- `src/stock_ai/codex_market.py:11` — `from open_stock_ai.agent_workspace import build_agent_watchlist`
+- `src/stock_ai/codex_market.py:83` — `agent_watchlist = await asyncio.to_thread(`
+- `src/stock_ai/codex_market.py:84` — `build_agent_watchlist,`
+- `src/stock_ai/codex_market.py:88` — `workspace_items = [item for item in agent_watchlist.get("items", []) if isinstance(item, dict)]`
+- `src/stock_ai/codex_market.py:90` — `universe = agent_watchlist.get("universe") if isinstance(agent_watchlist.get("universe"), dict) else {}`
+- `src/stock_ai/codex_market.py:91` — `universe_source = str(universe.get("source") or "none")`
+- `src/stock_ai/codex_market.py:176` — `else "尚未選擇分析 Universe，本輪未執行模型或規則掃描。"`
+- `src/stock_ai/codex_market.py:205` — `universe_source=universe_source,`
+- `src/stock_ai/codex_market.py:213` — `observation={"items": compact, "universe": universe},`
+- `src/stock_ai/codex_market.py:258` — `else "NO UNIVERSE"`
+- `src/stock_ai/codex_market.py:272` — `"portfolio": agent_watchlist.get("portfolio") or {},`
+- `src/stock_ai/codex_market.py:273` — `"agent_tool_manifest": agent_watchlist.get("tool_manifest") or {},`
+- `src/stock_ai/codex_market.py:274` — `"agent_bucket_counts": agent_watchlist.get("bucket_counts") or {},`
+- `src/stock_ai/codex_runtime.py:249` — `universe_source="explicit_symbols" if context["current_symbol"] else "none",`
+- `src/stock_ai/data_platform/service.py:676` — `def preferred_query(`
+- `src/stock_ai/data_platform/service.py:708` — `"schema_version": "stock_ai.preferred_data.v1",`
+- `src/stock_ai/data_platform/service.py:725` — `"schema_version": "stock_ai.preferred_data.v1",`
+- `src/stock_ai/data_platform/ui_api.py:24` — `("home", "watchlist", "stock"),`
+- `src/stock_ai/data_platform/ui_api.py:32` — `"watchlist_overview": (`
+- `src/stock_ai/data_platform/ui_api.py:34` — `"/watchlist/overview",`
+- `src/stock_ai/data_platform/ui_api.py:35` — `"/api/watchlist/overview",`
+- `src/stock_ai/data_platform/ui_api.py:36` — `("home", "watchlist"),`
+- `src/stock_ai/main.py:65` — `from .mvp_features import get_news_center, get_notification_channels, get_notification_previews, get_watchlist_overview, send_notification`
+- `src/stock_ai/main.py:91` — `from .universe import UniverseResolutionError, resolve_universe`
+- `src/stock_ai/main.py:117` — `from open_stock_ai.types import UniverseRequest, UniverseSnapshot`
+- `src/stock_ai/main.py:383` — `@app.get("/api/watchlist/default")`
+- `src/stock_ai/main.py:384` — `def default_watchlist(limit: int = 10):`
+- `src/stock_ai/main.py:389` — `"universe": {`
+- `src/stock_ai/main.py:393` — `"message": "No default watchlist is configured; add a user watchlist explicitly.",`
+- `src/stock_ai/main.py:398` — `@app.get(ui_data_route("watchlist_overview"))`
+- `src/stock_ai/main.py:399` — `@app.get("/api/watchlist/overview")`
+- `src/stock_ai/main.py:400` — `def watchlist_overview(limit: int = 10):`
+- `src/stock_ai/main.py:401` — `return get_watchlist_overview(limit=max(1, min(limit, 20)))`
+- `src/stock_ai/main.py:1073` — `universe = (`
+- `src/stock_ai/main.py:1074` — `UniverseSnapshot(source="explicit_symbols", symbols=explicit_symbols)`
+- `src/stock_ai/main.py:1076` — `else UniverseSnapshot.empty()`
+- `src/stock_ai/main.py:1079` — `universe=universe,`
+- `src/stock_ai/main.py:1158` — `universe = (`
+- `src/stock_ai/main.py:1159` — `UniverseSnapshot.empty()`
+- `src/stock_ai/main.py:1160` — `if req.universe_source in {"explicit_symbols", "workflow_parameters"} and not symbols`
+- `src/stock_ai/main.py:1161` — `else resolve_universe(`
+- `src/stock_ai/main.py:1162` — `UniverseRequest(`
+- `src/stock_ai/main.py:1163` — `source=req.universe_source,`
+- `src/stock_ai/main.py:1170` — `except (UniverseResolutionError, ValueError) as exc:`
+- `src/stock_ai/main.py:1172` — `rows = run_screener(req.conditions, symbols=universe.symbols)`
+- `src/stock_ai/main.py:1177` — `"universe": {`
+- `src/stock_ai/main.py:1178` — `"source": universe.source,`
+- `src/stock_ai/main.py:1179` — `"symbols": list(universe.symbols),`
+- `src/stock_ai/main.py:1180` — `"count": universe.count,`
+- `src/stock_ai/main.py:1181` — `"filters": universe.filters,`
+- `src/stock_ai/main.py:1182` — `"created_at": universe.created_at,`
+- `src/stock_ai/market_radar.py:87` — `universe_source: str = Field(min_length=1, max_length=100)`
+- `src/stock_ai/market_radar.py:199` — `universe_source: str,`
+- `src/stock_ai/market_radar.py:226` — `"universe_source": universe_source,`
+- `src/stock_ai/market_radar.py:243` — `"market_radar_universe_incomplete",`
+- `src/stock_ai/market_radar.py:244` — `"Every resolved Universe symbol must have one card and at least one observation",`
+- `src/stock_ai/models.py:140` — `universe_source: Literal[`
+- `src/stock_ai/models.py:141` — `"user_watchlist",`
+- `src/stock_ai/models.py:369` — `universe: dict[str, Any] = Field(default_factory=dict)`
+- `src/stock_ai/models.py:387` — `class WatchlistOverviewItem(BaseModel):`
+- `src/stock_ai/models.py:414` — `category: Literal["daily_report", "watchlist_alert", "market_news"]`
+- `src/stock_ai/models.py:582` — `watchlist_items: list[dict[str, Any]] = Field(default_factory=list)`
+- `src/stock_ai/mvp_features.py:16` — `from .models import NewsItem, NotificationChannelStatus, NotificationDeliveryResult, NotificationPreview, NotificationSendRequest, WatchlistOverviewItem`
+- `src/stock_ai/mvp_features.py:17` — `from open_stock_ai.types import UniverseSnapshot`
+- `src/stock_ai/mvp_features.py:24` — `securities_for_universe,`
+- `src/stock_ai/mvp_features.py:70` — `def _watchlist_debug_report(hypothesis_id: str, location: str, msg: str, data: dict[str, Any]) -> None:`
+- `src/stock_ai/mvp_features.py:202` — `universe: UniverseSnapshot | None = None,`
+- `src/stock_ai/mvp_features.py:206` — `resolved_universe = UniverseSnapshot(source="explicit_symbols", symbols=(symbol,))`
+- `src/stock_ai/mvp_features.py:208` — `resolved_universe = universe or UniverseSnapshot.empty()`
+- `src/stock_ai/mvp_features.py:209` — `symbols = list(resolved_universe.symbols)`
+- `src/stock_ai/mvp_features.py:232` — `"universe": {`
+- `src/stock_ai/mvp_features.py:233` — `"source": resolved_universe.source,`
+- `src/stock_ai/mvp_features.py:234` — `"symbols": list(resolved_universe.symbols),`
+- `src/stock_ai/mvp_features.py:235` — `"count": resolved_universe.count,`
+- `src/stock_ai/mvp_features.py:236` — `"filters": resolved_universe.filters,`
+- `src/stock_ai/mvp_features.py:237` — `"created_at": resolved_universe.created_at,`
+- `src/stock_ai/mvp_features.py:242` — `async def _fetch_watchlist_quotes(symbols: list[str]) -> dict[str, dict[str, Any]]:`
+- `src/stock_ai/mvp_features.py:254` — `def get_watchlist_overview(`
+- `src/stock_ai/mvp_features.py:257` — `universe: UniverseSnapshot | None = None,`
+- `src/stock_ai/mvp_features.py:260` — `_watchlist_debug_report("H1", "mvp_features.py:get_watchlist_overview", "watchlist-overview-start", {"limit": limit})`
+- `src/stock_ai/mvp_features.py:263` — `resolved_universe = universe or UniverseSnapshot.empty()`
+- `src/stock_ai/mvp_features.py:264` — `watchlist = securities_for_universe(resolved_universe, limit=limit)`
+- `src/stock_ai/mvp_features.py:265` — `_watchlist_debug_report(`
+- `src/stock_ai/mvp_features.py:267` — `"mvp_features.py:get_watchlist_overview",`
+- `src/stock_ai/mvp_features.py:268` — `"watchlist-overview-default-watchlist-ready",`
+- `src/stock_ai/mvp_features.py:269` — `{"watchlist_count": len(watchlist), "elapsed_ms": round((time.perf_counter() - phase_started) * 1000, 1)},`
+- `src/stock_ai/mvp_features.py:271` — `symbols = [item.symbol for item in watchlist]`
+- `src/stock_ai/mvp_features.py:274` — `quotes_future = executor.submit(asyncio.run, _fetch_watchlist_quotes(symbols))`
+- `src/stock_ai/mvp_features.py:282` — `_watchlist_debug_report(`
+- `src/stock_ai/mvp_features.py:284` — `"mvp_features.py:get_watchlist_overview",`
+- `src/stock_ai/mvp_features.py:285` — `"watchlist-overview-sources-ready",`
+- `src/stock_ai/mvp_features.py:287` — `"watchlist_count": len(watchlist),`
+- `src/stock_ai/mvp_features.py:296` — `items: list[WatchlistOverviewItem] = []`
+- `src/stock_ai/mvp_features.py:297` — `for security in watchlist:`
+- `src/stock_ai/mvp_features.py:315` — `WatchlistOverviewItem(`
+- `src/stock_ai/mvp_features.py:340` — `"universe": {`
+- `src/stock_ai/mvp_features.py:341` — `"source": resolved_universe.source,`
+- `src/stock_ai/mvp_features.py:342` — `"symbols": list(resolved_universe.symbols),`
+- `src/stock_ai/mvp_features.py:343` — `"count": resolved_universe.count,`
+- `src/stock_ai/mvp_features.py:344` — `"filters": resolved_universe.filters,`
+- `src/stock_ai/mvp_features.py:345` — `"created_at": resolved_universe.created_at,`
+- `src/stock_ai/mvp_features.py:348` — `_watchlist_debug_report(`
+- `src/stock_ai/mvp_features.py:350` — `"mvp_features.py:get_watchlist_overview",`
+- `src/stock_ai/mvp_features.py:351` — `"watchlist-overview-done",`
+- `src/stock_ai/mvp_features.py:356` — `_watchlist_debug_report(`
+- `src/stock_ai/mvp_features.py:358` — `"mvp_features.py:get_watchlist_overview",`
+- `src/stock_ai/mvp_features.py:359` — `"watchlist-overview-error",`
+- `src/stock_ai/mvp_features.py:391` — `universe = (`
+- `src/stock_ai/mvp_features.py:392` — `UniverseSnapshot(source="explicit_symbols", symbols=(symbol,))`
+- `src/stock_ai/mvp_features.py:394` — `else UniverseSnapshot.empty()`
+- `src/stock_ai/mvp_features.py:396` — `report = generate_daily_report(universe=universe, limit=3)`
+- `src/stock_ai/mvp_features.py:420` — `watchlist = get_watchlist_overview(limit=5, universe=universe)`
+- `src/stock_ai/mvp_features.py:421` — `hot_alerts = [item for item in watchlist["items"] if "漲跌幅異常" in item["alert_flags"] or "法人偏多" in item["alert_flags"]][:3]`
+- `src/stock_ai/mvp_features.py:425` — `category="watchlist_alert",`
+- `src/stock_ai/phase1_data.py:17` — `from open_stock_ai.types import UniverseSnapshot`
+- `src/stock_ai/phase1_data.py:677` — `def securities_for_universe(`
+- `src/stock_ai/phase1_data.py:678` — `universe: UniverseSnapshot,`
+- `src/stock_ai/phase1_data.py:682` — `symbols = list(universe.symbols[:limit] if limit is not None else universe.symbols)`
+- `src/stock_ai/phase1_data.py:701` — `source=f"UniverseSnapshot:{universe.source}; security metadata unavailable",`
+- `src/stock_ai/phase1_data.py:707` — `def generate_daily_report(universe: UniverseSnapshot, limit: int = 5) -> DailyReport:`
+- `src/stock_ai/phase1_data.py:715` — `{"limit": limit, "universe_source": universe.source, "universe_count": universe.count},`
+- `src/stock_ai/phase1_data.py:719` — `watchlist = securities_for_universe(universe, limit=limit)`
+- `src/stock_ai/phase1_data.py:721` — `if not watchlist:`
+- `src/stock_ai/phase1_data.py:725` — `summary="尚未指定 Universe，本輪未分析任何股票。",`
+- `src/stock_ai/phase1_data.py:728` — `universe={`
+- `src/stock_ai/phase1_data.py:729` — `"source": universe.source,`
+- `src/stock_ai/phase1_data.py:730` — `"symbols": list(universe.symbols),`
+- `src/stock_ai/phase1_data.py:731` — `"count": universe.count,`
+- `src/stock_ai/phase1_data.py:732` — `"filters": universe.filters,`
+- `src/stock_ai/phase1_data.py:733` — `"created_at": universe.created_at,`
+- `src/stock_ai/phase1_data.py:736` — `_daily_debug_report("H2", "phase1_data.py:generate_daily_report", "daily-report-watchlist-ready", {"watchlist_count": len(watchlist), "elapsed_ms": round((time.perf_counter() - started) * 1000, 1)})`
+- `src/stock_ai/phase1_data.py:755` — `for security in watchlist:`
+- `src/stock_ai/phase1_data.py:860` — `universe={`
+- `src/stock_ai/phase1_data.py:861` — `"source": universe.source,`
+- `src/stock_ai/phase1_data.py:862` — `"symbols": list(universe.symbols),`
+- `src/stock_ai/phase1_data.py:863` — `"count": universe.count,`
+- `src/stock_ai/phase1_data.py:864` — `"filters": universe.filters,`
+- `src/stock_ai/phase1_data.py:865` — `"created_at": universe.created_at,`
+- `src/stock_ai/query.py:8` — `from open_stock_ai.types import UniverseRequest`
+- `src/stock_ai/query.py:13` — `from .universe import UniverseResolutionError, resolve_universe`
+- `src/stock_ai/query.py:97` — `universe_payload: dict[str, Any] = {`
+- `src/stock_ai/query.py:104` — `universe = await asyncio.to_thread(`
+- `src/stock_ai/query.py:105` — `resolve_universe,`
+- `src/stock_ai/query.py:106` — `UniverseRequest(`
+- `src/stock_ai/query.py:112` — `except UniverseResolutionError as exc:`
+- `src/stock_ai/query.py:113` — `raise ValueError(f"Screening Universe could not be resolved: {exc}") from exc`
+- `src/stock_ai/query.py:114` — `symbols = list(universe.symbols)`
+- `src/stock_ai/query.py:115` — `universe_payload = {`
+- `src/stock_ai/query.py:116` — `"source": universe.source,`
+- `src/stock_ai/query.py:118` — `"count": universe.count,`
+- `src/stock_ai/query.py:119` — `"filters": universe.filters,`
+- `src/stock_ai/query.py:120` — `"created_at": universe.created_at,`
+- `src/stock_ai/query.py:133` — `"universe": universe_payload,`
+- `src/stock_ai/query.py:175` — `"Unified Agent Runtime 未完成可驗證答案；不會退回舊關鍵字分類器或空 Universe "`
+- `src/stock_ai/query.py:188` — `"universe": universe_payload,`
+- `src/stock_ai/realtime_quotes.py:385` — `preferred = []`
+- `src/stock_ai/realtime_quotes.py:387` — `preferred = ["otc", "tse"]`
+- `src/stock_ai/realtime_quotes.py:389` — `preferred = ["tse", "otc"]`
+- `src/stock_ai/realtime_quotes.py:391` — `preferred = ["tse", "otc"]`
+- `src/stock_ai/realtime_quotes.py:393` — `for ex in preferred:`
+- `src/stock_ai/services.py:16` — `from open_stock_ai.types import MissingSymbolError, UniverseSnapshot`
+- `src/stock_ai/services.py:127` — `than an implicit popular-stock Universe.`
+- `src/stock_ai/services.py:729` — `# Realtime-only quote universe. Do not mix Yahoo/global/latest-available or`
+- `src/stock_ai/services.py:956` — `from .mvp_features import get_notification_previews, get_watchlist_overview`
+- `src/stock_ai/services.py:962` — `universe = UniverseSnapshot(source="explicit_symbols", symbols=(focus_symbol,))`
+- `src/stock_ai/services.py:963` — `daily_report = generate_daily_report(universe=universe, limit=3)`
+- `src/stock_ai/services.py:964` — `watchlist = get_watchlist_overview(limit=5, universe=universe)`
+- `src/stock_ai/services.py:965` — `watch_items = watchlist.get("items", [])`
+- `src/stock_ai/services.py:1029` — `data_sources=[str(source) for source in focus_watch.get("data_sources", []) if source] or ["watchlist_overview"],`
+- `src/stock_ai/services.py:1052` — `"market_snapshot": "use daily report/watchlist data when realtime summary is unavailable",`
+- `src/stock_ai/services.py:1064` — `"source": market_summary.data_source if market_summary else "watchlist_overview fallback",`
+- `src/stock_ai/services.py:1073` — `watchlist_items=watch_items[:5],`
+- `src/stock_ai/source_policy.py:44` — `(3, "local_preview_or_research", ("daily_report", "watchlist", "notification", "local_preview", "strategy", "research", "backtest")),`
+- `src/stock_ai/system_contract.py:284` — `{"key": "watchlist", "label": "B. 自選股", "required": ["groups", "quotes", "change_volume_flow_margin_news", "custom_alerts"], "status": "partial"},`
+- `src/stock_ai/ui/static/css/features/codex-home.css:52` — `.home-universe-field{display:grid;gap:4px;color:#8f99a6;font-size:10px;font-weight:800;letter-spacing:.04em}.home-universe-field select,.home-universe-field input{min-height:42px;max-width:190px;padding:0 10px;border:1px solid rgba(255,255,255,.11);border-radius:6px;background:#0b0e12;color:#e8edf4}.home-universe-filter input{width:170px}.home-universe-limit input{width:64px}`
+- `src/stock_ai/ui/static/i18n/en-dynamic-01.json:66` — `"尚無自選股": "No watchlist stocks",`
+- `src/stock_ai/ui/static/i18n/en-dynamic-01.json:67` — `"預設自選清單暫時沒有資料。": "The default watchlist currently has no data.",`
+- `src/stock_ai/ui/static/i18n/en-dynamic-01.json:75` — `"自選股與今日報告尚未形成交集": "No overlap between the watchlist and today's report",`
+- `src/stock_ai/ui/static/i18n/en-dynamic-02.json:29` — `"這檔股票目前沒有在每日報告的觀察名單中，後續會補完整個股評分。": "This stock is not currently on the daily report watchlist. A complete stock score will be added later.",`
+- `src/stock_ai/ui/static/i18n/en-dynamic-02.json:36` — `"自選股載入失敗": "Failed to load watchlist",`
+- `src/stock_ai/ui/static/i18n/en-dynamic-03.json:43` — `"通知 / 自選": "Notifications / Watchlist",`
+- `src/stock_ai/ui/static/i18n/en-dynamic-03.json:44` — `"J 頁整合 daily / watchlist / notifications": "Page J integrates daily / watchlist / notifications",`
+- `src/stock_ai/ui/static/i18n/en-dynamic-03.json:56` — `"自選股": "Watchlist stock",`
+- `src/stock_ai/ui/static/i18n/en-dynamic-03.json:57` — `"尚無自選股摘要": "No watchlist summary",`
+- `src/stock_ai/ui/static/i18n/en-dynamic-03.json:83` — `"正在整合每日報告、自選股、通知與個股脈絡...": "Combining the daily report, watchlist, notifications, and stock context…",`
+- `src/stock_ai/ui/static/i18n/en-dynamic-04.json:89` — `"A-M 首頁、自選、個股、監控、選股、新聞、籌碼、財報、交易、輔助、風控、資產、通知": "A-M Home, Watchlist, Stock, Monitor, Screener, News, Positioning, Financials, Trading, Assistant, Risk, Portfolio, and Notifications",`
+- `src/stock_ai/ui/static/i18n/en-segments.json:80` — `"自選股：": "Watchlist:",`
+- `src/stock_ai/ui/static/i18n/en-segments.json:119` — `"檔自選": "watchlist stocks",`
+- `src/stock_ai/ui/static/index.html:70` — `<button class="nav-btn" data-view="watchlist"><span>B</span>自選清單</button>`
+- `src/stock_ai/ui/static/index.html:125` — `<label class="home-universe-field">`
+- `src/stock_ai/ui/static/index.html:127` — `<select id="homeUniverseSource" aria-label="市場雷達分析範圍">`
+- `src/stock_ai/ui/static/index.html:129` — `<option value="user_watchlist">我的自選清單</option>`
+- `src/stock_ai/ui/static/index.html:137` — `<label class="home-universe-field home-universe-filter">`
+- `src/stock_ai/ui/static/index.html:139` — `<input id="homeUniverseFilter" type="text" aria-label="市場雷達來源條件" placeholder="依來源選填" />`
+- `src/stock_ai/ui/static/index.html:140` — `<select id="homeUniverseReference" aria-label="市場雷達已儲存範圍" hidden></select>`
+- `src/stock_ai/ui/static/index.html:142` — `<label class="home-universe-field home-universe-limit">`
+- `src/stock_ai/ui/static/index.html:144` — `<input id="homeUniverseLimit" type="number" min="1" max="20" value="12" aria-label="市場雷達分析檔數" />`
+- `src/stock_ai/ui/static/index.html:219` — `<section class="view" id="watchlist">`
+- `src/stock_ai/ui/static/index.html:223` — `<div id="watchlistGroupsBox" class="event-list"></div>`
+- `src/stock_ai/ui/static/index.html:224` — `<div id="watchlistTable" class="table compact"></div>`
+- `src/stock_ai/ui/static/index.html:228` — `<div id="watchlistAlertsBox" class="event-list"></div>`
+- `src/stock_ai/ui/static/index.html:561` — `<div id="assistantWatchlistBox" class="event-list"></div>`
+- `src/stock_ai/ui/static/js/bootstrap.js:380` — `await safeInitStep('market-radar-universe-options', async () => loadHomeUniverseOptions());`
+- `src/stock_ai/ui/static/js/core/dom-state.js:230` — `'renderUpdateRunner', 'renderSourceStatus', 'signalLabel', 'displaySourceLabel', 'eventTypeLabel', 'renderWatchlist',`
+- `src/stock_ai/ui/static/js/core/dom-state.js:231` — `'renderWatchlistGroups', 'renderWatchlistAlerts', 'renderDailyReport', 'renderOverviewLeaders', 'renderInstitutionalTable',`
+- `src/stock_ai/ui/static/js/core/dom-state.js:332` — `function englishResearchReason(value, fallback = 'System-generated analysis detail.') { const source = String(value || '').trim(); if (!source) return fallback; if (!/[\u3400-\u9fff]/.test(source)) return source; const exact = { '暫無每日報告分數，改用觀察模式。': 'No daily-report score is available; using watch mode.', '即時摘要不可用，改看最近可用市場資料。': 'The realtime summary is unavailable; using the latest available market data.', '等待法人與量能資料進一步確認。': 'Waiting for further confirmation from institutional flow and volume.', '尚無新基本面亮點。': 'No new fundamental catalyst is available.', '暫無明顯事件催化。': 'No clear event catalyst is currently available.', '建議搭配風控摘要檢查單筆曝險。': 'Use the risk summary to verify single-trade exposure.', '盤中價格暫不可用。': 'The intraday price is currently unavailable.', '法人即時/近端資料不足。': 'Realtime or recent institutional-flow data is insufficient.', '自選股暫無異常提醒。': 'No unusual watchlist alert is currently active.', '營收資料待補。': 'Revenue data is pending.', '暫無最新新聞標題。': 'No latest news headline is available.', '波動放大時應降低口數。': 'Reduce order size when volatility expands.', '若風控摘要出現 block，應停止委託預覽往下操作。': 'Stop the order-preview workflow if the risk summary returns a block.', '收盤後建議重新檢查當日波動、委託預覽與資產配置變化。': 'After the close, review daily volatility, order previews, and portfolio-allocation changes.', '通知預覽可用來驗證收盤後提醒文案與自選股熱點。': 'Notification previews can validate post-close alerts and watchlist hotspots.', '所有量化規則參考皆為讀取型彙整，不代表確定結論或投資建議。': 'All quantitative rule references are read-only syntheses, not certain conclusions or investment advice.', '若多來源方向不一致，應優先以風控上限與人工判讀處理。': 'When sources disagree, prioritize risk limits and human review.', '資料交叉驗證中': 'Cross-validating data sources', '官方盤後與新聞來源交叉驗證中': 'Cross-validating official post-market and news sources', '尚未出現明顯強勢股': 'No clearly strong stock has emerged', '今日尚無明顯法人偏多名單': 'No clear institutional-bullish list is available today', '自選股與今日報告尚未形成交集': 'The watchlist and today’s report do not currently overlap', '目前沒有近期新聞': 'No recent news is available' }; if (exact[source]) return exact[source]; const patterns = [[/^每日報告分數\s*(.+)$/, (_, score) => `Daily-report score ${score}`], [/^市場趨勢\s*(.+)$/, (_, trend) => `Market trend: ${stockAiEnglishStatus(trend)}`], [/^月營收年增\s*(.+)%$/, (_, value) => `Monthly revenue YoY ${value}%`], [/^盤中\/最近可用價格\s*(.+)$/, (_, value) => `Intraday / latest available price ${value}`], [/^漲跌幅\s*(.+)$/, (_, value) => `Price change ${value}`], [/^法人淨額\s*(.+)$/, (_, value) => `Institutional net flow ${value}`], [/^自選股提醒：(.+)$/, (_, value) => `Watchlist alerts: ${String(value).split(',').map(englishAlertFlag).join(', ')}`], [/^營收年增\s*(.+)%$/, (_, value) => `Revenue YoY ${value}%`], [/^分數\s*(.+)$/, (_, value) => `Score ${value}`]]; for (const [pattern, replacement] of patterns) if (pattern.test(source)) return source.replace(pattern, replacement); return stockAiEnglishGenerated(source, fallback); }`
+- `src/stock_ai/ui/static/js/core/dom-state.js:337` — `if (original.renderWatchlist) window.renderWatchlist = function renderWatchlistStructured(items) { if (!stockAiEnglishUi()) return original.renderWatchlist(items); const box = $('watchlistTable'); if (!box) return; const rows = (items || []).map((item) => `<div class="row clickable" data-symbol="${stockAiEscape(item.symbol)}"><div>${stockAiEscape(item.name)}<br/><small>${stockAiEscape(item.symbol)}</small></div><div>${item.latest_price == null ? '-' : priceText(item.latest_price)}<br/><small class="${twColor(item.change_percent || 0)}">${item.change_percent == null ? '-' : `${priceText(item.change_percent)}%`}</small></div><div class="${twColor(item.institutional_net || 0)}">${item.institutional_net == null ? '-' : fmt(item.institutional_net)}</div><div>${stockAiEscape((item.alert_flags || []).slice(0, 2).map(englishAlertFlag).join(', ') || 'Watching')}</div></div>`).join(''); box.innerHTML = `<div class="row header"><div>Stock</div><div>Realtime Quote</div><div>Institutional Flow</div><div>Alerts</div></div>${rows || renderEmptyBlock('No Watchlist Stocks', 'The default watchlist is temporarily unavailable.')}`; if (typeof bindSymbolOpeners === 'function') bindSymbolOpeners('#watchlistTable .row.clickable'); };`
+- `src/stock_ai/ui/static/js/core/dom-state.js:338` — `if (original.renderWatchlistGroups) window.renderWatchlistGroups = function renderWatchlistGroupsStructured(items, report = null) { if (!stockAiEnglishUi()) return original.renderWatchlistGroups(items, report); const box = $('watchlistGroupsBox'); if (!box) return; const watchlist = items || [], reportPicks = report?.picks || [], strongest = [...watchlist].filter((item) => Number.isFinite(Number(item.change_percent))).sort((a, b) => Number(b.change_percent || 0) - Number(a.change_percent || 0)).slice(0, 3), institutional = [...watchlist].filter((item) => Number(item.institutional_net || 0) > 0).sort((a, b) => Number(b.institutional_net || 0) - Number(a.institutional_net || 0)).slice(0, 3), reportOverlap = reportPicks.filter((pick) => watchlist.some((item) => item.symbol === pick.symbol)).slice(0, 3), signal = (value) => value === 'buy' ? 'Buy Candidate' : value === 'watch' ? 'Watch' : 'Cautious'; const groups = [{ title: 'Core Watch', detail: watchlist.slice(0, 4).map((item) => `${item.name} ${item.symbol}`).join(', ') || 'No data' }, { title: 'Market Strength', detail: strongest.map((item) => `${item.name} ${priceText(item.change_percent)}%`).join(', ') || 'No clearly strong stock has emerged' }, { title: 'Institutional Buying', detail: institutional.map((item) => `${item.name} ${fmt(item.institutional_net)}`).join(', ') || 'No clear institutional-bullish list is available today' }, { title: 'Daily-report Overlap', detail: reportOverlap.map((item) => `${item.name} ${signal(item.signal)}`).join(', ') || 'The watchlist and today’s report do not currently overlap' }]; box.innerHTML = groups.map((group) => `<div class="event"><h4>${group.title}</h4><p>${stockAiEscape(group.detail)}</p></div>`).join(''); };`
+- `src/stock_ai/ui/static/js/core/dom-state.js:339` — `if (original.renderWatchlistAlerts) window.renderWatchlistAlerts = function renderWatchlistAlertsStructured(items) { if (!stockAiEnglishUi()) return original.renderWatchlistAlerts(items); const box = $('watchlistAlertsBox'); if (!box) return; const picks = (items || []).slice(0, 6); box.innerHTML = picks.map((item) => `<div class="event"><h4>${stockAiEscape(item.name)} ${stockAiEscape(item.symbol)}</h4><p>Alert tags: ${stockAiEscape((item.alert_flags || []).map(englishAlertFlag).join(', ') || 'Watching')}</p><p>Latest news: ${item.latest_news_title ? renderNewsSummaryLink(item.latest_news_title, item.latest_news_url, item.latest_news_title) : 'No recent news is available'}</p></div>`).join('') || renderEmptyBlock('No Alerts', 'Price, volume, institutional-flow, and material-event alerts can be added here.'); };`
+- `src/stock_ai/ui/static/js/core/dom-state.js:350` — `if (original.renderStockAiPlan) window.renderStockAiPlan = function renderStockAiPlanStructured(symbol, report, eventItems, marginItems, revenueItems) { if (!stockAiEnglishUi()) return original.renderStockAiPlan(symbol, report, eventItems, marginItems, revenueItems); const box = $('stockAiPlanBox'); if (!box) return; const pick = (report?.picks || []).find((item) => item.symbol === symbol) || null, margin = (marginItems || [])[0] || null, revenue = (revenueItems || [])[0] || null, eventCount = eventItems?.length || 0; if (!pick) { box.innerHTML = renderEmptyBlock('Stock Score Not Available', 'This stock is not currently in the daily report watchlist. A complete stock score can be added later.'); return; } box.innerHTML = `<div class="event"><h4>${stockAiEscape(pick.name)} ${stockAiEscape(pick.symbol)} ${signalLabel(pick.signal)}</h4><p>Confidence score ${stockAiEscape(pick.score)}. A recommendation is shown only after technical, flow, and fundamental evidence is cross-checked.</p><p>Rationale: ${stockAiEscape((pick.reasons || []).map((value) => englishResearchReason(value)).join('; ') || 'No rationale is available.')}</p><p>Risk: ${stockAiEscape((pick.risk_factors || []).map((value) => englishResearchReason(value, 'Risk factor from the research report.')).join('; ') || 'No additional risk factor is available.')}</p><p>Events: ${eventCount}; margin balance ${margin ? fmt(margin.margin_balance) : '-'}; monthly-revenue YoY ${revenue ? `${priceText(revenue.yoy_change_percent)}%` : '-'}</p><p>Trade plan: entry, stop-loss, take-profit, and invalidation fields remain reserved until the next rules-engine iteration.</p></div>`; };`
+- `src/stock_ai/ui/static/js/core/dom-state.js:352` — `if (original.renderAssistantWorkspace) window.renderAssistantWorkspace = function renderAssistantWorkspaceStructured(workspace) { if (!stockAiEnglishUi()) return original.renderAssistantWorkspace(workspace); const stockContext = state.currentEntity?.symbol || state.realtimeQuote?.symbol, snapshot = workspace.market_snapshot || {}, reportTitle = englishResearchReason(workspace.report_title || '', 'Daily Quantitative Rule Report'); $('assistantSummaryCards').innerHTML = [renderWorkspaceCard('Focus Instrument', stockAiEscape(workspace.focus_symbol || '-'), stockAiEscape(reportTitle)), renderWorkspaceCard('Stock-page Context', stockAiEscape(stockContext || 'No stock page open'), state.currentEntity?.name || 'Can be populated from Stock Analysis'), renderWorkspaceCard('Intraday Snapshot', `${snapshot.source ? stockAiEscape(sourceLabelEnglish(snapshot.source)) : 'Compiling'}<br/>${formatSignedPercent(snapshot.change_percent)}`, snapshot.symbol || workspace.focus_symbol), renderWorkspaceCard('Notifications / Watchlist', `${stockAiEnglishCount(workspace.notification_previews?.length || 0, 'notification')}<br/>${stockAiEnglishCount(workspace.watchlist_items?.length || 0, 'watchlist stock')}`, 'Integrates the daily rule report, watchlist, and notifications')].join(''); $('assistantContextBox').innerHTML = `<div class="event"><h4>Cross-module Context</h4><p>Rule report: ${stockAiEscape(reportTitle)}; watchlist: ${stockAiEnglishCount(workspace.watchlist_items?.length || 0, 'stock')}; notification previews: ${stockAiEnglishCount(workspace.notification_previews?.length || 0, 'item')}.</p><p>Current stock page: ${stockAiEscape(state.currentEntity?.name || 'Not open')} ${stockAiEscape(state.currentEntity?.symbol || '')}${state.realtimeQuote ? `; realtime price ${priceText(currentDisplayPrice(state.realtimeQuote))}` : ''}</p></div>`; $('assistantCardsBox').innerHTML = (workspace.cards || []).map((card) => { const list = (values, fallback) => stockAiEscape((values || []).map((value) => englishResearchReason(value, fallback)).join('; ') || fallback); return `<div class="event"><h4>${sessionLabel(card.session)}: ${stockAiEscape(card.name)} ${stockAiEscape(card.symbol)} <span class="tag ${card.action_bias === 'buy' ? 'positive' : card.action_bias === 'watch' ? 'neutral' : 'negative'}">${actionBiasLabel(card.action_bias)} Rule score ${Number(card.rule_score || 0).toFixed(3)}</span></h4><p>Technical: ${list(card.technical_reasons, 'No technical rationale is available.')}</p><p>Flow: ${list(card.flow_reasons, 'No flow rationale is available.')}</p><p>Fundamentals: ${list(card.fundamental_reasons, 'No fundamental rationale is available.')}</p><p data-i18n-skip>Events: ${stockAiEscape((card.event_reasons || []).join('; ') || 'No event rationale is available.')}</p><p>Risk: ${list(card.risk_reasons, 'No risk rationale is available.')}</p><p>Sources: ${stockAiEscape((card.data_sources || []).map(sourceLabelEnglish).join(', ') || 'Compiling')} · Time ${stockAiEscape(card.as_of || '-')}</p>${card.conflict_note ? `<p class="workspace-note warning">Data conflict: ${stockAiEscape(englishResearchReason(card.conflict_note, 'Source directions conflict; use risk limits and human review.'))}</p>` : ''}</div>`; }).join('') || renderEmptyBlock('No Rule-reference Cards', 'No rule reference is currently available.'); $('assistantWatchlistBox').innerHTML = (workspace.watchlist_items || []).slice(0, 5).map((item) => `<div class="event"><h4>${stockAiEscape(item.name || item.symbol || 'Watchlist stock')}</h4><p>${stockAiEscape(item.symbol || '-')} · Alerts ${stockAiEscape((item.alert_flags || []).map(englishAlertFlag).join(', ') || 'Watching')}</p><p>Latest ${item.latest_price == null ? '-' : formatMoney(item.latest_price)} · Change ${formatSignedPercent(item.change_percent)}</p></div>`).join('') || renderEmptyBlock('No Watchlist Summary', 'Choose an explicit symbol or watchlist first.'); $('assistantNotificationBox').innerHTML = (workspace.notification_previews || []).map((item) => `<div class="event"><h4>${stockAiEscape(englishResearchReason(item.title, 'Notification Preview'))}</h4><p>${stockAiEscape(englishResearchReason(item.body, 'System-generated notification preview.'))}</p><p>Channels ${stockAiEscape((item.channels || []).join(', ') || '-')} · Type ${stockAiEscape(item.category || '-')} · Dry run ${item.dry_run ? 'Yes' : 'No'}</p></div>`).join('') || renderEmptyBlock('No Notification Previews', 'No notification copy is currently available.'); $('assistantMetaBox').innerHTML = renderMetaEvents(workspace.meta); };`
+- `src/stock_ai/ui/static/js/core/dom-state.js:356` — `if (original.renderRequirementContract) window.renderRequirementContract = function renderRequirementContractStructured(contract) { if (!stockAiEnglishUi()) return original.renderRequirementContract(contract); const coverage = contract?.coverage || {}; $('requirementContractBox').innerHTML = cardHtml([['Source Tiers', `${coverage.source_tier_count ?? '-'} tiers`, 'Realtime/trading data, official public data, and auxiliary data'], ['Data Modules', `${coverage.data_module_count ?? '-'} modules`, 'Master data, realtime quotes, intraday candles, historical OHLCV, institutional flow, positioning, fundamentals, events, news, assets, orders, and signals'], ['Feature Views', `${coverage.app_feature_count ?? '-'} views`, 'Home, watchlist, stock analysis, monitoring, screener, news, flow, fundamentals, trading, assistance, risk, portfolio, and notifications'], ['Trading Boundary', coverage.live_ordering_enabled ? 'Live orders enabled' : 'Live orders disabled', coverage.broker_api_connected ? 'Brokerage API connected' : 'No brokerage API; preview and paper trading only']]); const safety = contract?.safety_limits || []; $('requirementSafetyBox').innerHTML = safety.slice(0, 7).map((item) => `<div class="event"><h4>${stockAiEscape(safetyRuleEnglish[item.code] || item.code)}</h4><p>${stockAiEscape(stockAiEnglishStatus(item.status))} / ${(item.enforced_by || []).length} controls</p></div>`).join('') || renderEmptyBlock('No Safety Limits', 'The system requirement contract has not loaded.'); };`
+- `src/stock_ai/ui/static/js/core/dom-state.js:366` — `function rerenderForLanguageChange() { window.clearTimeout(rerenderTimer); rerenderTimer = window.setTimeout(() => { const view = typeof currentViewId === 'function' ? currentViewId() : 'home'; if (view === 'home' && state.homeRadar && typeof window.renderHomeRadar === 'function') { window.renderHomeRadar(state.homeRadar); return; } let refresh = null; if (view === 'screener' && typeof runScreener === 'function') refresh = () => runScreener(); else if (['dashboard', 'watchlist', 'monitor', 'chips', 'fundamentals'].includes(view) && typeof loadDashboardOverview === 'function') refresh = () => loadDashboardOverview(); else if (view === 'news' && typeof loadNewsCenterView === 'function') refresh = () => loadNewsCenterView(); else if (typeof loadViewData === 'function') refresh = () => loadViewData(view); if (refresh) Promise.resolve(refresh()).catch((error) => console.error('Localized view refresh failed', error)); }, 30); }`
+- `src/stock_ai/ui/static/js/core/preferences.js:71` — `'zh-Hant': { home:'首頁',dashboard:'市場總覽',watchlist:'自選清單',stock:'個股分析',monitor:'即時監控',screener:'條件選股',news:'新聞中心',chips:'籌碼追蹤',fundamentals:'基本面中心',trading:'交易預覽',assistant:'量化交易參考',openstock:'量化策略研究',risk:'風險控管',assets:'資產部位','paper-trading':'模擬交易',notifications:'通知中心',ask:'研究問答',entities:'證券資料庫',linkage:'關聯推演',catalog:'資料目錄',settings:'設定' },`
+- `src/stock_ai/ui/static/js/core/preferences.js:72` — `en: { home:'Home',dashboard:'Market Overview',watchlist:'Watchlist',stock:'Stock Analysis',monitor:'Live Monitor',screener:'Screener',news:'News Center',chips:'Flow & Positioning',fundamentals:'Fundamentals',trading:'Trade Preview',assistant:'Quant Trade Reference',openstock:'Quant Research',risk:'Risk Control',assets:'Portfolio','paper-trading':'Paper Trading',notifications:'Notifications',ask:'Research Q&A',entities:'Security Database',linkage:'Linkage Analysis',catalog:'Data Catalog',settings:'Settings' },`
+- `src/stock_ai/ui/static/js/core/preferences.js:171` — `'自選群組': 'Watchlist Groups',`
+- `src/stock_ai/ui/static/js/core/preferences.js:172` — `'自選清單': 'Watchlist',`
+- `src/stock_ai/ui/static/js/core/preferences.js:213` — `'日報、自選與個股': 'Daily Brief, Watchlist & Stocks',`
+- `src/stock_ai/ui/static/js/core/preferences.js:215` — `'通知與自選脈絡': 'Notifications & Watchlist Context',`
+- `src/stock_ai/ui/static/js/core/preferences.js:216` — `'通知與自選': 'Notifications & Watchlist',`
+- `src/stock_ai/ui/static/js/features/codex.js:224` — `$('homeActionHeadline').textContent = actionPlan.headline || (payload.badge === 'NO UNIVERSE' ? '尚未選擇分析範圍' : '分析已完成');`
+- `src/stock_ai/ui/static/js/features/codex.js:255` — `function selectedHomeUniverseRequest() {`
+- `src/stock_ai/ui/static/js/features/codex.js:256` — `const source = String($('homeUniverseSource')?.value || 'explicit_symbols');`
+- `src/stock_ai/ui/static/js/features/codex.js:258` — `const filterValue = String($('homeUniverseFilter')?.value || '').trim();`
+- `src/stock_ai/ui/static/js/features/codex.js:259` — `const referenceValue = String($('homeUniverseReference')?.value || '').trim();`
+- `src/stock_ai/ui/static/js/features/codex.js:260` — `const limit = Math.max(1, Math.min(Number($('homeUniverseLimit')?.value || 12), 20));`
+- `src/stock_ai/ui/static/js/features/codex.js:265` — `if (source === 'user_watchlist' && (referenceValue || filterValue)) filters.watchlist_id = referenceValue || filterValue;`
+- `src/stock_ai/ui/static/js/features/codex.js:267` — `universe_source: source,`
+- `src/stock_ai/ui/static/js/features/codex.js:274` — `function updateHomeUniverseControls() {`
+- `src/stock_ai/ui/static/js/features/codex.js:275` — `const source = String($('homeUniverseSource')?.value || 'explicit_symbols');`
+- `src/stock_ai/ui/static/js/features/codex.js:276` — `const input = $('homeUniverseFilter');`
+- `src/stock_ai/ui/static/js/features/codex.js:277` — `const reference = $('homeUniverseReference');`
+- `src/stock_ai/ui/static/js/features/codex.js:281` — `user_watchlist: 'Watchlist ID（可留空）',`
+- `src/stock_ai/ui/static/js/features/codex.js:289` — `const usesReference = ['user_watchlist', 'workflow_parameters'].includes(source)`
+- `src/stock_ai/ui/static/js/features/codex.js:302` — `async function loadHomeUniverseOptions() {`
+- `src/stock_ai/ui/static/js/features/codex.js:303` — `const reference = $('homeUniverseReference');`
+- `src/stock_ai/ui/static/js/features/codex.js:305` — `const payload = await api('/api/agents/market-radar/universe-options');`
+- `src/stock_ai/ui/static/js/features/codex.js:307` — `(payload.watchlists || []).forEach(item => {`
+- `src/stock_ai/ui/static/js/features/codex.js:308` — `options.push(`<option data-source="user_watchlist" value="${escapeHtml(item.watchlist_id)}">${escapeHtml(item.name)} · ${Number(item.symbol_count || 0)} 檔</option>`);`
+- `src/stock_ai/ui/static/js/features/codex.js:314` — `state.homeUniverseOptions = payload;`
+- `src/stock_ai/ui/static/js/features/codex.js:315` — `updateHomeUniverseControls();`
+- `src/stock_ai/ui/static/js/features/codex.js:321` — `const universeRequest = selectedHomeUniverseRequest();`
+- `src/stock_ai/ui/static/js/features/codex.js:339` — `universe_source: universeRequest.universe_source,`
+- `src/stock_ai/ui/static/js/features/codex.js:340` — `symbols_considered: universeRequest.symbols,`
+- `src/stock_ai/ui/static/js/features/codex.js:350` — `if (universeRequest.universe_source === 'explicit_symbols' && !universeRequest.symbols.length) {`
+- `src/stock_ai/ui/static/js/features/codex.js:353` — `badge: 'NO UNIVERSE',`
+- `src/stock_ai/ui/static/js/features/codex.js:360` — `universe_source: 'none',`
+- `src/stock_ai/ui/static/js/features/codex.js:376` — `$('homeRadarSummary').textContent = '目前選定的模型正在分析明確指定的 Universe…';`
+- `src/stock_ai/ui/static/js/features/codex.js:383` — `...universeRequest,`
+- `src/stock_ai/ui/static/js/features/codex.js:428` — `const universeFailure = /universe_required|universe_resolution_failed|requires|contains no|no persisted/i.test(String(error?.message || error));`
+- `src/stock_ai/ui/static/js/features/codex.js:431` — `badge: universeFailure ? 'NO UNIVERSE' : 'MODEL ERROR',`
+- `src/stock_ai/ui/static/js/features/codex.js:438` — `universe_source: universeRequest.universe_source,`
+- `src/stock_ai/ui/static/js/features/codex.js:439` — `symbols_considered: universeRequest.symbols,`
+- `src/stock_ai/ui/static/js/features/codex.js:442` — `summary: universeFailure`
+- `src/stock_ai/ui/static/js/features/codex.js:448` — `headline: universeFailure ? '分析範圍為空' : '模型分析未完成',`
+- `src/stock_ai/ui/static/js/features/dashboard.js:1` — `function renderWatchlist(items) {`
+- `src/stock_ai/ui/static/js/features/dashboard.js:2` — `const box = $('watchlistTable');`
+- `src/stock_ai/ui/static/js/features/dashboard.js:12` — `bindSymbolOpeners('#watchlistTable .row.clickable');`
+- `src/stock_ai/ui/static/js/features/dashboard.js:15` — `function renderWatchlistGroups(items, report = null) {`
+- `src/stock_ai/ui/static/js/features/dashboard.js:16` — `const box = $('watchlistGroupsBox');`
+- `src/stock_ai/ui/static/js/features/dashboard.js:18` — `const watchlist = items || [];`
+- `src/stock_ai/ui/static/js/features/dashboard.js:20` — `const strongest = [...watchlist]`
+- `src/stock_ai/ui/static/js/features/dashboard.js:24` — `const institutional = [...watchlist]`
+- `src/stock_ai/ui/static/js/features/dashboard.js:28` — `const reportOverlap = reportPicks.filter(pick => watchlist.some(item => item.symbol === pick.symbol)).slice(0, 3);`
+- `src/stock_ai/ui/static/js/features/dashboard.js:30` — `{ title: '核心觀察', detail: watchlist.slice(0, 4).map(item => `${item.name} ${item.symbol}`).join('、') || '尚無資料' },`
+- `src/stock_ai/ui/static/js/features/dashboard.js:38` — `function renderWatchlistAlerts(items) {`
+- `src/stock_ai/ui/static/js/features/dashboard.js:39` — `const box = $('watchlistAlertsBox');`
+- `src/stock_ai/ui/static/js/features/dashboard.js:1036` — `const [masterResult, watchlistResult, reportResult, flowResult, sourceResult, newsCenterResult, overviewIndexResult] = await Promise.allSettled([`
+- `src/stock_ai/ui/static/js/features/dashboard.js:1038` — `api(uiDataApi('/watchlist/overview?limit=12')),`
+- `src/stock_ai/ui/static/js/features/dashboard.js:1045` — `const watchlistItems = watchlistResult.status === 'fulfilled' ? watchlistResult.value.items : [];`
+- `src/stock_ai/ui/static/js/features/dashboard.js:1049` — `if (watchlistResult.status === 'fulfilled') {`
+- `src/stock_ai/ui/static/js/features/dashboard.js:1050` — `renderWatchlist(watchlistItems);`
+- `src/stock_ai/ui/static/js/features/dashboard.js:1051` — `renderWatchlistGroups(watchlistItems, dailyReport);`
+- `src/stock_ai/ui/static/js/features/dashboard.js:1052` — `renderWatchlistAlerts(watchlistItems);`
+- `src/stock_ai/ui/static/js/features/dashboard.js:1053` — `populateSymbolSelect(masterItems.length ? masterItems : watchlistItems);`
+- `src/stock_ai/ui/static/js/features/dashboard.js:1056` — `$('watchlistTable').innerHTML = renderEmptyBlock('自選股載入失敗', watchlistResult.reason?.message || '請稍後再試。');`
+- `src/stock_ai/ui/static/js/features/dashboard.js:1155` — `if ($('homeUniverseSource')) $('homeUniverseSource').addEventListener('change', () => {`
+- `src/stock_ai/ui/static/js/features/dashboard.js:1156` — `updateHomeUniverseControls();`
+- `src/stock_ai/ui/static/js/features/dashboard.js:1159` — `updateHomeUniverseControls();`
+- `src/stock_ai/ui/static/js/features/dashboard.js:1190` — `if ($('refreshAssistantBtn')) $('refreshAssistantBtn').addEventListener('click', () => loadAssistantView().catch(err => renderWorkspaceError(['assistantContextBox', 'assistantCardsBox', 'assistantWatchlistBox', 'assistantNotificationBox', 'assistantMetaBox'], '量化交易參考載入失敗', err.message || '請稍後再試。')));`
+- `src/stock_ai/ui/static/js/features/trading-workspaces.js:248` — `renderWorkspaceCard('通知 / 自選', `${fmt(workspace.notification_previews?.length || 0)} 則通知<br/>${fmt(workspace.watchlist_items?.length || 0)} 檔自選`, 'J 頁整合 daily / watchlist / notifications'),`
+- `src/stock_ai/ui/static/js/features/trading-workspaces.js:253` — `<p>每日報告：${escapeHtml(reportTitle)}；自選股：${fmt(workspace.watchlist_items?.length || 0)} 檔；通知預覽：${fmt(workspace.notification_previews?.length || 0)} 則。</p>`
+- `src/stock_ai/ui/static/js/features/trading-workspaces.js:267` — `$('assistantWatchlistBox').innerHTML = (workspace.watchlist_items || []).slice(0, 5).map(item => ``
+- `src/stock_ai/ui/static/js/features/trading-workspaces.js:358` — `renderWorkspaceError(['assistantContextBox', 'assistantCardsBox', 'assistantWatchlistBox', 'assistantNotificationBox', 'assistantMetaBox'], '載入中', '正在整合每日報告、自選股、通知與個股脈絡...');`
+- `src/stock_ai/ui/static/js/features/trading-workspaces.js:362` — `['assistantContextBox', 'assistantCardsBox', 'assistantWatchlistBox', 'assistantNotificationBox', 'assistantMetaBox'],`
+- `src/stock_ai/universe.py:10` — `from open_stock_ai.types import UniverseRequest, UniverseSnapshot`
+- `src/stock_ai/universe.py:16` — `class UniverseResolutionError(ValueError):`
+- `src/stock_ai/universe.py:17` — `"""A requested Universe cannot be resolved without inventing membership."""`
+- `src/stock_ai/universe.py:20` — `def resolve_universe(request: UniverseRequest | None) -> UniverseSnapshot:`
+- `src/stock_ai/universe.py:21` — `"""Resolve a formally requested symbol Universe with provenance.`
+- `src/stock_ai/universe.py:23` — ``None` means no Universe, and deliberately returns an empty snapshot. Sources`
+- `src/stock_ai/universe.py:29` — `return UniverseSnapshot.empty()`
+- `src/stock_ai/universe.py:31` — `return UniverseSnapshot(`
+- `src/stock_ai/universe.py:36` — `if request.source == "user_watchlist":`
+- `src/stock_ai/universe.py:37` — `symbols, provenance = _user_watchlist_symbols(request.filters)`
+- `src/stock_ai/universe.py:72` — `raise UniverseResolutionError(`
+- `src/stock_ai/universe.py:73` — `"top_by_volume received no attributed official quote rows; no fallback Universe is allowed"`
+- `src/stock_ai/universe.py:82` — `return UniverseSnapshot(`
+- `src/stock_ai/universe.py:89` — `raise UniverseResolutionError(`
+- `src/stock_ai/universe.py:90` — `f"{request.source} requires an attributed ranking provider; no fallback Universe is allowed"`
+- `src/stock_ai/universe.py:104` — `raise UniverseResolutionError("sector_members requires filters.sector")`
+- `src/stock_ai/universe.py:111` — `return UniverseSnapshot(`
+- `src/stock_ai/universe.py:118` — `def universe_payload(snapshot: UniverseSnapshot) -> dict[str, Any]:`
+- `src/stock_ai/universe.py:122` — `def universe_source_options() -> dict[str, Any]:`
+- `src/stock_ai/universe.py:123` — `"""Describe live selectable Universe providers without resolving a scan."""`
+- `src/stock_ai/universe.py:127` — `watchlists: list[dict[str, Any]] = []`
+- `src/stock_ai/universe.py:134` — `select w.watchlist_id, w.name, w.user_id, count(s.symbol) as symbol_count`
+- `src/stock_ai/universe.py:135` — `from user_watchlists w`
+- `src/stock_ai/universe.py:136` — `left join user_watchlist_symbols s on s.watchlist_id = w.watchlist_id`
+- `src/stock_ai/universe.py:137` — `group by w.watchlist_id, w.name, w.user_id`
+- `src/stock_ai/universe.py:141` — `watchlists = [`
+- `src/stock_ai/universe.py:143` — `"watchlist_id": str(row["watchlist_id"]),`
+- `src/stock_ai/universe.py:151` — `watchlists = []`
+- `src/stock_ai/universe.py:167` — `except UniverseResolutionError:`
+- `src/stock_ai/universe.py:170` — `"schema_version": "stock_ai.universe_source_options.v1",`
+- `src/stock_ai/universe.py:173` — `"user_watchlist",`
+- `src/stock_ai/universe.py:180` — `"watchlists": watchlists,`
+- `src/stock_ai/universe.py:181` — `"configured_watchlist_count": len(settings.watchlist),`
+- `src/stock_ai/universe.py:188` — `request: UniverseRequest,`
+- `src/stock_ai/universe.py:191` — `) -> UniverseSnapshot:`
+- `src/stock_ai/universe.py:194` — `_normalize_universe_symbol(symbol)`
+- `src/stock_ai/universe.py:196` — `if _normalize_universe_symbol(symbol)`
+- `src/stock_ai/universe.py:205` — `return UniverseSnapshot(`
+- `src/stock_ai/universe.py:212` — `def _user_watchlist_symbols(filters: dict[str, Any]) -> tuple[list[str], dict[str, Any]]:`
+- `src/stock_ai/universe.py:216` — `for item in settings.watchlist`
+- `src/stock_ai/universe.py:219` — `sources = ["config.open_stock_ai.watchlist"] if symbols else []`
+- `src/stock_ai/universe.py:228` — `if filters.get("watchlist_id"):`
+- `src/stock_ai/universe.py:229` — `clauses.append("w.watchlist_id = ?")`
+- `src/stock_ai/universe.py:230` — `parameters.append(str(filters["watchlist_id"]))`
+- `src/stock_ai/universe.py:238` — `from user_watchlist_symbols s`
+- `src/stock_ai/universe.py:239` — `join user_watchlists w on w.watchlist_id = s.watchlist_id`
+- `src/stock_ai/universe.py:249` — `sources.append("sqlite.user_watchlists")`
+- `src/stock_ai/universe.py:252` — `raise UniverseResolutionError(`
+- `src/stock_ai/universe.py:253` — `"user_watchlist has no persisted or configured symbols; no fallback Universe is allowed"`
+- `src/stock_ai/universe.py:256` — `"provider": "user_watchlist_store",`
+- `src/stock_ai/universe.py:271` — `raise UniverseResolutionError(`
+- `src/stock_ai/universe.py:282` — `raise UniverseResolutionError(`
+- `src/stock_ai/universe.py:283` — `"portfolio_positions contains no open paper positions; no fallback Universe is allowed"`
+- `src/stock_ai/universe.py:293` — `request: UniverseRequest,`
+- `src/stock_ai/universe.py:304` — `raise UniverseResolutionError(`
+- `src/stock_ai/universe.py:308` — `raise UniverseResolutionError(f"Workflow not found: {workflow_id}")`
+- `src/stock_ai/universe.py:314` — `raise UniverseResolutionError(`
+- `src/stock_ai/universe.py:325` — `request: UniverseRequest,`
+- `src/stock_ai/universe.py:340` — `raise UniverseResolutionError(`
+- `src/stock_ai/universe.py:344` — `raise UniverseResolutionError(f"Agent run not found: {run_id}")`
+- `src/stock_ai/universe.py:354` — `raise UniverseResolutionError(`
+- `src/stock_ai/universe.py:372` — `elif normalized_key in {"symbols", "tickers", "universe"} and isinstance(item, list):`
+- `src/stock_ai/universe.py:382` — `def _normalize_universe_symbol(value: Any) -> str:`
+- `src/stock_ai/update_runner.py:38` — `"candidate_endpoints": ["/api/reports/daily", "/api/watchlist/overview"],`
+- `src/stock_ai/update_runner.py:40` — `"operation": "build_pre_market_watchlist",`
+- `src/stock_ai/update_runner.py:52` — `"candidate_endpoints": ["/api/watchlist/overview", "/api/assets/summary"],`
+- `src/stock_ai/update_runner.py:54` — `"operation": "monitor_watchlist_and_positions",`
+- `config/open_stock_ai.yaml:27` — `universe:`
+- `config/open_stock_ai.yaml:29` — `allow_user_watchlist: true`
+- `config/open_stock_ai.yaml:33` — `# A migrated user watchlist may be stored here, but new installations are empty.`
+- `config/open_stock_ai.yaml:34` — `watchlist: []`
+- `config/open_stock_ai.yaml:35` — `legacy_watchlist_migrated: true`

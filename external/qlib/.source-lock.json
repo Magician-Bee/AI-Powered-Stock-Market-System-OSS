@@ -1,0 +1,8 @@
+{
+  "schema_version": "open_stock_ai.external_snapshot_lock.v1",
+  "source_key": "qlib",
+  "origin": "https://github.com/microsoft/qlib.git",
+  "branch": "main",
+  "head": "d5379c520f66a39953bad76234a7019a72796fd0",
+  "snapshot_mode": "vendored_source_snapshot"
+}

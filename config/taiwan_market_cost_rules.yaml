@@ -1,0 +1,102 @@
+schema_version: open_stock_ai.taiwan_market_cost_rules.v1
+snapshot_id: taiwan-secondary-market-costs-2026-08-13
+reviewed_at: "2026-08-13T12:55:00+08:00"
+authority: Taiwan Ministry of Finance and Taiwan Stock Exchange
+
+# This is a reviewed, structured snapshot of official rules, not a broker
+# account statement.  Broker commissions, minimum charges and any customer
+# exchange-fee pass-through remain account-specific inputs.
+sources:
+  - source_id: mof-securities-transaction-tax-act
+    authority: Ministry of Finance, R.O.C.
+    url: https://law-out.mof.gov.tw/EngLawContent.aspx?id=20707&lan=E
+    document: Securities Transaction Tax Act, Articles 2, 2-1 and 2-2
+    checked_at: "2026-08-13"
+    retrieved_at: "2026-08-26T01:30:00+08:00"
+    content_sha256: "91fcdd2257aa62fcf71fc86afa4e34c287f49508d01f3792195deaa0307ded4b"
+  - source_id: twse-investment-guide-2025
+    authority: Taiwan Stock Exchange
+    url: https://www.twse.com.tw/zh/about/company/guide.html
+    document: Fee Schedule and Transaction Taxes
+    checked_at: "2026-08-13"
+    retrieved_at: "2026-08-26T01:30:00+08:00"
+    content_sha256: "a70e9f7c3dfc181e67ca9dd875af71dac55eeec380fab72d6e1b16dbe4029d8b"
+  - source_id: twse-operating-rules-article-94
+    authority: Taiwan Stock Exchange
+    url: https://twse-regulation.twse.com.tw/EN/law/DOC01_print.aspx?FLCODE=FL007304&FLNO=94
+    document: TWSE Operating Rules, Article 94
+    checked_at: "2026-08-13"
+    retrieved_at: "2026-08-26T01:30:00+08:00"
+    content_sha256: "130209d7f3a52c7bf5c160fc3a1dcf8d99d51ed300ef00ccfe7580d2987c1201"
+
+commission_reference:
+  rule_id: tw-broker-commission-reference-2026
+  reference_bps: 14.25
+  source_ids: [twse-investment-guide-2025, twse-operating-rules-article-94]
+  note: Brokers set account-specific rates, discounts and minimum charges; a rate above 14.25 bps requires notice.
+
+tax_rules:
+  - rule_id: tw-buy-side-no-securities-transaction-tax
+    venues: [TWSE, TPEX]
+    product_types: [stock, etf, bond_etf]
+    lot_types: [board_lot, odd_lot]
+    side: buy
+    valid_from: "1965-09-01"
+    valid_to: null
+    tax_bps: 0.0
+    source_ids: [mof-securities-transaction-tax-act]
+
+  - rule_id: tw-stock-standard-seller-tax
+    venues: [TWSE, TPEX]
+    product_types: [stock]
+    lot_types: [board_lot, odd_lot]
+    side: sell
+    valid_from: "1965-09-01"
+    valid_to: null
+    tax_bps: 30.0
+    source_ids: [mof-securities-transaction-tax-act, twse-investment-guide-2025]
+
+  - rule_id: tw-stock-day-trade-reduced-seller-tax-2017-2027
+    venues: [TWSE, TPEX]
+    product_types: [stock]
+    # The reduced day-trade seller tax applies to offsetting board-lot
+    # securities trades.  Odd-lot sales fall through to the normal seller tax.
+    lot_types: [board_lot]
+    side: sell
+    valid_from: "2017-04-28"
+    valid_to: "2027-12-31"
+    tax_bps: 15.0
+    day_trade_offset: true
+    source_ids: [mof-securities-transaction-tax-act, twse-investment-guide-2025]
+
+  - rule_id: tw-etf-standard-seller-tax
+    venues: [TWSE, TPEX]
+    product_types: [etf]
+    lot_types: [board_lot, odd_lot]
+    side: sell
+    valid_from: "1965-09-01"
+    valid_to: null
+    tax_bps: 10.0
+    source_ids: [mof-securities-transaction-tax-act, twse-investment-guide-2025]
+
+  - rule_id: tw-bond-etf-exempt-seller-tax-2017-2026
+    venues: [TWSE, TPEX]
+    product_types: [bond_etf]
+    lot_types: [board_lot, odd_lot]
+    side: sell
+    valid_from: "2017-01-01"
+    valid_to: "2026-12-31"
+    tax_bps: 0.0
+    bond_etf_tax_exemption_eligible: true
+    source_ids: [mof-securities-transaction-tax-act, twse-investment-guide-2025]
+
+  - rule_id: tw-bond-etf-nonexempt-seller-tax
+    venues: [TWSE, TPEX]
+    product_types: [bond_etf]
+    lot_types: [board_lot, odd_lot]
+    side: sell
+    valid_from: "2017-01-01"
+    valid_to: null
+    tax_bps: 10.0
+    bond_etf_tax_exemption_eligible: false
+    source_ids: [mof-securities-transaction-tax-act]

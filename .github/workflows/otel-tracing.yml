@@ -1,0 +1,158 @@
+name: Hosted OpenTelemetry tracing
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "23 5 * * 1"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: otel-tracing-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  collector-delivery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install project
+        run: python -m pip install -e .
+
+      - name: Start pinned external OpenTelemetry Collector
+        env:
+          OTEL_ARTIFACT: ${{ runner.temp }}/stock-ai-otel/artifact
+          OTEL_CONFIG: ${{ github.workspace }}/.github/otel/collector-config.yaml
+          COLLECTOR_IMAGE: otel/opentelemetry-collector-contrib:0.160.0
+        run: |
+          mkdir -p "${OTEL_ARTIFACT}"
+          chmod 0777 "${OTEL_ARTIFACT}"
+          cp "${OTEL_CONFIG}" "${OTEL_ARTIFACT}/collector-config.yaml"
+          docker pull "${COLLECTOR_IMAGE}"
+          docker run --detach --name stock-ai-otel-collector \
+            --publish 127.0.0.1:4318:4318 \
+            --volume "${OTEL_CONFIG}:/etc/otelcol-contrib/config.yaml:ro" \
+            --volume "${OTEL_ARTIFACT}:/evidence" \
+            "${COLLECTOR_IMAGE}" --config=/etc/otelcol-contrib/config.yaml
+          for attempt in $(seq 1 30); do
+            if curl --silent --output /dev/null http://127.0.0.1:4318/v1/traces; then break; fi
+            sleep 1
+          done
+          docker ps --filter name=stock-ai-otel-collector --filter status=running --format '{{.Names}}' | grep -qx stock-ai-otel-collector
+
+      - name: Deliver request to decision to paper-order trace
+        env:
+          OTEL_ARTIFACT: ${{ runner.temp }}/stock-ai-otel/artifact
+          OTEL_SENDER: ${{ runner.temp }}/stock-ai-otel/sender
+        run: |
+          python scripts/run_hosted_otel_gate.py \
+            --mode send \
+            --endpoint http://127.0.0.1:4318/v1/traces \
+            --output-dir "${OTEL_SENDER}" \
+            --commit-sha "${GITHUB_SHA}" \
+            --run-id "${GITHUB_RUN_ID}" \
+            --allow-hosted-otel-drill
+          cp "${OTEL_SENDER}"/*.json "${OTEL_ARTIFACT}/"
+
+      - name: Stop Collector and bind runtime identity
+        if: always()
+        env:
+          OTEL_ARTIFACT: ${{ runner.temp }}/stock-ai-otel/artifact
+          COLLECTOR_IMAGE: otel/opentelemetry-collector-contrib:0.160.0
+        run: |
+          docker stop --time 15 stock-ai-otel-collector
+          docker logs stock-ai-otel-collector > "${OTEL_ARTIFACT}/collector.log" 2>&1
+          export COLLECTOR_IMAGE_ID=$(docker image inspect "${COLLECTOR_IMAGE}" --format '{{.Id}}')
+          export CONFIG_SHA=$(sha256sum "${OTEL_ARTIFACT}/collector-config.yaml" | cut -d' ' -f1)
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          path = Path(os.environ["OTEL_ARTIFACT"]) / "collector-runtime.json"
+          path.write_text(json.dumps({
+              "collector_image": os.environ["COLLECTOR_IMAGE"],
+              "collector_image_id": os.environ["COLLECTOR_IMAGE_ID"],
+              "collector_config_sha256": os.environ["CONFIG_SHA"],
+          }, sort_keys=True))
+          PY
+      - name: Assert Collector persisted trace
+        env:
+          OTEL_ARTIFACT: ${{ runner.temp }}/stock-ai-otel/artifact
+        run: test -s "${OTEL_ARTIFACT}/collector-traces.json"
+
+      - name: Upload Collector evidence off host
+        uses: actions/upload-artifact@v4
+        with:
+          name: stock-ai-otel-trace-${{ github.sha }}
+          path: ${{ runner.temp }}/stock-ai-otel/artifact
+          if-no-files-found: error
+          retention-days: 90
+
+  clean-runner-verify:
+    needs: collector-delivery
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install project
+        run: python -m pip install -e .
+
+      - name: Download Collector evidence into clean runner
+        uses: actions/download-artifact@v4
+        with:
+          name: stock-ai-otel-trace-${{ github.sha }}
+          path: ${{ runner.temp }}/stock-ai-otel/input
+
+      - name: Verify cross-service trace from Collector output
+        env:
+          OTEL_INPUT: ${{ runner.temp }}/stock-ai-otel/input
+          OTEL_VERIFY: ${{ runner.temp }}/stock-ai-otel/verification
+        run: |
+          test ! -e "${OTEL_VERIFY}"
+          python scripts/run_hosted_otel_gate.py \
+            --mode verify \
+            --input-dir "${OTEL_INPUT}" \
+            --output-dir "${OTEL_VERIFY}" \
+            --commit-sha "${GITHUB_SHA}" \
+            --run-id "${GITHUB_RUN_ID}" \
+            --allow-hosted-otel-drill
+
+      - name: Verify hosted OTEL receipt independently
+        env:
+          OTEL_VERIFY: ${{ runner.temp }}/stock-ai-otel/verification
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          from open_stock_ai.agent_runtime.hosted_otel_gate import verify_hosted_otel_gate_receipt
+          receipt = json.loads((Path(os.environ["OTEL_VERIFY"]) / "otel-gate-receipt.json").read_text())
+          if receipt["commit_sha"] != os.environ["GITHUB_SHA"]:
+              raise SystemExit("OTEL candidate SHA mismatch")
+          if not receipt["passed"] or not verify_hosted_otel_gate_receipt(receipt):
+              raise SystemExit("hosted OTEL receipt failed verification")
+          PY
+
+      - name: Upload clean-runner OTEL evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: stock-ai-otel-verification-${{ github.sha }}
+          path: ${{ runner.temp }}/stock-ai-otel/verification
+          if-no-files-found: error
+          retention-days: 90

@@ -1,0 +1,63 @@
+name: Hosted HA failover
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ha-failover-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  multi-process-failover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install project
+        run: python -m pip install -e .
+
+      - name: Kill leaders and verify standby takeover
+        env:
+          EVIDENCE_DIR: ${{ runner.temp }}/stock-ai-ha/evidence
+        run: |
+          mkdir -p "$(dirname "${EVIDENCE_DIR}")"
+          python scripts/run_hosted_ha_failover.py \
+            --output-dir "${EVIDENCE_DIR}" \
+            --commit-sha "${GITHUB_SHA}" \
+            --allow-process-kill
+
+      - name: Verify failover receipt independently
+        env:
+          EVIDENCE_DIR: ${{ runner.temp }}/stock-ai-ha/evidence
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          from open_stock_ai.governance import verify_hosted_ha_failover_receipt
+
+          receipt = json.loads((Path(os.environ["EVIDENCE_DIR"]) / "ha-failover-receipt.json").read_text())
+          if receipt["commit_sha"] != os.environ["GITHUB_SHA"]:
+              raise SystemExit("HA receipt candidate SHA mismatch")
+          if not receipt["passed"] or not verify_hosted_ha_failover_receipt(receipt):
+              raise SystemExit("hosted HA failover receipt failed verification")
+          PY
+
+      - name: Upload failover evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: stock-ai-ha-failover-${{ github.sha }}
+          path: ${{ runner.temp }}/stock-ai-ha/evidence
+          if-no-files-found: error
+          retention-days: 30

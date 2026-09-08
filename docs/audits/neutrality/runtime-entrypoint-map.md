@@ -1,0 +1,297 @@
+# Runtime Entrypoint Map
+
+- Baseline commit: `94e8cb2d65c9f5d8f8de04717847d77c513cee27`
+- Generated at: `2026-07-29T19:18:01.417729+00:00`
+- Scope: Production `src/` and `config/`; vendored UI files excluded.
+- Matches: **278**
+
+## Purpose
+
+Inventory of HTTP entrypoints and router composition. The target architecture must route `/api/query`, home radar, and Agent runs through the unified driver registry. Native Codex routes may remain developer-only.
+
+## Classification notes
+
+- `/api/codex/market-radar` is a confirmed legacy production path.
+- `/api/agents/runs` is the durable interoperable runtime.
+- Every market-analysis entrypoint must require an explicit Universe or return an empty state.
+
+## Inventory
+
+- `src/open_stock_ai/api.py:36` — `router.include_router(paper_training_router)`
+- `src/open_stock_ai/api.py:37` — `router.include_router(agent_trading_router)`
+- `src/open_stock_ai/api.py:52` — `@router.get("/analyze")`
+- `src/open_stock_ai/api.py:61` — `@router.get("/agent/tool-manifest")`
+- `src/open_stock_ai/api.py:66` — `@router.get("/agent/portfolio")`
+- `src/open_stock_ai/api.py:71` — `@router.get("/agent/workspace")`
+- `src/open_stock_ai/api.py:80` — `@router.get("/agent/watchlist")`
+- `src/open_stock_ai/api.py:88` — `@router.get("/paper-account")`
+- `src/open_stock_ai/api.py:104` — `@router.get("/paper-oms/orders")`
+- `src/open_stock_ai/api.py:118` — `@router.post("/paper-account/corporate-actions/sync")`
+- `src/open_stock_ai/api.py:132` — `@router.get("/session/{session}")`
+- `src/open_stock_ai/api.py:137` — `@router.get("/external-sources")`
+- `src/open_stock_ai/api.py:142` — `@router.get("/external-source-lock")`
+- `src/open_stock_ai/api.py:147` — `@router.get("/broker-import-governance")`
+- `src/open_stock_ai/api.py:152` — `@router.get("/optional-external-sources")`
+- `src/open_stock_ai/api.py:157` — `@router.get("/storage")`
+- `src/open_stock_ai/api.py:162` — `@router.get("/signals")`
+- `src/open_stock_ai/api.py:167` — `@router.get("/decision-log")`
+- `src/open_stock_ai/api.py:172` — `@router.get("/decision-review")`
+- `src/open_stock_ai/api.py:178` — `@router.get("/paper-orders")`
+- `src/open_stock_ai/api.py:183` — `@router.get("/paper-exposure")`
+- `src/open_stock_ai/api.py:188` — `@router.get("/integration-audit")`
+- `src/open_stock_ai/integration_audit.py:2110` — `route_count = router_text.count('@router.get("')`
+- `src/open_stock_ai/integration_audit.py:2114` — `if '@app.get("/api/open-stock-ai' in line or '@app.post("/api/open-stock-ai' in line`
+- `src/open_stock_ai/integration_audit.py:2117` — `include_mounted = "app.include_router(open_stock_ai_router)" in app_text`
+- `src/stock_ai/agent_api.py:194` — `@router.get("")`
+- `src/stock_ai/agent_api.py:199` — `@router.get("/tools")`
+- `src/stock_ai/agent_api.py:210` — `@router.get("/capabilities")`
+- `src/stock_ai/agent_api.py:215` — `@router.get("/providers")`
+- `src/stock_ai/agent_api.py:225` — `@router.get("/providers/{provider_id}/health")`
+- `src/stock_ai/agent_api.py:234` — `@router.get("/environment")`
+- `src/stock_ai/agent_api.py:239` — `@router.get("/settings")`
+- `src/stock_ai/agent_api.py:244` — `@router.post("/providers/openai-compatible/models")`
+- `src/stock_ai/agent_api.py:265` — `@router.post("/ui/state")`
+- `src/stock_ai/agent_api.py:270` — `@router.get("/ui/commands")`
+- `src/stock_ai/agent_api.py:280` — `@router.post("/ui/commands/{command_id}/result")`
+- `src/stock_ai/agent_api.py:285` — `@router.post("/settings")`
+- `src/stock_ai/agent_api.py:296` — `@router.post("/sessions", status_code=201)`
+- `src/stock_ai/agent_api.py:304` — `@router.get("/sessions")`
+- `src/stock_ai/agent_api.py:314` — `@router.get("/sessions/{session_id}")`
+- `src/stock_ai/agent_api.py:325` — `@router.get("/sessions/{session_id}/messages")`
+- `src/stock_ai/agent_api.py:340` — `@router.post("/sessions/{session_id}/archive")`
+- `src/stock_ai/agent_api.py:348` — `@router.post("/sessions/{session_id}/runs", status_code=202)`
+- `src/stock_ai/agent_api.py:364` — `@router.post("/run")`
+- `src/stock_ai/agent_api.py:386` — `@router.post("/run/stream")`
+- `src/stock_ai/agent_api.py:415` — `@router.post("/runs", status_code=202)`
+- `src/stock_ai/agent_api.py:432` — `@router.post("/market-radar/runs", status_code=202)`
+- `src/stock_ai/agent_api.py:527` — `@router.get("/market-radar/universe-options")`
+- `src/stock_ai/agent_api.py:532` — `@router.post("/providers/{driver_id}/conformance")`
+- `src/stock_ai/agent_api.py:558` — `@router.get("/market-radar/runs/{run_id}")`
+- `src/stock_ai/agent_api.py:664` — `@router.get("/market-radar/runs/{run_id}/stream")`
+- `src/stock_ai/agent_api.py:686` — `@router.get("/runs")`
+- `src/stock_ai/agent_api.py:696` — `@router.get("/runs/{run_id}")`
+- `src/stock_ai/agent_api.py:704` — `@router.get("/runs/{run_id}/snapshot")`
+- `src/stock_ai/agent_api.py:712` — `@router.get("/runs/{run_id}/stream")`
+- `src/stock_ai/agent_api.py:734` — `@router.post("/runs/{run_id}/cancel", status_code=202)`
+- `src/stock_ai/agent_api.py:742` — `@router.post("/runs/{run_id}/pause", status_code=202)`
+- `src/stock_ai/agent_api.py:750` — `@router.post("/runs/{run_id}/resume", status_code=202)`
+- `src/stock_ai/agent_api.py:758` — `@router.post("/runs/{run_id}/retry", status_code=202)`
+- `src/stock_ai/agent_api.py:769` — `@router.post("/runs/{run_id}/continue", status_code=202)`
+- `src/stock_ai/agent_api.py:784` — `@router.post("/runs/{run_id}/replan", status_code=202)`
+- `src/stock_ai/agent_api.py:797` — `@router.get("/runs/{run_id}/plan")`
+- `src/stock_ai/agent_api.py:809` — `@router.get("/runs/{run_id}/events")`
+- `src/stock_ai/agent_api.py:824` — `@router.get("/runs/{run_id}/artifacts")`
+- `src/stock_ai/agent_api.py:836` — `@router.get("/runs/{run_id}/artifacts/{artifact_id}")`
+- `src/stock_ai/agent_api.py:860` — `@router.get("/runs/{run_id}/checkpoints")`
+- `src/stock_ai/agent_api.py:872` — `@router.get("/approvals")`
+- `src/stock_ai/agent_api.py:882` — `@router.post("/approvals/{approval_id}/approve")`
+- `src/stock_ai/agent_api.py:897` — `@router.post("/approvals/{approval_id}/deny")`
+- `src/stock_ai/agent_api.py:912` — `@router.post("/approvals/{approval_id}/challenge")`
+- `src/stock_ai/agent_api.py:925` — `@router.post("/workflows", status_code=201)`
+- `src/stock_ai/agent_api.py:937` — `@router.get("/workflows")`
+- `src/stock_ai/agent_api.py:947` — `@router.get("/workflows/{workflow_id}")`
+- `src/stock_ai/agent_api.py:955` — `@router.post("/workflows/{workflow_id}/runs", status_code=202)`
+- `src/stock_ai/agent_api.py:973` — `@router.post("/schedules", status_code=201)`
+- `src/stock_ai/agent_api.py:981` — `@router.get("/schedules")`
+- `src/stock_ai/agent_api.py:987` — `@router.patch("/schedules/{schedule_id}")`
+- `src/stock_ai/agent_api.py:998` — `@router.post("/schedules/{schedule_id}/pause")`
+- `src/stock_ai/agent_api.py:1006` — `@router.post("/schedules/{schedule_id}/resume")`
+- `src/stock_ai/agent_api.py:1014` — `@router.post("/schedules/events", status_code=202)`
+- `src/stock_ai/agent_api.py:1027` — `@router.delete("/schedules/{schedule_id}")`
+- `src/stock_ai/agent_trading_api.py:281` — `@router.get("/session")`
+- `src/stock_ai/agent_trading_api.py:322` — `@router.post("/account/reset")`
+- `src/stock_ai/agent_trading_api.py:358` — `@router.post("/analyze")`
+- `src/stock_ai/agent_trading_api.py:430` — `@router.post("/control")`
+- `src/stock_ai/broker_api.py:21` — `@router.get("/connections")`
+- `src/stock_ai/broker_api.py:26` — `@router.get("/capabilities")`
+- `src/stock_ai/broker_api.py:31` — `@router.get("/health")`
+- `src/stock_ai/broker_api.py:36` — `@router.get("/runtime")`
+- `src/stock_ai/broker_api.py:41` — `@router.get("/{broker_id}/authorization")`
+- `src/stock_ai/broker_api.py:46` — `@router.post("/{broker_id}/authorization/open")`
+- `src/stock_ai/codex_api.py:42` — `@router.get("/account")`
+- `src/stock_ai/codex_api.py:50` — `@router.post("/login")`
+- `src/stock_ai/codex_api.py:60` — `@router.get("/login/{login_id}")`
+- `src/stock_ai/codex_api.py:65` — `@router.post("/logout")`
+- `src/stock_ai/codex_api.py:71` — `@router.post("/run")`
+- `src/stock_ai/codex_api.py:106` — `@router.get("/capabilities")`
+- `src/stock_ai/codex_api.py:132` — `@router.post("/project/sync")`
+- `src/stock_ai/codex_api.py:143` — `@router.post("/market-radar")`
+- `src/stock_ai/codex_llm_bridge.py:128` — `@app.get("/v1/models")`
+- `src/stock_ai/codex_llm_bridge.py:144` — `@app.post("/v1/chat/completions")`
+- `src/stock_ai/data_platform/api.py:15` — `@router.get("/status")`
+- `src/stock_ai/data_platform/api.py:20` — `@router.get("/ui/v1/contract")`
+- `src/stock_ai/data_platform/api.py:25` — `@router.get("/sources")`
+- `src/stock_ai/data_platform/api.py:30` — `@router.get("/cache")`
+- `src/stock_ai/data_platform/api.py:44` — `@router.get("/cache/{dataset}")`
+- `src/stock_ai/data_platform/api.py:58` — `@router.post("/cache/{dataset}/invalidate")`
+- `src/stock_ai/data_platform/api.py:90` — `@router.get("/failover")`
+- `src/stock_ai/data_platform/api.py:95` — `@router.get("/failover/runs")`
+- `src/stock_ai/data_platform/api.py:102` — `@router.get("/failover/runs/{run_id}")`
+- `src/stock_ai/data_platform/api.py:113` — `@router.get("/entity-registry")`
+- `src/stock_ai/data_platform/api.py:118` — `@router.get("/entity-registry/resolve")`
+- `src/stock_ai/data_platform/api.py:136` — `@router.get("/entities")`
+- `src/stock_ai/data_platform/api.py:150` — `@router.get("/security-lifecycle")`
+- `src/stock_ai/data_platform/api.py:159` — `@router.get("/entities/{entity_id}/lifecycle")`
+- `src/stock_ai/data_platform/api.py:167` — `@router.get("/entities/{entity_id}")`
+- `src/stock_ai/data_platform/api.py:178` — `@router.post("/query")`
+- `src/stock_ai/data_platform/api.py:189` — `@router.get("/warehouse/{domain}")`
+- `src/stock_ai/data_platform/api.py:218` — `@router.get("/ingestion/runs")`
+- `src/stock_ai/data_platform/api.py:230` — `@router.get("/ingestion/runs/{run_id}")`
+- `src/stock_ai/data_platform/api.py:241` — `@router.get("/revisions/history")`
+- `src/stock_ai/data_platform/api.py:256` — `@router.post("/snapshots")`
+- `src/stock_ai/data_platform/api.py:280` — `@router.get("/snapshots/{snapshot_id}")`
+- `src/stock_ai/data_platform/api.py:296` — `@router.get("/revisions/{revision_id}/lineage")`
+- `src/stock_ai/data_platform/api.py:304` — `@router.get("/lineage/artifacts")`
+- `src/stock_ai/data_platform/api.py:322` — `@router.post("/lineage/artifacts")`
+- `src/stock_ai/data_platform/api.py:375` — `@router.get("/lineage/{target_id}")`
+- `src/stock_ai/data_platform/api.py:383` — `@router.get("/raw")`
+- `src/stock_ai/data_platform/api.py:395` — `@router.get("/raw/{raw_payload_id}")`
+- `src/stock_ai/data_platform/api.py:403` — `@router.post("/raw/{raw_payload_id}/reprocess")`
+- `src/stock_ai/data_platform/api.py:426` — `@router.post("/quality/daily")`
+- `src/stock_ai/data_platform/api.py:445` — `@router.get("/quality/reports")`
+- `src/stock_ai/data_platform/api.py:458` — `@router.get("/quality/reports/{report_id}")`
+- `src/stock_ai/data_platform/api.py:466` — `@router.post("/quality/{dataset}")`
+- `src/stock_ai/data_platform/api.py:483` — `@router.post("/reconcile")`
+- `src/stock_ai/data_platform/api.py:499` — `@router.get("/reconciliation")`
+- `src/stock_ai/data_platform/api.py:504` — `@router.post("/reconciliation/runs")`
+- `src/stock_ai/data_platform/api.py:529` — `@router.get("/reconciliation/runs")`
+- `src/stock_ai/data_platform/api.py:536` — `@router.get("/reconciliation/runs/{run_id}")`
+- `src/stock_ai/data_platform/api.py:547` — `@router.get("/reconciliation/conflicts")`
+- `src/stock_ai/main.py:157` — `app.include_router(open_stock_ai_router)`
+- `src/stock_ai/main.py:158` — `app.include_router(codex_router)`
+- `src/stock_ai/main.py:159` — `app.include_router(agent_router)`
+- `src/stock_ai/main.py:160` — `app.include_router(data_platform_router)`
+- `src/stock_ai/main.py:161` — `app.include_router(broker_router)`
+- `src/stock_ai/main.py:164` — `@app.get("/", include_in_schema=False)`
+- `src/stock_ai/main.py:175` — `@app.get("/favicon.ico", include_in_schema=False)`
+- `src/stock_ai/main.py:188` — `@app.get("/health")`
+- `src/stock_ai/main.py:201` — `@app.get("/api/system/settings-overview")`
+- `src/stock_ai/main.py:280` — `@app.get(ui_data_route("catalog"))`
+- `src/stock_ai/main.py:281` — `@app.get("/api/catalog")`
+- `src/stock_ai/main.py:286` — `@app.get("/api/system/requirements")`
+- `src/stock_ai/main.py:291` — `@app.get("/api/system/schedule")`
+- `src/stock_ai/main.py:306` — `@app.get("/api/system/source-policy")`
+- `src/stock_ai/main.py:311` — `@app.post("/api/system/source-policy/evaluate")`
+- `src/stock_ai/main.py:316` — `@app.get("/api/system/official-derivatives")`
+- `src/stock_ai/main.py:321` — `@app.get("/api/system/official-events")`
+- `src/stock_ai/main.py:326` — `@app.get("/api/system/update-plan")`
+- `src/stock_ai/main.py:343` — `@app.post("/api/system/update-run")`
+- `src/stock_ai/main.py:360` — `@app.get(ui_data_route("securities_master"))`
+- `src/stock_ai/main.py:361` — `@app.get("/api/securities/master")`
+- `src/stock_ai/main.py:377` — `@app.post(ui_data_route("securities_master_refresh"))`
+- `src/stock_ai/main.py:378` — `@app.post("/api/securities/master/refresh")`
+- `src/stock_ai/main.py:383` — `@app.get("/api/watchlist/default")`
+- `src/stock_ai/main.py:398` — `@app.get(ui_data_route("watchlist_overview"))`
+- `src/stock_ai/main.py:399` — `@app.get("/api/watchlist/overview")`
+- `src/stock_ai/main.py:404` — `@app.get(ui_data_route("sources"))`
+- `src/stock_ai/main.py:405` — `@app.get("/api/sources")`
+- `src/stock_ai/main.py:410` — `@app.get(ui_data_route("overview_indices"))`
+- `src/stock_ai/main.py:411` — `@app.get("/api/overview/indices")`
+- `src/stock_ai/main.py:416` — `@app.get("/api/twse/openapi/inventory")`
+- `src/stock_ai/main.py:421` — `@app.get("/api/twse/openapi/fetch")`
+- `src/stock_ai/main.py:429` — `@app.get(ui_data_route("realtime_status"))`
+- `src/stock_ai/main.py:430` — `@app.get("/api/realtime/status")`
+- `src/stock_ai/main.py:435` — `@app.get(ui_data_route("realtime_quote"))`
+- `src/stock_ai/main.py:436` — `@app.get("/api/realtime/quote/{symbol}")`
+- `src/stock_ai/main.py:459` — `@app.get(ui_data_route("realtime_stream"))`
+- `src/stock_ai/main.py:460` — `@app.get("/api/realtime/stream/{symbol}")`
+- `src/stock_ai/main.py:480` — `@app.get(ui_data_route("intraday_candle_status"))`
+- `src/stock_ai/main.py:481` — `@app.get("/api/intraday/candles/status")`
+- `src/stock_ai/main.py:486` — `@app.get(ui_data_route("intraday_candle_dates"))`
+- `src/stock_ai/main.py:487` — `@app.get("/api/intraday/candles/{symbol}/dates")`
+- `src/stock_ai/main.py:495` — `@app.get(ui_data_route("intraday_candles"))`
+- `src/stock_ai/main.py:496` — `@app.get("/api/intraday/candles/{symbol}")`
+- `src/stock_ai/main.py:516` — `@app.get(ui_data_route("entities_search"))`
+- `src/stock_ai/main.py:517` — `@app.get("/api/entities/search")`
+- `src/stock_ai/main.py:523` — `@app.get(ui_data_route("market_summary"))`
+- `src/stock_ai/main.py:524` — `@app.get("/api/market/{symbol}/summary")`
+- `src/stock_ai/main.py:536` — `@app.get(ui_data_route("market_history"))`
+- `src/stock_ai/main.py:537` — `@app.get("/api/market/{symbol}/history")`
+- `src/stock_ai/main.py:571` — `@app.get(ui_data_route("institutional_flow"))`
+- `src/stock_ai/main.py:572` — `@app.get("/api/flow/institutional")`
+- `src/stock_ai/main.py:578` — `@app.get(ui_data_route("margin"))`
+- `src/stock_ai/main.py:579` — `@app.get("/api/flow/margin")`
+- `src/stock_ai/main.py:585` — `@app.get(ui_data_route("revenue"))`
+- `src/stock_ai/main.py:586` — `@app.get("/api/fundamentals/revenue")`
+- `src/stock_ai/main.py:592` — `@app.get(ui_data_route("revenue_history"))`
+- `src/stock_ai/main.py:593` — `@app.get("/api/fundamentals/revenue/history")`
+- `src/stock_ai/main.py:613` — `@app.post(ui_data_route("revenue_history_sync"))`
+- `src/stock_ai/main.py:614` — `@app.post("/api/fundamentals/revenue/history/sync")`
+- `src/stock_ai/main.py:642` — `@app.get(ui_data_route("income_statement_history"))`
+- `src/stock_ai/main.py:643` — `@app.get("/api/fundamentals/income-statement/history")`
+- `src/stock_ai/main.py:663` — `@app.post(ui_data_route("income_statement_history_sync"))`
+- `src/stock_ai/main.py:664` — `@app.post("/api/fundamentals/income-statement/history/sync")`
+- `src/stock_ai/main.py:692` — `@app.get(ui_data_route("balance_sheet_history"))`
+- `src/stock_ai/main.py:693` — `@app.get("/api/fundamentals/balance-sheet/history")`
+- `src/stock_ai/main.py:713` — `@app.post(ui_data_route("balance_sheet_history_sync"))`
+- `src/stock_ai/main.py:714` — `@app.post("/api/fundamentals/balance-sheet/history/sync")`
+- `src/stock_ai/main.py:742` — `@app.get(ui_data_route("cash_flow_history"))`
+- `src/stock_ai/main.py:743` — `@app.get("/api/fundamentals/cash-flow/history")`
+- `src/stock_ai/main.py:763` — `@app.post(ui_data_route("cash_flow_history_sync"))`
+- `src/stock_ai/main.py:764` — `@app.post("/api/fundamentals/cash-flow/history/sync")`
+- `src/stock_ai/main.py:792` — `@app.get(ui_data_route("financial_ratio_history"))`
+- `src/stock_ai/main.py:793` — `@app.get("/api/fundamentals/ratios/history")`
+- `src/stock_ai/main.py:813` — `@app.get(ui_data_route("growth_history"))`
+- `src/stock_ai/main.py:814` — `@app.get("/api/fundamentals/growth/history")`
+- `src/stock_ai/main.py:840` — `@app.get("/api/official/tdcc/holding-distribution")`
+- `src/stock_ai/main.py:845` — `@app.post("/api/official/tdcc/holding-distribution/import")`
+- `src/stock_ai/main.py:850` — `@app.post("/api/official/tdcc/holding-distribution/import-csv")`
+- `src/stock_ai/main.py:855` — `@app.get("/api/official/taifex/derivatives-summary")`
+- `src/stock_ai/main.py:860` — `@app.post("/api/official/taifex/derivatives-summary/import")`
+- `src/stock_ai/main.py:865` — `@app.post("/api/official/taifex/derivatives-summary/import-csv")`
+- `src/stock_ai/main.py:870` — `@app.get("/api/official/mops/company-events")`
+- `src/stock_ai/main.py:875` — `@app.post("/api/official/mops/company-events/import")`
+- `src/stock_ai/main.py:882` — `@app.post("/api/official/mops/company-events/import-csv")`
+- `src/stock_ai/main.py:889` — `@app.get(ui_data_route("market_events"))`
+- `src/stock_ai/main.py:890` — `@app.get("/api/market/{symbol}/events")`
+- `src/stock_ai/main.py:898` — `@app.get(ui_data_route("market_anomalies"))`
+- `src/stock_ai/main.py:899` — `@app.get("/api/market/{symbol}/anomalies")`
+- `src/stock_ai/main.py:907` — `@app.post(ui_data_route("market_anomalies_scan"))`
+- `src/stock_ai/main.py:908` — `@app.post("/api/market/{symbol}/anomalies/scan")`
+- `src/stock_ai/main.py:922` — `@app.post(ui_data_route("market_anomaly_tracking"))`
+- `src/stock_ai/main.py:923` — `@app.post("/api/market/{symbol}/anomalies/{event_id}/tracking")`
+- `src/stock_ai/main.py:961` — `@app.get(ui_data_route("corporate_actions"))`
+- `src/stock_ai/main.py:962` — `@app.get("/api/market/{symbol}/corporate-actions")`
+- `src/stock_ai/main.py:977` — `@app.post("/api/official/corporate-actions/import")`
+- `src/stock_ai/main.py:990` — `@app.get(ui_data_route("trading_restrictions"))`
+- `src/stock_ai/main.py:991` — `@app.get("/api/market/{symbol}/trading-restrictions")`
+- `src/stock_ai/main.py:1009` — `@app.post("/api/official/trading-restrictions/import")`
+- `src/stock_ai/main.py:1022` — `@app.get(ui_data_route("market_liquidity"))`
+- `src/stock_ai/main.py:1023` — `@app.get("/api/market/{symbol}/liquidity")`
+- `src/stock_ai/main.py:1042` — `@app.get(ui_data_route("news"))`
+- `src/stock_ai/main.py:1043` — `@app.get("/api/news/center")`
+- `src/stock_ai/main.py:1057` — `@app.get(ui_data_route("market_overview"))`
+- `src/stock_ai/main.py:1058` — `@app.get("/api/market/{symbol}/overview")`
+- `src/stock_ai/main.py:1063` — `@app.get(ui_data_route("daily_reports"))`
+- `src/stock_ai/main.py:1064` — `@app.get("/api/reports/daily")`
+- `src/stock_ai/main.py:1084` — `@app.get("/api/notifications/channels")`
+- `src/stock_ai/main.py:1089` — `@app.get("/api/notifications/previews")`
+- `src/stock_ai/main.py:1094` — `@app.post("/api/notifications/send")`
+- `src/stock_ai/main.py:1099` — `@app.get(ui_data_route("linkage"))`
+- `src/stock_ai/main.py:1100` — `@app.get("/api/linkage")`
+- `src/stock_ai/main.py:1105` — `@app.get("/api/trading/preview")`
+- `src/stock_ai/main.py:1112` — `@app.get("/api/trading/assistant")`
+- `src/stock_ai/main.py:1117` — `@app.get("/api/risk/summary")`
+- `src/stock_ai/main.py:1124` — `@app.get("/api/assets/summary")`
+- `src/stock_ai/main.py:1134` — `@app.get("/api/assets/positions")`
+- `src/stock_ai/main.py:1146` — `@app.post(ui_data_route("question"), response_model=QueryResponse)`
+- `src/stock_ai/main.py:1147` — `@app.post("/api/query", response_model=QueryResponse)`
+- `src/stock_ai/main.py:1153` — `@app.post(ui_data_route("screener"))`
+- `src/stock_ai/main.py:1154` — `@app.post("/api/screener")`
+- `src/stock_ai/paper_training_api.py:285` — `@router.get("/research-pack")`
+- `src/stock_ai/paper_training_api.py:325` — `@router.get("/paper-training/account")`
+- `src/stock_ai/paper_training_api.py:336` — `@router.post("/paper-training/reset")`
+- `src/stock_ai/paper_training_api.py:354` — `@router.post("/paper-training/episode")`
+- `src/stock_ai/paper_training_api.py:359` — `@router.post("/paper-training/preview")`
+- `src/stock_ai/paper_training_api.py:380` — `@router.post("/paper-training/order")`
+- `src/stock_ai/paper_training_api.py:485` — `@router.get("/paper-training/orders")`
+- `src/stock_ai/paper_training_api.py:491` — `@router.get("/paper-training/fills")`
+- `src/stock_ai/paper_training_api.py:497` — `@router.post("/paper-training/orders/{order_id}/cancel")`
+- `src/stock_ai/paper_training_api.py:516` — `@router.post("/paper-training/mark-to-market")`
+- `src/stock_ai/paper_training_api.py:565` — `@router.get("/paper-training/learning")`
+- `src/stock_ai/paper_training_api.py:570` — `@router.post("/paper-training/evaluate")`
+- `src/stock_ai/paper_training_api.py:578` — `@router.post("/paper-training/reflection")`
+- `src/stock_ai/paper_training_api.py:591` — `@router.post("/paper-training/policy-proposals/{proposal_id}/evaluate")`
+- `src/stock_ai/paper_training_api.py:599` — `@router.post("/paper-training/policy-proposals/{proposal_id}/shadow")`
+- `src/stock_ai/paper_training_api.py:607` — `@router.post("/paper-training/policy-proposals/{proposal_id}/shadow-result")`
+- `src/stock_ai/paper_training_api.py:615` — `@router.post("/paper-training/policy-proposals/{proposal_id}/promote")`

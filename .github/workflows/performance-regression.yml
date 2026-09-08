@@ -1,0 +1,94 @@
+name: Hosted non-model performance regression
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "23 7 * * 3"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: performance-regression-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  db-api-backtest-performance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install project
+        run: python -m pip install -e .
+
+      - name: Start isolated Stock AI API with model execution disabled
+        env:
+          OPEN_STOCK_AI_SQLITE_PATH: ${{ runner.temp }}/stock-ai-performance/open-stock-ai.sqlite
+          STOCK_AI_AGENT_DATA_ROOT: ${{ runner.temp }}/stock-ai-performance/agent-runtime
+          STOCK_AI_MARKET_DATA_DB: ${{ runner.temp }}/stock-ai-performance/market-data.sqlite
+          STOCK_AI_AGENT_BACKGROUND_PAUSED: "1"
+          STOCK_AI_BUILD_COMMIT: ${{ github.sha }}
+          STOCK_AI_INSTANCE_ID: github-hosted-performance-gate
+        run: |
+          mkdir -p "${RUNNER_TEMP}/stock-ai-performance"
+          nohup python -m uvicorn stock_ai.main:app --host 127.0.0.1 --port 8765 >"${RUNNER_TEMP}/stock-ai-performance/server.log" 2>&1 &
+          echo "$!" >"${RUNNER_TEMP}/stock-ai-performance/server.pid"
+          for attempt in $(seq 1 60); do
+            if curl --fail --silent --show-error http://127.0.0.1:8765/health >"${RUNNER_TEMP}/stock-ai-performance/health.json"; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat "${RUNNER_TEMP}/stock-ai-performance/server.log"
+          exit 1
+
+      - name: Capture DB API and backtest baseline and candidate samples
+        run: |
+          python scripts/run_hosted_performance_gate.py \
+            --url http://127.0.0.1:8765/health \
+            --output-dir "${RUNNER_TEMP}/stock-ai-performance/evidence" \
+            --commit-sha "${GITHUB_SHA}" \
+            --samples 100
+
+      - name: Verify retained receipt independently
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          from open_stock_ai.governance import verify_hosted_performance_gate_receipt
+
+          path = Path(os.environ["RUNNER_TEMP"]) / "stock-ai-performance/evidence/performance-gate-receipt.json"
+          receipt = json.loads(path.read_text())
+          if not receipt["passed"] or not verify_hosted_performance_gate_receipt(receipt):
+              raise SystemExit("retained T-008 performance receipt failed verification")
+          if receipt["deferred_surfaces"] != ["model_runtime"]:
+              raise SystemExit("model runtime deferral must remain explicit")
+          PY
+
+      - name: Upload retained performance evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: stock-ai-t008-performance-${{ github.sha }}
+          path: ${{ runner.temp }}/stock-ai-performance/evidence
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Upload diagnostics on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: stock-ai-t008-performance-diagnostics-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/stock-ai-performance/server.log
+            ${{ runner.temp }}/stock-ai-performance/health.json
+          if-no-files-found: ignore
+          retention-days: 14

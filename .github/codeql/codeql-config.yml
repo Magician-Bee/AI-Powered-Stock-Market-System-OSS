@@ -1,0 +1,9 @@
+name: stock-ai-first-party
+
+paths:
+  - src
+  - scripts
+
+paths-ignore:
+  - external/**
+  - Users/**

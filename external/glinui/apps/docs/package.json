@@ -1,0 +1,47 @@
+{
+  "name": "@glinui/docs",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "preregistry": "node scripts/build-registry-endpoints.mjs",
+    "predev": "pnpm metadata:generate && pnpm preregistry",
+    "dev": "WATCHPACK_POLLING=true next dev -p 3002",
+    "dev:restart": "sh -c 'PIDS=$(lsof -ti tcp:3002); if [ -n \"$PIDS\" ]; then kill $PIDS; fi; WATCHPACK_POLLING=true next dev -p 3002'",
+    "prebuild": "rm -rf .next && pnpm metadata:generate && pnpm preregistry",
+    "build": "next build",
+    "start": "next start -p 3002",
+    "pretypecheck": "pnpm metadata:generate",
+    "typecheck": "tsc --noEmit",
+    "lint": "echo 'lint: @glinui/docs (todo)'",
+    "pretest": "pnpm metadata:generate && pnpm preregistry",
+    "test": "node --test tests/**/*.test.mjs",
+    "api:generate": "node scripts/generate-api-metadata.mjs",
+    "api:audit": "node scripts/audit-api-tables.mjs",
+    "api:cleanup-safe": "node scripts/cleanup-safe-api-tables.mjs",
+    "registry:generate": "node scripts/generate-registry-metadata.mjs",
+    "metadata:generate": "pnpm api:generate && pnpm registry:generate",
+    "registry:endpoints": "pnpm preregistry"
+  },
+  "dependencies": {
+    "@mdx-js/loader": "^3.1.1",
+    "@next/mdx": "^15.3.0",
+    "@glinui/motion": "workspace:*",
+    "@glinui/registry": "workspace:*",
+    "@glinui/tokens": "workspace:*",
+    "@glinui/ui": "workspace:*",
+    "lucide-react": "^0.563.0",
+    "next": "^15.3.0",
+    "prism-react-renderer": "^2.4.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "@types/react": "^19.0.6",
+    "@types/react-dom": "^19.0.2",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17"
+  }
+}

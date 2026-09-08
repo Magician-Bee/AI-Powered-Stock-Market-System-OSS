@@ -1,0 +1,25 @@
+{
+  "questionInput": [],
+  "paperTrainingObjective": [
+    [
+      "讓 Codex 測試選股、進出場與持倉管理假設",
+      "Let Codex test stock selection, entries/exits, and position-management hypotheses"
+    ],
+    [
+      "測試選股、進出場、委託與持倉管理",
+      "Test stock selection, entries/exits, orders, and position management"
+    ]
+  ],
+  "agentTradingHomePrompt": [
+    [
+      "分析帳戶與目前股票，提出下一個最值得測試的模擬交易。",
+      "Analyze the account and current stock, then propose the next paper trade most worth testing."
+    ]
+  ],
+  "agentTradingPaperPrompt": [
+    [
+      "先讀取目前現金、持倉、掛單、成交與過去反思，再分析這檔股票並提出可驗證的下一步。",
+      "Read current cash, positions, open orders, fills, and past reflections, then analyze this stock and propose a verifiable next step."
+    ]
+  ]
+}

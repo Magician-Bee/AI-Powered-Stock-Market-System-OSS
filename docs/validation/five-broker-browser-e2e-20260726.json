@@ -1,0 +1,32 @@
+{
+  "schema_version": "stock_ai.broker_browser_e2e_artifact.v1",
+  "generated_at": "2026-07-26T06:38:47+08:00",
+  "automation": "playwright-cli",
+  "surface": "settings/broker-api",
+  "viewport": {
+    "width": 900,
+    "height": 900
+  },
+  "scope": "unconnected_without_broker_credentials",
+  "checks": {
+    "five_broker_cards_rendered": true,
+    "capabilities_remained_unverified": true,
+    "runtime_endpoint_loaded": true,
+    "missing_feed_labelled_as_unavailable": true,
+    "external_page_not_opened_without_user_click": true,
+    "secret_values_visible_in_dom": false
+  },
+  "screenshot": {
+    "local_gitignored_path": ".playwright-cli/page-2026-07-25T22-38-47-998Z.png",
+    "sha256": "4cc92f13287610792cc4110694be219a10f5f61854420f887f52393942565394",
+    "committed_to_repository": false
+  },
+  "not_validated": [
+    "account-owner official onboarding",
+    "OTP or certificate workflow",
+    "real broker login",
+    "resume after account-owner authorization",
+    "real market, account, sandbox, or order receipts"
+  ],
+  "acceptance": "automated_unconnected_state_passed_real_account_owner_flow_pending"
+}

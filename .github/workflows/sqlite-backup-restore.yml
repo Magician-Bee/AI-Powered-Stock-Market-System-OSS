@@ -1,0 +1,123 @@
+name: Hosted SQLite backup restore
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 3 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sqlite-backup-restore-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  create-backup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install project
+        run: python -m pip install -e .
+
+      - name: Create verified SQLite backup artifact
+        env:
+          OFF_HOST_DIR: ${{ runner.temp }}/stock-ai-backup/off-host-artifact
+        run: |
+          python scripts/run_hosted_backup_gate.py \
+            --mode backup \
+            --output-dir "${OFF_HOST_DIR}" \
+            --commit-sha "${GITHUB_SHA}" \
+            --run-id "${GITHUB_RUN_ID}" \
+            --repository "${GITHUB_REPOSITORY}" \
+            --allow-off-host-drill
+
+      - name: Upload off-host backup
+        uses: actions/upload-artifact@v4
+        with:
+          name: stock-ai-sqlite-backup-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/stock-ai-backup/off-host-artifact/authoritative.backup.sqlite
+            ${{ runner.temp }}/stock-ai-backup/off-host-artifact/backup-receipt.json
+            ${{ runner.temp }}/stock-ai-backup/off-host-artifact/backup-policy-decision.json
+            ${{ runner.temp }}/stock-ai-backup/off-host-artifact/source-manifest.json
+          if-no-files-found: error
+          retention-days: 30
+
+  clean-runner-restore:
+    needs: create-backup
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install project
+        run: python -m pip install -e .
+
+      - name: Download off-host backup into fresh runner
+        uses: actions/download-artifact@v4
+        with:
+          name: stock-ai-sqlite-backup-${{ github.sha }}
+          path: ${{ runner.temp }}/stock-ai-backup/off-host-input
+
+      - name: Restore and verify on clean runner
+        env:
+          OFF_HOST_INPUT: ${{ runner.temp }}/stock-ai-backup/off-host-input
+          RESTORE_DIR: ${{ runner.temp }}/stock-ai-backup/clean-restore
+        run: |
+          test ! -e "${RESTORE_DIR}"
+          python scripts/run_hosted_backup_gate.py \
+            --mode restore \
+            --input-dir "${OFF_HOST_INPUT}" \
+            --output-dir "${RESTORE_DIR}" \
+            --commit-sha "${GITHUB_SHA}" \
+            --run-id "${GITHUB_RUN_ID}" \
+            --allow-off-host-drill
+
+      - name: Verify restore receipt independently
+        env:
+          RESTORE_DIR: ${{ runner.temp }}/stock-ai-backup/clean-restore
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import sqlite3
+          from pathlib import Path
+          from open_stock_ai.storage.hosted_backup_gate import verify_hosted_backup_gate_receipt
+
+          output = Path(os.environ["RESTORE_DIR"])
+          receipt = json.loads((output / "backup-gate-receipt.json").read_text())
+          if receipt["commit_sha"] != os.environ["GITHUB_SHA"]:
+              raise SystemExit("backup restore candidate SHA mismatch")
+          if not receipt["passed"] or not verify_hosted_backup_gate_receipt(receipt):
+              raise SystemExit("hosted backup restore receipt failed verification")
+          with sqlite3.connect(output / "restored.sqlite") as connection:
+              if connection.execute("pragma quick_check").fetchone()[0] != "ok":
+                  raise SystemExit("restored SQLite quick_check failed")
+          PY
+
+      - name: Upload clean-runner restore evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: stock-ai-sqlite-restore-evidence-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/stock-ai-backup/clean-restore/backup-gate-receipt.json
+            ${{ runner.temp }}/stock-ai-backup/clean-restore/restored.sqlite
+          if-no-files-found: error
+          retention-days: 30

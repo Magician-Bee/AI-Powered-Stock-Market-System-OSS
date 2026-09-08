@@ -1,0 +1,113 @@
+name: Hosted migration retention
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "41 4 * * 0"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: migration-retention-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  migration-and-cleanup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install project
+        run: python -m pip install -e .
+
+      - name: Exercise startup migration and retention cleanup
+        env:
+          MIGRATION_WORK: ${{ runner.temp }}/stock-ai-migration/work
+          OFF_HOST_DIR: ${{ runner.temp }}/stock-ai-migration/off-host-artifact
+        run: |
+          python scripts/run_hosted_migration_gate.py \
+            --mode create \
+            --work-dir "${MIGRATION_WORK}" \
+            --output-dir "${OFF_HOST_DIR}" \
+            --commit-sha "${GITHUB_SHA}" \
+            --run-id "${GITHUB_RUN_ID}" \
+            --allow-migration-retention-drill
+
+      - name: Upload retained migration backups off host
+        uses: actions/upload-artifact@v4
+        with:
+          name: stock-ai-migration-retention-${{ github.sha }}
+          path: ${{ runner.temp }}/stock-ai-migration/off-host-artifact
+          if-no-files-found: error
+          retention-days: 90
+
+  clean-runner-verify:
+    needs: migration-and-cleanup
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install project
+        run: python -m pip install -e .
+
+      - name: Download retained migration backups into fresh runner
+        uses: actions/download-artifact@v4
+        with:
+          name: stock-ai-migration-retention-${{ github.sha }}
+          path: ${{ runner.temp }}/stock-ai-migration/off-host-input
+
+      - name: Verify retained and prepared pairs
+        env:
+          OFF_HOST_INPUT: ${{ runner.temp }}/stock-ai-migration/off-host-input
+          VERIFY_DIR: ${{ runner.temp }}/stock-ai-migration/clean-verification
+        run: |
+          test ! -e "${VERIFY_DIR}"
+          python scripts/run_hosted_migration_gate.py \
+            --mode verify \
+            --input-dir "${OFF_HOST_INPUT}" \
+            --output-dir "${VERIFY_DIR}" \
+            --commit-sha "${GITHUB_SHA}" \
+            --run-id "${GITHUB_RUN_ID}" \
+            --allow-migration-retention-drill
+
+      - name: Verify hosted migration receipt independently
+        env:
+          VERIFY_DIR: ${{ runner.temp }}/stock-ai-migration/clean-verification
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          from open_stock_ai.storage.hosted_migration_gate import verify_hosted_migration_gate_receipt
+
+          receipt = json.loads((Path(os.environ["VERIFY_DIR"]) / "migration-gate-receipt.json").read_text())
+          if receipt["commit_sha"] != os.environ["GITHUB_SHA"]:
+              raise SystemExit("migration retention candidate SHA mismatch")
+          if not receipt["passed"] or not verify_hosted_migration_gate_receipt(receipt):
+              raise SystemExit("hosted migration retention receipt failed verification")
+          PY
+
+      - name: Upload clean-runner migration evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: stock-ai-migration-verification-${{ github.sha }}
+          path: ${{ runner.temp }}/stock-ai-migration/clean-verification
+          if-no-files-found: error
+          retention-days: 90

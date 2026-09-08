@@ -1,0 +1,8 @@
+{
+  "schema_version": "open_stock_ai.external_snapshot_lock.v1",
+  "source_key": "finrobot",
+  "origin": "https://github.com/AI4Finance-Foundation/FinRobot.git",
+  "branch": "master",
+  "head": "6a8161ff5cfa66ec3df9c11a0bf7a84a1ac11f01",
+  "snapshot_mode": "vendored_source_snapshot"
+}

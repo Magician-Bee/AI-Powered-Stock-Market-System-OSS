@@ -1,0 +1,71 @@
+/*
+ * Glin UI liquid-glass token bridge.
+ * Source repo: external/glinui
+ * References:
+ * - packages/ui/src/components/glass-card.tsx
+ * - packages/ui/src/components/liquid-button.tsx
+ * - packages/ui/src/lib/use-liquid-glass.tsx
+ *
+ * The app is static HTML/CSS, so these tokens adapt Glin UI's React/Tailwind
+ * glass-card and liquid-button contract into CSS custom properties.
+ */
+:root{
+  --color-background:#000;
+  --color-foreground:#f5f5f7;
+  --color-muted:#9ca3af;
+  --color-border:rgba(255,255,255,.12);
+  --color-accent:#60a5fa;
+  --glass-saturate:1.8;
+  --glass-border:rgba(255,255,255,.16);
+  --glass-refraction-top:rgba(255,255,255,.4);
+  --glass-1-surface:rgba(255,255,255,.025);
+  --glass-2-surface:rgba(255,255,255,.038);
+  --glass-3-surface:rgba(255,255,255,.052);
+  --glass-4-surface:rgba(255,255,255,.075);
+  --glass-5-surface:rgba(255,255,255,.1);
+  --glass-1-blur:12px;
+  --glass-2-blur:18px;
+  --glass-3-blur:28px;
+  --glass-4-blur:38px;
+  --glass-5-blur:48px;
+  --glass-1-shadow:0 10px 28px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.06);
+  --glass-2-shadow:0 18px 44px rgba(0,0,0,.48),inset 0 1px 0 rgba(255,255,255,.08);
+  --glass-3-shadow:0 24px 64px rgba(0,0,0,.58),inset 0 1px 0 rgba(255,255,255,.1);
+  --glass-4-shadow:0 32px 82px rgba(0,0,0,.68),inset 0 1px 0 rgba(255,255,255,.13);
+  --glass-5-shadow:0 40px 108px rgba(0,0,0,.74),inset 0 1px 0 rgba(255,255,255,.16);
+}
+
+.glin-glass-card{
+  border:1px solid var(--glass-border);
+  border-top-color:var(--glass-refraction-top);
+  background:var(--glass-3-surface)!important;
+  background-clip:padding-box!important;
+  backdrop-filter:saturate(var(--glass-saturate)) blur(var(--glass-3-blur))!important;
+  -webkit-backdrop-filter:saturate(var(--glass-saturate)) blur(var(--glass-3-blur))!important;
+  box-shadow:0 18px 50px rgba(0,0,0,.52),inset 0 1px 0 rgba(255,255,255,.2),inset 1px 0 0 rgba(255,255,255,.055),inset 0 -1px 0 rgba(0,0,0,.62)!important;
+}
+
+.sidebar.glin-glass-card{
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
+
+.glin-liquid-button{
+  transform:translateZ(0);
+  transition:transform .18s ease,box-shadow .18s ease,filter .18s ease,border-color .18s ease;
+}
+
+.glin-liquid-button:not(.nav-btn){
+  background:var(--glass-4-surface)!important;
+  border-color:rgba(255,255,255,.18)!important;
+  border-top-color:rgba(255,255,255,.36)!important;
+  backdrop-filter:saturate(1.65) blur(18px)!important;
+  -webkit-backdrop-filter:saturate(1.65) blur(18px)!important;
+  box-shadow:0 12px 28px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.25),inset 0 -1px 0 rgba(0,0,0,.42)!important;
+}
+
+.glin-liquid-button:hover{
+  transform:translateY(-1px) scale(1.01);
+  border-top-color:var(--glass-refraction-top);
+  box-shadow:0 0 0 1px var(--glass-refraction-top),0 18px 30px -16px rgba(255,255,255,.18);
+}

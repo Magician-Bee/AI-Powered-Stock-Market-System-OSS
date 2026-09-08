@@ -1,0 +1,417 @@
+# Silent Fallback Audit
+
+- Baseline commit: `94e8cb2d65c9f5d8f8de04717847d77c513cee27`
+- Generated at: `2026-07-29T19:18:01.417729+00:00`
+- Scope: Production `src/` and `config/`; vendored UI files excluded.
+- Matches: **398**
+
+## Purpose
+
+Find broad exception handling, pass statements, and fallback paths requiring manual classification.
+
+## Classification notes
+
+- Abstract-method `pass` and explicitly surfaced data fallback may be valid.
+- Model exceptions must never preserve or relabel a deterministic answer as AI.
+- Every retained fallback needs a reason and provenance visible to callers.
+
+## Inventory
+
+- `src/open_stock_ai/agent_runtime/checkpoint_store.py:122` — `def _decode(value: str | None, fallback: Any) -> Any:`
+- `src/open_stock_ai/agent_runtime/checkpoint_store.py:124` — `return json.loads(value) if value is not None else fallback`
+- `src/open_stock_ai/agent_runtime/checkpoint_store.py:126` — `return fallback`
+- `src/open_stock_ai/agent_runtime/orchestrator.py:66` — `"update_node, remove_node, set_completion_criteria, set_fallback_rules, "`
+- `src/open_stock_ai/agent_runtime/orchestrator.py:228` — `For multi-framework stock analysis, first read market.research_pack, then pass its verified observations into relevant`
+- `src/open_stock_ai/agent_runtime/orchestrator.py:651` — `pass`
+- `src/open_stock_ai/agent_runtime/orchestrator.py:712` — `fallback=turn_summary,`
+- `src/open_stock_ai/agent_runtime/orchestrator.py:893` — `except Exception as exc:`
+- `src/open_stock_ai/agent_runtime/orchestrator.py:950` — `except Exception as exc:`
+- `src/open_stock_ai/agent_runtime/orchestrator.py:1072` — `except Exception as exc:`
+- `src/open_stock_ai/agent_runtime/orchestrator.py:1781` — `except Exception as attempt_exc:`
+- `src/open_stock_ai/agent_runtime/orchestrator.py:1950` — `except Exception as exc:`
+- `src/open_stock_ai/agent_runtime/orchestrator.py:3257` — `fallback: str,`
+- `src/open_stock_ai/agent_runtime/orchestrator.py:3262` — `return fallback`
+- `src/open_stock_ai/agent_runtime/plan_graph.py:142` — `fallback_rules: list[str]`
+- `src/open_stock_ai/agent_runtime/plan_graph.py:158` — `fallback_rules=[`
+- `src/open_stock_ai/agent_runtime/plan_graph.py:183` — `fallback_rules=[str(item) for item in value.get("fallback_rules") or []],`
+- `src/open_stock_ai/agent_runtime/plan_graph.py:202` — `"fallback_rules": list(self.fallback_rules),`
+- `src/open_stock_ai/agent_runtime/plan_graph.py:261` — `elif action == "set_fallback_rules":`
+- `src/open_stock_ai/agent_runtime/plan_graph.py:262` — `self.fallback_rules = [`
+- `src/open_stock_ai/agent_runtime/plan_graph.py:279` — `except Exception:`
+- `src/open_stock_ai/agent_runtime/plan_graph.py:287` — `self.fallback_rules = restored.fallback_rules`
+- `src/open_stock_ai/agent_runtime/plan_manager.py:149` — `def _decode(value: str | None, fallback: Any) -> Any:`
+- `src/open_stock_ai/agent_runtime/plan_manager.py:151` — `return json.loads(value) if value is not None else fallback`
+- `src/open_stock_ai/agent_runtime/plan_manager.py:153` — `return fallback`
+- `src/open_stock_ai/agent_runtime/provider_capabilities.py:20` — `schema_fallback: bool = True`
+- `src/open_stock_ai/agent_runtime/provider_capabilities.py:106` — `except Exception as exc:`
+- `src/open_stock_ai/agent_runtime/providers/codex.py:103` — `schema_fallback=True,`
+- `src/open_stock_ai/agent_runtime/providers/http.py:130` — `except Exception as exc:`
+- `src/open_stock_ai/agent_runtime/providers/http.py:194` — `except Exception as exc:`
+- `src/open_stock_ai/agent_runtime/providers/http.py:225` — `schema_fallback=True,`
+- `src/open_stock_ai/agent_runtime/providers/http.py:344` — `except Exception as exc:`
+- `src/open_stock_ai/agent_runtime/providers/http.py:401` — `except Exception as exc:`
+- `src/open_stock_ai/agent_runtime/providers/http.py:425` — `schema_fallback=True,`
+- `src/open_stock_ai/agent_runtime/session_store.py:201` — `def _decode(value: str | None, fallback: Any) -> Any:`
+- `src/open_stock_ai/agent_runtime/session_store.py:203` — `return json.loads(value) if value is not None else fallback`
+- `src/open_stock_ai/agent_runtime/session_store.py:205` — `return fallback`
+- `src/open_stock_ai/agent_runtime/validation_layers.py:389` — `"tests pass",`
+- `src/open_stock_ai/agent_runtime/workers/base.py:66` — `pass`
+- `src/open_stock_ai/agent_runtime/workers/base.py:72` — `pass`
+- `src/open_stock_ai/agent_runtime/workers/supervisor.py:276` — `except Exception as exc:`
+- `src/open_stock_ai/agent_runtime/workers/supervisor.py:353` — `pass`
+- `src/open_stock_ai/agent_workspace.py:46` — `"Never present fallback, delayed or simulated data as realtime.",`
+- `src/open_stock_ai/agent_workspace.py:231` — `"is_fallback": data_contract.get("is_fallback") is True,`
+- `src/open_stock_ai/analysis_contracts.py:32` — `fallback_used: bool = False`
+- `src/open_stock_ai/analysis_contracts.py:33` — `fallback_reason: str | None = None`
+- `src/open_stock_ai/config/settings.py:109` — `def _env_float(name: str, default: Any, fallback: float) -> float:`
+- `src/open_stock_ai/config/settings.py:110` — `return _float(getenv(name, default), fallback)`
+- `src/open_stock_ai/data/data_quality.py:61` — `is_fallback: bool = False,`
+- `src/open_stock_ai/data/data_quality.py:78` — `if is_fallback:`
+- `src/open_stock_ai/data/data_quality.py:79` — `blockers.append("fallback_data")`
+- `src/open_stock_ai/data/data_quality.py:103` — `"is_fallback": is_fallback,`
+- `src/open_stock_ai/data/execution_quote.py:99` — `pass`
+- `src/open_stock_ai/data/market_data_hub.py:16` — `The hub still collects auxiliary and fallback data for agent research, but it`
+- `src/open_stock_ai/data/market_data_hub.py:19` — `delayed/fallback value with a current tradable quote.`
+- `src/open_stock_ai/data/market_data_hub.py:31` — `price_is_fallback = bundle["price_is_fallback"]`
+- `src/open_stock_ai/data/market_data_hub.py:88` — `except Exception as exc:`
+- `src/open_stock_ai/data/market_data_hub.py:100` — `if price_is_fallback:`
+- `src/open_stock_ai/data/market_data_hub.py:101` — `blockers.append("fallback_price_not_execution_eligible")`
+- `src/open_stock_ai/data/market_data_hub.py:127` — `"is_fallback": price_is_fallback,`
+- `src/open_stock_ai/execution/paper_training.py:75` — `position["is_fallback"] = mark.get("is_fallback") is True`
+- `src/open_stock_ai/execution/paper_training.py:103` — `is_fallback: bool,`
+- `src/open_stock_ai/execution/paper_training.py:123` — `source_timestamp, received_at, is_realtime, is_fallback,`
+- `src/open_stock_ai/execution/paper_training.py:136` — `1 if is_fallback else 0,`
+- `src/open_stock_ai/execution/paper_training.py:160` — `"is_fallback": is_fallback,`
+- `src/open_stock_ai/execution/paper_training.py:173` — `"is_fallback": is_fallback,`
+- `src/open_stock_ai/execution/paper_training.py:203` — `"is_fallback": bool(row["is_fallback"]),`
+- `src/open_stock_ai/external_sources/ai_trader_source.py:311` — `add_skill(skills[0], "fallback local skill route from available AI-Trader contract", "read_only_contract")`
+- `src/open_stock_ai/integration_audit.py:1498` — `fallback: dict[str, Any] | None = None`
+- `src/open_stock_ai/integration_audit.py:1549` — `if fallback is None:`
+- `src/open_stock_ai/integration_audit.py:1550` — `fallback = summary`
+- `src/open_stock_ai/integration_audit.py:1551` — `if fallback is not None:`
+- `src/open_stock_ai/integration_audit.py:1552` — `return fallback`
+- `src/open_stock_ai/integration_audit.py:1573` — `fallback: dict[str, Any] | None = None`
+- `src/open_stock_ai/integration_audit.py:1606` — `if fallback is None:`
+- `src/open_stock_ai/integration_audit.py:1607` — `fallback = summary`
+- `src/open_stock_ai/integration_audit.py:1608` — `if fallback is not None:`
+- `src/open_stock_ai/integration_audit.py:1609` — `return fallback`
+- `src/open_stock_ai/integration_audit.py:1910` — `fallback: dict[str, Any] | None = None`
+- `src/open_stock_ai/integration_audit.py:1982` — `if fallback is None:`
+- `src/open_stock_ai/integration_audit.py:1983` — `fallback = summary`
+- `src/open_stock_ai/integration_audit.py:1984` — `if fallback is not None:`
+- `src/open_stock_ai/integration_audit.py:1985` — `return fallback`
+- `src/open_stock_ai/integration_audit.py:2015` — `if stripped == "pass" or "placeholder" in stripped.lower():`
+- `src/open_stock_ai/research/research_engine.py:88` — `else "Advisory research completed; execution evidence is blocked until point-in-time exact replay and empirical model validation pass."`
+- `src/open_stock_ai/storage/migrations.py:329` — `# autocheckpoint remains the fallback and schema migration is complete.`
+- `src/open_stock_ai/storage/migrations.py:330` — `pass`
+- `src/open_stock_ai/storage/migrations.py:473` — `is_fallback integer not null default 0,`
+- `src/open_stock_ai/storage/migrations.py:884` — `# Han n-gram fallback in MemoryStore when this optional index is absent.`
+- `src/open_stock_ai/storage/migrations.py:932` — `pass`
+- `src/open_stock_ai/storage/migrations.py:1023` — `fallback_used integer not null default 0,`
+- `src/open_stock_ai/storage/migrations.py:1146` — `is_fallback integer not null default 0,`
+- `src/open_stock_ai/storage/migrations.py:1366` — `pass`
+- `src/open_stock_ai/storage/migrations.py:1525` — `is_fallback integer not null default 0,`
+- `src/open_stock_ai/storage/migrations.py:1552` — `effective_at, expires_at, quality_status, is_fallback,`
+- `src/open_stock_ai/storage/migrations.py:1557` — `effective_at, expires_at, quality_status, is_fallback,`
+- `src/open_stock_ai/storage/trade_store.py:139` — `"source_of_truth": "legacy_trade_ledger_fallback",`
+- `src/open_stock_ai/types.py:62` — `raise MissingSymbolError("This operation requires an explicit symbol; no fallback is allowed")`
+- `src/open_stock_ai/types.py:119` — `raise MissingSymbolError("StockRequest requires an explicit symbol; no fallback is allowed")`
+- `src/stock_ai/agent_api.py:382` — `except Exception as exc:`
+- `src/stock_ai/agent_api.py:659` — `"fallback_used": False,`
+- `src/stock_ai/agent_drivers.py:295` — `except Exception as exc:`
+- `src/stock_ai/agent_general_tools.py:64` — `packages=("ripgrep", "python-fallback"),`
+- `src/stock_ai/agent_general_tools.py:79` — `packages=("ripgrep", "python-fallback"),`
+- `src/stock_ai/agent_general_tools.py:464` — `"provider": "python_fallback",`
+- `src/stock_ai/agent_general_tools.py:501` — `"provider": "python_fallback",`
+- `src/stock_ai/agent_general_tools.py:753` — `except Exception as exc:`
+- `src/stock_ai/agent_general_tools.py:761` — `except Exception as exc:`
+- `src/stock_ai/agent_general_tools.py:810` — `except Exception as exc:`
+- `src/stock_ai/agent_run_store.py:1202` — `def _decode(value: str | None, fallback: Any) -> Any:`
+- `src/stock_ai/agent_run_store.py:1204` — `return fallback`
+- `src/stock_ai/agent_run_store.py:1208` — `return fallback`
+- `src/stock_ai/agent_tools.py:347` — `except Exception as exc:`
+- `src/stock_ai/agent_trading_api.py:294` — `except Exception as exc:`
+- `src/stock_ai/agent_trading_api.py:301` — `except Exception as exc:`
+- `src/stock_ai/agent_trading_api.py:379` — `except Exception as exc:`
+- `src/stock_ai/agent_trading_api.py:459` — `except Exception as exc:`
+- `src/stock_ai/agent_ui_bridge.py:285` — `def _decode(value: str | None, fallback: Any) -> Any:`
+- `src/stock_ai/agent_ui_bridge.py:287` — `return json.loads(value) if value is not None else fallback`
+- `src/stock_ai/agent_ui_bridge.py:289` — `return fallback`
+- `src/stock_ai/balance_sheet.py:48` — `pass`
+- `src/stock_ai/balance_sheet.py:52` — `pass`
+- `src/stock_ai/balance_sheet.py:522` — `except Exception as exc:`
+- `src/stock_ai/brokers/contracts/errors.py:9` — `pass`
+- `src/stock_ai/brokers/contracts/errors.py:13` — `pass`
+- `src/stock_ai/brokers/contracts/errors.py:17` — `pass`
+- `src/stock_ai/brokers/contracts/errors.py:21` — `pass`
+- `src/stock_ai/brokers/contracts/errors.py:25` — `pass`
+- `src/stock_ai/brokers/monitoring.py:167` — `message="Market latency or a sequence gap requires fallback evaluation.",`
+- `src/stock_ai/brokers/worker_protocol.py:142` — `except Exception as exc:`
+- `src/stock_ai/cash_flow_statement.py:48` — `pass`
+- `src/stock_ai/cash_flow_statement.py:52` — `pass`
+- `src/stock_ai/cash_flow_statement.py:515` — `except Exception as exc:`
+- `src/stock_ai/codex_api.py:46` — `except Exception as exc:`
+- `src/stock_ai/codex_api.py:56` — `except Exception as exc:`
+- `src/stock_ai/codex_api.py:102` — `except Exception as exc:`
+- `src/stock_ai/codex_api.py:139` — `except Exception as exc:`
+- `src/stock_ai/codex_api.py:156` — `except Exception as exc:`
+- `src/stock_ai/codex_llm_bridge.py:175` — `except Exception as exc:`
+- `src/stock_ai/codex_market.py:94` — `{**_fallback_item(item, explain=explain), "origin": "rule_strategy"}`
+- `src/stock_ai/codex_market.py:142` — `except Exception as exc:`
+- `src/stock_ai/codex_market.py:209` — `fallback_used=False,`
+- `src/stock_ai/codex_market.py:210` — `fallback_reason=None,`
+- `src/stock_ai/codex_market.py:315` — `"data_fallback": data_status.get("is_fallback") is True,`
+- `src/stock_ai/codex_market.py:355` — `def _fallback_item(item: dict[str, Any], *, explain: bool) -> dict[str, Any]:`
+- `src/stock_ai/codex_market.py:394` — `fallback = _fallback_item(source, explain=explain)`
+- `src/stock_ai/codex_market.py:396` — `requested_action = str(candidate.get("action") or fallback["action"])`
+- `src/stock_ai/codex_market.py:400` — `action = fallback["action"]`
+- `src/stock_ai/codex_market.py:403` — `action = fallback["action"]`
+- `src/stock_ai/codex_market.py:409` — `timing = str(candidate.get("timing") or fallback["timing"])`
+- `src/stock_ai/codex_market.py:411` — `timing = fallback["timing"]`
+- `src/stock_ai/codex_runtime.py:28` — `pass`
+- `src/stock_ai/codex_runtime.py:684` — `except Exception:`
+- `src/stock_ai/codex_runtime.py:708` — `except Exception as exc:  # pragma: no cover - runtime transport failure`
+- `src/stock_ai/daily_history.py:23` — `pass`
+- `src/stock_ai/daily_history.py:108` — `is_fallback: bool,`
+- `src/stock_ai/daily_history.py:159` — `is_fallback=is_fallback,`
+- `src/stock_ai/daily_history.py:242` — `except Exception:`
+- `src/stock_ai/daily_history.py:253` — `except Exception:`
+- `src/stock_ai/daily_history.py:294` — `allow_fallback: bool = True,`
+- `src/stock_ai/daily_history.py:331` — `is_fallback=False,`
+- `src/stock_ai/daily_history.py:344` — `if allow_fallback and (failed_months or not official_points):`
+- `src/stock_ai/daily_history.py:345` — `fallback_points = _fetch_yahoo_range(normalized, start_iso, end_iso)`
+- `src/stock_ai/daily_history.py:350` — `points=fallback_points,`
+- `src/stock_ai/daily_history.py:351` — `is_fallback=True,`
+- `src/stock_ai/daily_history.py:393` — `fallback_count = sum(bool(item["is_fallback"]) for item in items)`
+- `src/stock_ai/daily_history.py:500` — `"fallback_count": fallback_count,`
+- `src/stock_ai/daily_history.py:501` — `"is_fallback": bool(fallback_count),`
+- `src/stock_ai/daily_history.py:519` — `and not fallback_count`
+- `src/stock_ai/daily_history.py:544` — `and not fallback_count`
+- `src/stock_ai/daily_history.py:549` — `else "資料覆蓋不完整或含研究用途 fallback；缺口與來源已逐月揭露，不會補造 K 線。"`
+- `src/stock_ai/data_platform/contracts.py:463` — `is_fallback: bool = False`
+- `src/stock_ai/data_platform/failover.py:175` — `except Exception as exc:`
+- `src/stock_ai/data_platform/failover.py:189` — `is_fallback=failover_depth > 0,`
+- `src/stock_ai/data_platform/failover.py:249` — `except Exception as exc:`
+- `src/stock_ai/data_platform/gateway.py:34` — `price_is_fallback = False`
+- `src/stock_ai/data_platform/gateway.py:51` — `except Exception as exc:`
+- `src/stock_ai/data_platform/gateway.py:65` — `price_is_fallback = True`
+- `src/stock_ai/data_platform/gateway.py:71` — `is_fallback=price_is_fallback,`
+- `src/stock_ai/data_platform/gateway.py:73` — `except Exception as exc:`
+- `src/stock_ai/data_platform/gateway.py:82` — `except Exception as exc:`
+- `src/stock_ai/data_platform/gateway.py:96` — `except Exception as exc:`
+- `src/stock_ai/data_platform/gateway.py:106` — `"price_is_fallback": price_is_fallback,`
+- `src/stock_ai/data_platform/gateway.py:122` — `is_fallback: bool,`
+- `src/stock_ai/data_platform/gateway.py:175` — `is_fallback=is_fallback or source_id == "yahoo_finance",`
+- `src/stock_ai/data_platform/gateway.py:182` — `if "yahoo" in label or "fallback" in label:`
+- `src/stock_ai/data_platform/identity.py:11` — `"""Resolve a runtime symbol through Entity Registry with a neutral provisional fallback."""`
+- `src/stock_ai/data_platform/incremental.py:101` — `except Exception:`
+- `src/stock_ai/data_platform/incremental.py:139` — `except Exception as exc:`
+- `src/stock_ai/data_platform/service.py:426` — `is_fallback: bool = False,`
+- `src/stock_ai/data_platform/service.py:487` — `is_fallback=is_fallback,`
+- `src/stock_ai/data_platform/service.py:501` — `except Exception as exc:`
+- `src/stock_ai/data_platform/service.py:693` — `1 if row.is_fallback else 0,`
+- `src/stock_ai/data_platform/service.py:714` — `"fallback_used": False,`
+- `src/stock_ai/data_platform/service.py:716` — `selected_priority, selected_fallback_rank, _ = candidates[0]`
+- `src/stock_ai/data_platform/service.py:719` — `for priority, fallback_rank, row in candidates`
+- `src/stock_ai/data_platform/service.py:720` — `if (priority, fallback_rank)`
+- `src/stock_ai/data_platform/service.py:721` — `== (selected_priority, selected_fallback_rank)`
+- `src/stock_ai/data_platform/service.py:723` — `fallback_used = bool(selected_fallback_rank)`
+- `src/stock_ai/data_platform/service.py:731` — `"fallback_used": fallback_used,`
+- `src/stock_ai/data_platform/source_registry.py:128` — `for fallback_id in current.failure_strategy.failover_dataset_ids:`
+- `src/stock_ai/data_platform/source_registry.py:129` — `visit(fallback_id)`
+- `src/stock_ai/data_platform/warehouse.py:1304` — `quality_status, quality_flags_json, is_fallback,`
+- `src/stock_ai/data_platform/warehouse.py:1811` — `except Exception as exc:`
+- `src/stock_ai/data_platform/warehouse.py:1901` — `is_fallback: bool,`
+- `src/stock_ai/data_platform/warehouse.py:1978` — `quality_status, quality_flags_json, is_fallback,`
+- `src/stock_ai/data_platform/warehouse.py:2004` — `1 if is_fallback else 0,`
+- `src/stock_ai/data_platform/warehouse.py:2033` — `is_fallback=is_fallback,`
+- `src/stock_ai/data_platform/warehouse.py:2149` — `quality_status, quality_flags_json, is_fallback,`
+- `src/stock_ai/data_platform/warehouse.py:2209` — `is_fallback=False,`
+- `src/stock_ai/data_platform/warehouse.py:2262` — `is_fallback: bool = False,`
+- `src/stock_ai/data_platform/warehouse.py:2309` — `quality_status, quality_flags_json, is_fallback,`
+- `src/stock_ai/data_platform/warehouse.py:2338` — `1 if is_fallback else 0,`
+- `src/stock_ai/data_platform/warehouse.py:2361` — `is_fallback=is_fallback,`
+- `src/stock_ai/data_platform/warehouse.py:2406` — `is_fallback: bool,`
+- `src/stock_ai/data_platform/warehouse.py:2419` — `effective_at, expires_at, quality_status, is_fallback,`
+- `src/stock_ai/data_platform/warehouse.py:2437` — `1 if is_fallback else 0,`
+- `src/stock_ai/data_platform/warehouse.py:2522` — `projection only chooses the non-fallback, highest-priority current source`
+- `src/stock_ai/data_platform/warehouse.py:2545` — `order by p.observation_key asc, p.is_fallback asc,`
+- `src/stock_ai/data_platform/warehouse.py:5070` — `is_fallback=bool(row["is_fallback"]),`
+- `src/stock_ai/durable_agent_runtime.py:46` — `# invariant even for programmatic callers that only pass a run store;`
+- `src/stock_ai/durable_agent_runtime.py:910` — `except Exception:`
+- `src/stock_ai/durable_agent_runtime.py:937` — `except Exception as exc:`
+- `src/stock_ai/durable_agent_runtime.py:1057` — `except Exception as exc:`
+- `src/stock_ai/external_project_tools.py:815` — `"fallback_models": False,`
+- `src/stock_ai/external_project_tools.py:821` — `except Exception as exc:`
+- `src/stock_ai/external_project_tools.py:963` — `"fallback_used": False,`
+- `src/stock_ai/external_project_tools.py:1126` — `"fallback_used": False,`
+- `src/stock_ai/external_project_tools.py:1182` — `"fallback_used": False,`
+- `src/stock_ai/external_workflow_worker.py:5` — `This module intentionally contains no fallback models or local heuristics.  An`
+- `src/stock_ai/external_workflow_worker.py:708` — `except Exception as exc:`
+- `src/stock_ai/financial_ratios.py:22` — `pass`
+- `src/stock_ai/growth_metrics.py:25` — `pass`
+- `src/stock_ai/income_statement.py:40` — `pass`
+- `src/stock_ai/income_statement.py:44` — `pass`
+- `src/stock_ai/income_statement.py:299` — `return "sii", "display_symbol_suffix_fallback"`
+- `src/stock_ai/income_statement.py:301` — `return "otc", "display_symbol_suffix_fallback"`
+- `src/stock_ai/income_statement.py:303` — `"market segment cannot be resolved; pass market_segment explicitly"`
+- `src/stock_ai/income_statement.py:575` — `fallback = stable_entity_id(`
+- `src/stock_ai/income_statement.py:580` — `return list(dict.fromkeys((canonical, fallback)))`
+- `src/stock_ai/income_statement.py:827` — `except Exception as exc:`
+- `src/stock_ai/intraday_candles.py:38` — `pass`
+- `src/stock_ai/intraday_candles.py:42` — `pass`
+- `src/stock_ai/intraday_candles.py:918` — `except Exception as exc:  # pragma: no cover - dependency is installed in app`
+- `src/stock_ai/intraday_candles.py:1036` — `except Exception as exc:`
+- `src/stock_ai/liquidity.py:23` — `pass`
+- `src/stock_ai/liquidity.py:201` — `except Exception as exc:`
+- `src/stock_ai/liquidity.py:393` — `allow_fallback=False,`
+- `src/stock_ai/liquidity.py:399` — `except Exception as exc:`
+- `src/stock_ai/main.py:545` — `allow_fallback: bool = True,`
+- `src/stock_ai/main.py:558` — `allow_fallback=allow_fallback,`
+- `src/stock_ai/market_radar.py:89` — `fallback_used: Literal[False] = False`
+- `src/stock_ai/market_radar.py:228` — `"fallback_used": False,`
+- `src/stock_ai/market_radar.py:232` — `except Exception as exc:`
+- `src/stock_ai/models.py:448` — `fallback: dict[str, Any] = Field(default_factory=dict)`
+- `src/stock_ai/models.py:535` — `fallback_fields: dict[str, Any] = Field(default_factory=dict)`
+- `src/stock_ai/monthly_revenue.py:38` — `pass`
+- `src/stock_ai/monthly_revenue.py:42` — `pass`
+- `src/stock_ai/monthly_revenue.py:230` — `return "sii", "display_symbol_suffix_fallback"`
+- `src/stock_ai/monthly_revenue.py:232` — `return "otc", "display_symbol_suffix_fallback"`
+- `src/stock_ai/monthly_revenue.py:234` — `"market segment cannot be resolved; pass market_segment explicitly"`
+- `src/stock_ai/monthly_revenue.py:462` — `fallback = stable_entity_id(`
+- `src/stock_ai/monthly_revenue.py:467` — `return list(dict.fromkeys((canonical, fallback)))`
+- `src/stock_ai/monthly_revenue.py:638` — `except Exception as exc:`
+- `src/stock_ai/mvp_features.py:78` — `except Exception:`
+- `src/stock_ai/mvp_features.py:247` — `except Exception:`
+- `src/stock_ai/mvp_features.py:355` — `except Exception as exc:`
+- `src/stock_ai/paper_asset_workspace.py:56` — `fallback={`
+- `src/stock_ai/paper_training_api.py:161` — `"is_fallback": not is_realtime,`
+- `src/stock_ai/paper_training_api.py:466` — `is_fallback=price["is_fallback"],`
+- `src/stock_ai/paper_training_api.py:538` — `is_fallback=price["is_fallback"],`
+- `src/stock_ai/paper_training_api.py:555` — `for key in ("symbol", "market", "price", "price_source", "source_timestamp", "is_realtime", "is_fallback")`
+- `src/stock_ai/phase1_data.py:337` — `fallback_items = items[:limit]`
+- `src/stock_ai/phase1_data.py:363` — `fallback_by_symbol = {item.symbol.upper(): item for item in fallback_items}`
+- `src/stock_ai/phase1_data.py:367` — `fallback = fallback_by_symbol.get(str(row.get("symbol") or "").upper())`
+- `src/stock_ai/phase1_data.py:368` — `if fallback:`
+- `src/stock_ai/phase1_data.py:371` — `"margin_eligible": fallback.margin_eligible,`
+- `src/stock_ai/phase1_data.py:372` — `"short_eligible": fallback.short_eligible,`
+- `src/stock_ai/phase1_data.py:389` — `for item in fallback_items`
+- `src/stock_ai/phase1_data.py:391` — `except Exception as exc:`
+- `src/stock_ai/phase1_data.py:394` — `# failures instead of relabeling fallback data as warehouse data.`
+- `src/stock_ai/phase1_data.py:400` — `return fallback_items`
+- `src/stock_ai/phase1_data.py:434` — `except Exception as exc:`
+- `src/stock_ai/phase1_data.py:528` — `except Exception as exc:`
+- `src/stock_ai/phase1_data.py:593` — `except Exception as exc:`
+- `src/stock_ai/phase1_data.py:668` — `except Exception as exc:`
+- `src/stock_ai/phase1_data.py:763` — `except Exception:`
+- `src/stock_ai/phase1_data.py:870` — `except Exception as exc:`
+- `src/stock_ai/price_adjustments.py:32` — `pass`
+- `src/stock_ai/price_adjustments.py:133` — `except Exception as exc:`
+- `src/stock_ai/price_adjustments.py:336` — `except Exception as exc:`
+- `src/stock_ai/realtime_data.py:54` — `except Exception:`
+- `src/stock_ai/realtime_data.py:63` — `except Exception:`
+- `src/stock_ai/realtime_data.py:77` — `except Exception as exc:  # pragma: no cover - exercised when env missing dep`
+- `src/stock_ai/realtime_data.py:84` — `# common Taiwan fallback for OTC when user did not specify suffix`
+- `src/stock_ai/realtime_data.py:114` — `except Exception:`
+- `src/stock_ai/realtime_data.py:159` — `except Exception:`
+- `src/stock_ai/realtime_quotes.py:27` — `pass`
+- `src/stock_ai/realtime_quotes.py:31` — `pass`
+- `src/stock_ai/realtime_quotes.py:405` — `except Exception as exc:`
+- `src/stock_ai/realtime_quotes.py:744` — `except Exception as exc:`
+- `src/stock_ai/realtime_quotes.py:766` — `except Exception:`
+- `src/stock_ai/realtime_quotes.py:889` — `except Exception as exc:`
+- `src/stock_ai/sandbox_executor.py:120` — `pass`
+- `src/stock_ai/services.py:137` — `except Exception as exc:`
+- `src/stock_ai/services.py:147` — `except Exception as exc:`
+- `src/stock_ai/services.py:163` — `except Exception as exc:`
+- `src/stock_ai/services.py:167` — `except Exception:`
+- `src/stock_ai/services.py:188` — `except Exception:`
+- `src/stock_ai/services.py:266` — `except Exception:`
+- `src/stock_ai/services.py:297` — `except Exception:`
+- `src/stock_ai/services.py:331` — `except Exception:`
+- `src/stock_ai/services.py:366` — `except Exception as exc:`
+- `src/stock_ai/services.py:532` — `except Exception as exc:`
+- `src/stock_ai/services.py:557` — `except Exception as exc:`
+- `src/stock_ai/services.py:561` — `"official-detail-fallback-failed",`
+- `src/stock_ai/services.py:591` — `except Exception as exc:`
+- `src/stock_ai/services.py:614` — `allow_fallback: bool = True,`
+- `src/stock_ai/services.py:638` — `allow_fallback=allow_fallback,`
+- `src/stock_ai/services.py:657` — `except Exception as exc:`
+- `src/stock_ai/services.py:669` — `source = "Yahoo Finance historical fallback"`
+- `src/stock_ai/services.py:670` — `except Exception as exc:`
+- `src/stock_ai/services.py:671` — `errors.append(f"fallback:{type(exc).__name__}")`
+- `src/stock_ai/services.py:781` — `fallback: dict[str, Any] | None = None,`
+- `src/stock_ai/services.py:786` — `"若即時行情暫時不可用，系統會退回最近可用收盤或本機預設欄位，並於 fallback 明確標示。",`
+- `src/stock_ai/services.py:795` — `fallback=fallback or {},`
+- `src/stock_ai/services.py:819` — `"fallback_fields": {"reference_price": "realtime_quote"},`
+- `src/stock_ai/services.py:831` — `"price_source": "Latest available official history close (preview fallback)",`
+- `src/stock_ai/services.py:833` — `"fallback_fields": {"reference_price": "latest_available_close"},`
+- `src/stock_ai/services.py:878` — `fallback={"reference_price": snapshot["fallback_fields"], "risk_rules": "central_risk_engine_order_preview"},`
+- `src/stock_ai/services.py:923` — `fallback_fields={`
+- `src/stock_ai/services.py:924` — `"reference_price": snapshot["fallback_fields"],`
+- `src/stock_ai/services.py:926` — `"portfolio_snapshot": asset_workspace.meta.fallback,`
+- `src/stock_ai/services.py:931` — `fallback={"reference_price": snapshot["fallback_fields"], "order_submission": "disabled_without_broker_api"},`
+- `src/stock_ai/services.py:1051` — `fallback={`
+- `src/stock_ai/services.py:1064` — `"source": market_summary.data_source if market_summary else "watchlist_overview fallback",`
+- `src/stock_ai/system_contract.py:143` — `"Yahoo Finance research-only fallback",`
+- `src/stock_ai/taiwan_official.py:88` — `except Exception as exc:`
+- `src/stock_ai/taiwan_official.py:480` — `except Exception as exc:`
+- `src/stock_ai/taiwan_official.py:559` — `except Exception as exc:`
+- `src/stock_ai/tool_providers/browser.py:212` — `except Exception as exc:`
+- `src/stock_ai/tool_providers/mcp.py:29` — `except Exception as exc:`
+- `src/stock_ai/trading_anomalies.py:32` — `pass`
+- `src/stock_ai/trading_anomalies.py:475` — `allow_fallback=False,`
+- `src/stock_ai/trading_anomalies.py:498` — `"fallback_count": int(history.get("fallback_count") or 0),`
+- `src/stock_ai/ui/static/css/shell/material.css:1` — `/* Ultra material pass: dense market workstation with high-fidelity glass chrome. */`
+- `src/stock_ai/ui/static/i18n/en-dynamic-02.json:101` — `"限制與 fallback": "Limitations & Fallback"`
+- `src/stock_ai/ui/static/i18n/en-dynamic-03.json:37` — `"使用交易 API 內嵌 fallback": "Using embedded Trading API fallback",`
+- `src/stock_ai/ui/static/i18n/en-segments-extra.json:119` — `"限制與 fallback": "Limitations & Fallback",`
+- `src/stock_ai/ui/static/i18n/en-segments.json:23` — `"Fallback：": "Fallback:",`
+- `src/stock_ai/ui/static/js/core/dom-state.js:166` — `function stockAiEnglishGenerated(value, fallback = 'Additional system detail.') {`
+- `src/stock_ai/ui/static/js/core/dom-state.js:168` — `if (!source) return fallback;`
+- `src/stock_ai/ui/static/js/core/dom-state.js:172` — `'若即時行情暫時不可用，系統會退回最近可用收盤或本機預設欄位，並於 fallback 明確標示。': 'When realtime quotes are unavailable, the system falls back to the latest available close or a local default and marks the fallback explicitly.',`
+- `src/stock_ai/ui/static/js/core/dom-state.js:217` — `return fallback;`
+- `src/stock_ai/ui/static/js/core/dom-state.js:323` — `if (original.renderMetaEvents) window.renderMetaEvents = function renderMetaEventsStructured(meta, extraItems = []) { if (!stockAiEnglishUi()) return original.renderMetaEvents(meta, extraItems); if (!meta && !extraItems.length) return renderEmptyBlock('No Data-source Information', 'Waiting for the API response.'); const blocks = []; if (meta) { blocks.push(`<div class="event"><h4>Data Sources & Time</h4><p>Generated: ${stockAiEscape(meta.generated_at || '-')}</p><p>Sources: ${stockAiEscape((meta.data_sources || []).map(stockAiEnglishSourceName).join(', ') || 'Compiling')}</p></div>`); blocks.push(`<div class="event"><h4>Limitations & Fallback</h4>${(meta.limitations || []).length ? `<ul class="workspace-list">${meta.limitations.map((item) => `<li>${stockAiEscape(stockAiEnglishGenerated(item, 'Additional read-only limitation.'))}</li>`).join('')}</ul>` : '<p>There are no additional limitation notes.</p>'}<p>Fallback: ${stockAiEscape(JSON.stringify(meta.fallback || {}, null, 0) || '{}')}</p></div>`); } extraItems.forEach((item) => blocks.push(item)); return blocks.join(''); };`
+- `src/stock_ai/ui/static/js/core/dom-state.js:327` — `if (original.renderTradingWorkspace) window.renderTradingWorkspace = function renderTradingWorkspaceStructured(workspace, riskPayload = null, assetSummaryPayload = null, assetPositionsPayload = null) { if (!stockAiEnglishUi()) return original.renderTradingWorkspace(workspace, riskPayload, assetSummaryPayload, assetPositionsPayload); $('tradingStatusBox').innerHTML = `<div class="event"><h4>${stockAiEscape(workspace.broker_status.provider_name || 'Broker Connection Status')}</h4><p>Mode: ${stockAiEscape(workspace.broker_status.mode || '-')} · ${workspace.broker_status.connected ? 'Connected' : 'Not connected'} · ${workspace.broker_status.can_submit_orders ? 'Order submission available' : 'Order submission unavailable'}</p><p>Only trade preview, risk checks, and the portfolio framework are available. Live order submission is disabled.</p></div>`; $('tradingPreviewCards').innerHTML = [renderWorkspaceCard('Instrument / Side', `${stockAiEscape(workspace.preview.name)}<br/>${stockAiEscape(workspace.preview.symbol)} / ${workspace.preview.side === 'buy' ? 'Buy' : 'Sell'}`, `${fmt(workspace.preview.quantity_lots)} lot(s) / ${fmt(workspace.preview.quantity_shares)} shares`), renderWorkspaceCard('Reference / Estimated Fill', `${formatMoney(workspace.preview.reference_price)}<br/>${formatMoney(workspace.preview.estimated_fill_price)}`, 'Read-only preview price'), renderWorkspaceCard('Estimated Total', formatMoney(workspace.preview.estimated_costs?.estimated_total), `Commission ${formatMoney(workspace.preview.estimated_costs?.estimated_fee)} / Transaction tax ${formatMoney(workspace.preview.estimated_costs?.estimated_tax)}`), renderWorkspaceCard('Available Cash Change', `${formatMoney(workspace.preview.available_cash_before)}<br/>${formatMoney(workspace.preview.available_cash_after)}`, 'Order submission is disabled')].join(''); $('tradingEstimateBox').innerHTML = `<div class="event"><h4>Order Preview Workflow</h4><p>Gross amount ${formatMoney(workspace.preview.estimated_costs?.gross_amount)}; estimated total ${formatMoney(workspace.preview.estimated_costs?.estimated_total)}.</p><p>For order preview and cost estimation only. It is not a live order while no brokerage API is connected.</p></div>${renderRiskAlerts(workspace.risk_summary?.alerts || [], 'Trade-preview Alerts')}`; const riskSummary = riskPayload?.summary || workspace.risk_summary, assetSummary = assetSummaryPayload?.summary || workspace.asset_summary; $('tradingLinkedSummary').innerHTML = [renderWorkspaceCard('K Single-trade Risk', formatPercent(riskSummary?.single_trade_risk_percent), `Limit ${formatPercent(riskSummary?.max_single_trade_risk_percent)}`, riskSummary?.order_allowed ? '' : 'warn'), renderWorkspaceCard('K Daily Risk', formatPercent(riskSummary?.daily_risk_percent), `Limit ${formatPercent(riskSummary?.max_daily_risk_percent)}`), renderWorkspaceCard('K Position Concentration', formatPercent(riskSummary?.position_concentration_percent), `Limit ${formatPercent(riskSummary?.max_position_concentration_percent)}`), renderWorkspaceCard('L Total Assets', formatMoney(assetSummary?.total_assets), `Cash ${formatMoney(assetSummary?.cash_available)}`), renderWorkspaceCard('L Holdings Value', formatMoney(assetSummary?.holdings_market_value), `Today's P&L ${formatSignedMoney(assetSummary?.today_pnl)}`), renderWorkspaceCard('L Preview Limitation', 'Local Paper OMS account', 'Brokerage API not connected')].join(''); renderPositionTable('tradingPositionsTable', assetPositionsPayload?.items || workspace.positions, 'No portfolio positions are currently available on the trade page.'); $('tradingMetaBox').innerHTML = renderMetaEvents(workspace.meta, [`<div class="event"><h4>I Page Limitation</h4><p>The order workflow is fixed to Preview Mode; ${stockAiEscape(workspace.preview.fallback_fields?.broker_submission || 'disabled')}.</p></div>`, `<div class="event"><h4>K/L Integration Status</h4><p>Risk summary ${riskPayload ? 'synchronized' : 'uses the embedded trade-API fallback'}; portfolio summary ${assetSummaryPayload ? 'synchronized' : 'uses the embedded trade-API fallback'}.</p></div>`]); };`
+- `src/stock_ai/ui/static/js/core/dom-state.js:332` — `function englishResearchReason(value, fallback = 'System-generated analysis detail.') { const source = String(value || '').trim(); if (!source) return fallback; if (!/[\u3400-\u9fff]/.test(source)) return source; const exact = { '暫無每日報告分數，改用觀察模式。': 'No daily-report score is available; using watch mode.', '即時摘要不可用，改看最近可用市場資料。': 'The realtime summary is unavailable; using the latest available market data.', '等待法人與量能資料進一步確認。': 'Waiting for further confirmation from institutional flow and volume.', '尚無新基本面亮點。': 'No new fundamental catalyst is available.', '暫無明顯事件催化。': 'No clear event catalyst is currently available.', '建議搭配風控摘要檢查單筆曝險。': 'Use the risk summary to verify single-trade exposure.', '盤中價格暫不可用。': 'The intraday price is currently unavailable.', '法人即時/近端資料不足。': 'Realtime or recent institutional-flow data is insufficient.', '自選股暫無異常提醒。': 'No unusual watchlist alert is currently active.', '營收資料待補。': 'Revenue data is pending.', '暫無最新新聞標題。': 'No latest news headline is available.', '波動放大時應降低口數。': 'Reduce order size when volatility expands.', '若風控摘要出現 block，應停止委託預覽往下操作。': 'Stop the order-preview workflow if the risk summary returns a block.', '收盤後建議重新檢查當日波動、委託預覽與資產配置變化。': 'After the close, review daily volatility, order previews, and portfolio-allocation changes.', '通知預覽可用來驗證收盤後提醒文案與自選股熱點。': 'Notification previews can validate post-close alerts and watchlist hotspots.', '所有量化規則參考皆為讀取型彙整，不代表確定結論或投資建議。': 'All quantitative rule references are read-only syntheses, not certain conclusions or investment advice.', '若多來源方向不一致，應優先以風控上限與人工判讀處理。': 'When sources disagree, prioritize risk limits and human review.', '資料交叉驗證中': 'Cross-validating data sources', '官方盤後與新聞來源交叉驗證中': 'Cross-validating official post-market and news sources', '尚未出現明顯強勢股': 'No clearly strong stock has emerged', '今日尚無明顯法人偏多名單': 'No clear institutional-bullish list is available today', '自選股與今日報告尚未形成交集': 'The watchlist and today’s report do not currently overlap', '目前沒有近期新聞': 'No recent news is available' }; if (exact[source]) return exact[source]; const patterns = [[/^每日報告分數\s*(.+)$/, (_, score) => `Daily-report score ${score}`], [/^市場趨勢\s*(.+)$/, (_, trend) => `Market trend: ${stockAiEnglishStatus(trend)}`], [/^月營收年增\s*(.+)%$/, (_, value) => `Monthly revenue YoY ${value}%`], [/^盤中\/最近可用價格\s*(.+)$/, (_, value) => `Intraday / latest available price ${value}`], [/^漲跌幅\s*(.+)$/, (_, value) => `Price change ${value}`], [/^法人淨額\s*(.+)$/, (_, value) => `Institutional net flow ${value}`], [/^自選股提醒：(.+)$/, (_, value) => `Watchlist alerts: ${String(value).split(',').map(englishAlertFlag).join(', ')}`], [/^營收年增\s*(.+)%$/, (_, value) => `Revenue YoY ${value}%`], [/^分數\s*(.+)$/, (_, value) => `Score ${value}`]]; for (const [pattern, replacement] of patterns) if (pattern.test(source)) return source.replace(pattern, replacement); return stockAiEnglishGenerated(source, fallback); }`
+- `src/stock_ai/ui/static/js/core/dom-state.js:352` — `if (original.renderAssistantWorkspace) window.renderAssistantWorkspace = function renderAssistantWorkspaceStructured(workspace) { if (!stockAiEnglishUi()) return original.renderAssistantWorkspace(workspace); const stockContext = state.currentEntity?.symbol || state.realtimeQuote?.symbol, snapshot = workspace.market_snapshot || {}, reportTitle = englishResearchReason(workspace.report_title || '', 'Daily Quantitative Rule Report'); $('assistantSummaryCards').innerHTML = [renderWorkspaceCard('Focus Instrument', stockAiEscape(workspace.focus_symbol || '-'), stockAiEscape(reportTitle)), renderWorkspaceCard('Stock-page Context', stockAiEscape(stockContext || 'No stock page open'), state.currentEntity?.name || 'Can be populated from Stock Analysis'), renderWorkspaceCard('Intraday Snapshot', `${snapshot.source ? stockAiEscape(sourceLabelEnglish(snapshot.source)) : 'Compiling'}<br/>${formatSignedPercent(snapshot.change_percent)}`, snapshot.symbol || workspace.focus_symbol), renderWorkspaceCard('Notifications / Watchlist', `${stockAiEnglishCount(workspace.notification_previews?.length || 0, 'notification')}<br/>${stockAiEnglishCount(workspace.watchlist_items?.length || 0, 'watchlist stock')}`, 'Integrates the daily rule report, watchlist, and notifications')].join(''); $('assistantContextBox').innerHTML = `<div class="event"><h4>Cross-module Context</h4><p>Rule report: ${stockAiEscape(reportTitle)}; watchlist: ${stockAiEnglishCount(workspace.watchlist_items?.length || 0, 'stock')}; notification previews: ${stockAiEnglishCount(workspace.notification_previews?.length || 0, 'item')}.</p><p>Current stock page: ${stockAiEscape(state.currentEntity?.name || 'Not open')} ${stockAiEscape(state.currentEntity?.symbol || '')}${state.realtimeQuote ? `; realtime price ${priceText(currentDisplayPrice(state.realtimeQuote))}` : ''}</p></div>`; $('assistantCardsBox').innerHTML = (workspace.cards || []).map((card) => { const list = (values, fallback) => stockAiEscape((values || []).map((value) => englishResearchReason(value, fallback)).join('; ') || fallback); return `<div class="event"><h4>${sessionLabel(card.session)}: ${stockAiEscape(card.name)} ${stockAiEscape(card.symbol)} <span class="tag ${card.action_bias === 'buy' ? 'positive' : card.action_bias === 'watch' ? 'neutral' : 'negative'}">${actionBiasLabel(card.action_bias)} Rule score ${Number(card.rule_score || 0).toFixed(3)}</span></h4><p>Technical: ${list(card.technical_reasons, 'No technical rationale is available.')}</p><p>Flow: ${list(card.flow_reasons, 'No flow rationale is available.')}</p><p>Fundamentals: ${list(card.fundamental_reasons, 'No fundamental rationale is available.')}</p><p data-i18n-skip>Events: ${stockAiEscape((card.event_reasons || []).join('; ') || 'No event rationale is available.')}</p><p>Risk: ${list(card.risk_reasons, 'No risk rationale is available.')}</p><p>Sources: ${stockAiEscape((card.data_sources || []).map(sourceLabelEnglish).join(', ') || 'Compiling')} · Time ${stockAiEscape(card.as_of || '-')}</p>${card.conflict_note ? `<p class="workspace-note warning">Data conflict: ${stockAiEscape(englishResearchReason(card.conflict_note, 'Source directions conflict; use risk limits and human review.'))}</p>` : ''}</div>`; }).join('') || renderEmptyBlock('No Rule-reference Cards', 'No rule reference is currently available.'); $('assistantWatchlistBox').innerHTML = (workspace.watchlist_items || []).slice(0, 5).map((item) => `<div class="event"><h4>${stockAiEscape(item.name || item.symbol || 'Watchlist stock')}</h4><p>${stockAiEscape(item.symbol || '-')} · Alerts ${stockAiEscape((item.alert_flags || []).map(englishAlertFlag).join(', ') || 'Watching')}</p><p>Latest ${item.latest_price == null ? '-' : formatMoney(item.latest_price)} · Change ${formatSignedPercent(item.change_percent)}</p></div>`).join('') || renderEmptyBlock('No Watchlist Summary', 'Choose an explicit symbol or watchlist first.'); $('assistantNotificationBox').innerHTML = (workspace.notification_previews || []).map((item) => `<div class="event"><h4>${stockAiEscape(englishResearchReason(item.title, 'Notification Preview'))}</h4><p>${stockAiEscape(englishResearchReason(item.body, 'System-generated notification preview.'))}</p><p>Channels ${stockAiEscape((item.channels || []).join(', ') || '-')} · Type ${stockAiEscape(item.category || '-')} · Dry run ${item.dry_run ? 'Yes' : 'No'}</p></div>`).join('') || renderEmptyBlock('No Notification Previews', 'No notification copy is currently available.'); $('assistantMetaBox').innerHTML = renderMetaEvents(workspace.meta); };`
+- `src/stock_ai/ui/static/js/core/dom-state.js:354` — `const safetyRuleEnglish = { no_auto_order_without_broker_api: 'Automatic ordering is prohibited without a brokerage API.', no_mouse_broker_app_ordering: 'The system may not place orders by simulating mouse input in a broker application.', no_yahoo_google_as_sole_price_source: 'Google or Yahoo scraping may not be the sole market-price source.', risk_gate_required: 'Every trading signal must pass risk control.', validate_before_auto_trading: 'Automated trading must first pass backtests, paper trading, and small-capital live validation.', pre_order_checks: 'Before an order, validate price, quantity, inventory, cash, maximum loss, and maximum position size.', decision_reason_logging: 'Every decision must record its rationale for later review.' };`
+- `src/stock_ai/ui/static/js/core/presentation.js:52` — `function renderNewsSummaryLink(summary, url, fallback = '閱讀全文') {`
+- `src/stock_ai/ui/static/js/core/presentation.js:53` — `const text = compactText(summary || '', 180) || compactText(fallback || '', 180) || '閱讀全文';`
+- `src/stock_ai/ui/static/js/features/agent/agent-formatters.js:42` — `function text(value, fallback = '') {`
+- `src/stock_ai/ui/static/js/features/agent/agent-formatters.js:43` — `if (value === null || value === undefined) return fallback;`
+- `src/stock_ai/ui/static/js/features/agent/agent-formatters.js:45` — `try { return JSON.stringify(redact(value), null, 2); } catch { return fallback; }`
+- `src/stock_ai/ui/static/js/features/agent/agent-task-tree-view.js:197` — `// Defensive fallback for malformed imported plans: never hide an orphan or`
+- `src/stock_ai/ui/static/js/features/codex.js:341` — `fallback_used: false,`
+- `src/stock_ai/ui/static/js/features/codex.js:362` — `fallback_used: false,`
+- `src/stock_ai/ui/static/js/features/codex.js:440` — `fallback_used: false,`
+- `src/stock_ai/ui/static/js/features/market-chart.js:338` — `allow_fallback: 'true',`
+- `src/stock_ai/ui/static/js/features/market-chart.js:356` — `const fallback = payload.is_fallback ? '；含研究用途 fallback' : '';`
+- `src/stock_ai/ui/static/js/features/market-chart.js:369` — `+ `；來源 ${escapeHtml(sources)}${adjustment}${escapeHtml(fallback)}`;`
+- `src/stock_ai/ui/static/js/features/market-chart.js:527` — `let fallbackCount = 0;`
+- `src/stock_ai/ui/static/js/features/market-chart.js:540` — `fallbackCount += Number(page.fallback_count || 0);`
+- `src/stock_ai/ui/static/js/features/market-chart.js:558` — `fallback_count: fallbackCount,`
+- `src/stock_ai/ui/static/js/features/market-chart.js:559` — `is_fallback: fallbackCount > 0,`
+- `src/stock_ai/ui/static/js/features/quant-research.js:25` — `function contractLabel(value, fallback = '契約 v1') {`
+- `src/stock_ai/ui/static/js/features/quant-research.js:28` — `return version ? `契約 v${version}` : fallback;`
+- `src/stock_ai/ui/static/js/features/trading-workspaces.js:169` — `<h4>限制與 fallback</h4>`
+- `src/stock_ai/ui/static/js/features/trading-workspaces.js:171` — `<p>Fallback：${escapeHtml(JSON.stringify(meta.fallback || {}, null, 0) || '{}')}</p>`
+- `src/stock_ai/ui/static/js/features/trading-workspaces.js:235` — ``<div class="event"><h4>I 頁面限制</h4><p>委託流程目前固定為預覽模式；${escapeHtml(workspace.preview.fallback_fields?.broker_submission || 'disabled')}。</p></div>`,`
+- `src/stock_ai/ui/static/js/features/trading-workspaces.js:236` — ``<div class="event"><h4>K/L 串接狀態</h4><p>風控摘要 ${riskPayload ? '已同步' : '使用交易 API 內嵌 fallback'}；資產摘要 ${assetSummaryPayload ? '已同步' : '使用交易 API 內嵌 fallback'}。</p></div>`,`
+- `src/stock_ai/ui/static/js/shell/freefrontend-liquid-glass.js:110` — `document.documentElement.dataset.ffButtonFilter = 'container-fallback';`
+- `src/stock_ai/ui/static/js/shell/freefrontend-liquid-glass.js:132` — `document.documentElement.dataset.navSwitcherFilter = 'css-fallback';`
+- `src/stock_ai/ui/static/js/shell/glass.js:445` — `document.documentElement.dataset.liquidGl = 'css-fallback';`
+- `src/stock_ai/ui/static/js/shell/glass.js:447` — `document.documentElement.dataset.glassControlRefraction = 'css-fallback';`
+- `src/stock_ai/ui/static/js/shell/glass.js:489` — `document.documentElement.dataset.glassControlRefraction = 'css-fallback';`
+- `src/stock_ai/ui/static/js/shell/glass.js:494` — `document.documentElement.dataset.glassControlRefraction = 'css-fallback';`
+- `src/stock_ai/ui/static/ui-fixes-v2.css:195` — `Light-theme coherence pass v3`
+- `src/stock_ai/universe.py:73` — `"top_by_volume received no attributed official quote rows; no fallback Universe is allowed"`
+- `src/stock_ai/universe.py:90` — `f"{request.source} requires an attributed ranking provider; no fallback Universe is allowed"`
+- `src/stock_ai/universe.py:163` — `except Exception:`
+- `src/stock_ai/universe.py:253` — `"user_watchlist has no persisted or configured symbols; no fallback Universe is allowed"`
+- `src/stock_ai/universe.py:270` — `except Exception as exc:`
+- `src/stock_ai/universe.py:283` — `"portfolio_positions contains no open paper positions; no fallback Universe is allowed"`
+- `src/stock_ai/universe.py:303` — `except Exception as exc:`
+- `src/stock_ai/universe.py:339` — `except Exception as exc:`
+- `config/market_data_sources.yaml:197` — `fallback_only: true`
+- `config/market_data_sources.yaml:262` — `fallback_only: true`

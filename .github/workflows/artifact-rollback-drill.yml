@@ -1,0 +1,63 @@
+name: Hosted artifact rollback drill
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: artifact-rollback-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  strategy-model-rollback:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install project
+        run: python -m pip install -e .
+
+      - name: Exercise durable strategy and model rollback APIs
+        env:
+          EVIDENCE_DIR: ${{ runner.temp }}/stock-ai-rollback/evidence
+        run: |
+          mkdir -p "$(dirname "${EVIDENCE_DIR}")"
+          python scripts/run_hosted_rollback_gate.py \
+            --output-dir "${EVIDENCE_DIR}" \
+            --commit-sha "${GITHUB_SHA}" \
+            --allow-rollback-drill
+
+      - name: Verify rollback receipt independently
+        env:
+          EVIDENCE_DIR: ${{ runner.temp }}/stock-ai-rollback/evidence
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          from open_stock_ai.governance import verify_hosted_rollback_gate_receipt
+
+          receipt = json.loads((Path(os.environ["EVIDENCE_DIR"]) / "rollback-gate-receipt.json").read_text())
+          if receipt["commit_sha"] != os.environ["GITHUB_SHA"]:
+              raise SystemExit("rollback candidate SHA mismatch")
+          if not receipt["passed"] or not verify_hosted_rollback_gate_receipt(receipt):
+              raise SystemExit("hosted rollback receipt failed verification")
+          PY
+
+      - name: Upload rollback evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: stock-ai-artifact-rollback-${{ github.sha }}
+          path: ${{ runner.temp }}/stock-ai-rollback/evidence
+          if-no-files-found: error
+          retention-days: 30

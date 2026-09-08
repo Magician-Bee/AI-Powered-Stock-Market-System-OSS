@@ -1,0 +1,8 @@
+{
+  "schema_version": "open_stock_ai.external_snapshot_lock.v1",
+  "source_key": "finrl",
+  "origin": "https://github.com/AI4Finance-Foundation/FinRL.git",
+  "branch": "master",
+  "head": "220f9e490996a6e5c84cfad914ff14f2e0c42d22",
+  "snapshot_mode": "vendored_source_snapshot"
+}

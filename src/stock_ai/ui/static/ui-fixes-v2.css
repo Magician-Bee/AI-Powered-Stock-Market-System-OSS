@@ -1,0 +1,602 @@
+/* Final light-theme and paper-training presentation fixes.
+   Loaded after the main glass styles so it can correct hard-coded dark-theme remnants. */
+
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]){
+  --light-ink-950:#1f3342;
+  --light-ink-900:#263c4c;
+  --light-ink-800:#314a5b;
+  --light-ink-700:#40596a;
+  --light-ink-600:#536b7b;
+  --light-accent:#3473a3;
+  --light-border:rgba(47,78,101,.20);
+  --light-border-strong:rgba(45,77,101,.32);
+  --light-glass:rgba(255,255,255,.20);
+  --light-glass-hover:rgba(255,255,255,.32);
+  --light-glass-active:rgba(198,225,244,.34);
+  /* Shared semantic surfaces. Feature modules must consume these instead of
+     falling back to the default dark palette in a light workspace. */
+  --page-bg:#e7edf2;
+  --bg:#e7edf2;
+  --bg-soft:#dfe9f0;
+  --panel:rgba(255,255,255,.58);
+  --panel-solid:rgba(247,251,255,.96);
+  --panel-2:rgba(234,244,250,.72);
+  --surface:rgba(247,251,255,.92);
+  --surface-2:rgba(235,245,251,.88);
+  --glass-1-surface:rgba(255,255,255,.48);
+  --glass-2-surface:rgba(255,255,255,.64);
+  --glass-3-surface:rgba(255,255,255,.72);
+  --glass-4-surface:rgba(255,255,255,.80);
+  --glass-5-surface:rgba(255,255,255,.88);
+  --shadow:0 18px 42px rgba(56,79,96,.14),inset 0 1px 0 rgba(255,255,255,.86);
+  --chart-canvas-surface:rgba(247,251,255,.86);
+  --chart-tooltip-surface:rgba(247,251,255,.96);
+  --chart-tooltip-border:rgba(44,103,143,.34);
+  --chart-tooltip-text:#1f3342;
+}
+
+/* Shared light workspace contract: route tabs, chart tools and decision
+   context are light glass surfaces, never isolated graphite islands. */
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) :is(
+  .workspace-tabs,
+  .chart-drawing-tools,
+  .chart-drawing-settings-popover,
+  .home-chart-canvas-wrap,
+  .home-chart-decision-panel
+){
+  color:var(--light-ink-800)!important;
+  background:linear-gradient(145deg,rgba(255,255,255,.70),rgba(222,238,248,.48))!important;
+  border-color:var(--light-border)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.90),0 10px 28px rgba(55,79,97,.10)!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) :is(
+  .workspace-tab,
+  .chart-drawing-tools .chart-tool-button,
+  .chart-drawing-settings>summary,
+  .home-chart-control-group button
+){
+  color:var(--light-ink-700)!important;
+  background:rgba(255,255,255,.50)!important;
+  border-color:var(--light-border)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.86),0 4px 12px rgba(55,79,97,.07)!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) :is(
+  .workspace-tab.is-active,
+  .chart-drawing-tools .chart-tool-button.is-active,
+  .chart-drawing-tools .chart-tool-button[aria-pressed="true"],
+  .chart-drawing-settings[open]>summary,
+  .home-chart-control-group button.is-active
+){
+  color:#214f70!important;
+  background:rgba(174,216,244,.46)!important;
+  border-color:rgba(54,128,178,.44)!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .home-chart-decision-panel :is(h4,strong){
+  color:var(--light-ink-950)!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .home-chart-decision-panel :is(p,span,dt,dd){
+  color:var(--light-ink-600)!important;
+}
+
+/* Decision board: these generated descendants previously kept white text. */
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) :is(
+  .home-status-bar,.home-action-brief,.decision-board,.decision-lane,.decision-row,
+  .decision-empty,.decision-symbol,.decision-name,.decision-confidence,.decision-next,
+  .decision-timing,.decision-trigger,.decision-levels,.decision-open
+){
+  color:var(--light-ink-800)!important;
+  text-shadow:none!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) :is(
+  .home-status-bar h3,.home-action-brief strong,.decision-lane-head h3,
+  .decision-row strong,.decision-next b,.decision-timing b,.decision-trigger b
+){
+  color:var(--light-ink-950)!important;
+  opacity:1!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) :is(
+  .home-status-bar p,.home-action-brief small,.decision-lane-head small,.decision-row p,
+  .decision-row small,.decision-name,.decision-levels
+){
+  color:var(--light-ink-600)!important;
+  opacity:1!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .decision-confidence{
+  color:#557287!important;
+  opacity:1!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .decision-open{
+  color:#2f82bf!important;
+  font-weight:800;
+  opacity:1!important;
+}
+
+/* General generated content that was still too pale. */
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) :is(
+  .event,.event h4,.event p,.row,.row div,.table,.table div,.meta-bar,.meta-bar span,
+  .workspace-note,.workspace-list,.trade-hint,.auth-state,.project-sync-result,
+  .settings-status-list,.settings-status-row,.settings-actions,.range-control output
+){
+  color:var(--light-ink-800)!important;
+  text-shadow:none!important;
+  opacity:1;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) :is(
+  .event h4,.row.header,.settings-status-row strong,.settings-actions strong
+){
+  color:var(--light-ink-950)!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) :is(
+  .event p,.settings-status-row small,.trade-hint,.settings-actions>span
+){
+  color:var(--light-ink-600)!important;
+}
+
+/* News scope/category pills: all states are transparent glass, never black. */
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) :is(
+  #newsScopeBar button,#newsFilterBar button,.filter-bar button,.filter-chip,.scope-chip,
+  .news-scope-button,.news-category-button,.meta-bar .chip,.meta-bar .tag
+){
+  color:var(--light-ink-800)!important;
+  background:linear-gradient(145deg,rgba(255,255,255,.29),rgba(220,238,249,.13))!important;
+  border:1px solid var(--light-border)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.82),0 8px 22px rgba(54,91,116,.09)!important;
+  backdrop-filter:saturate(135%) blur(18px)!important;
+  -webkit-backdrop-filter:saturate(135%) blur(18px)!important;
+  text-shadow:none!important;
+  opacity:1!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) :is(
+  #newsScopeBar button:hover,#newsFilterBar button:hover,.filter-bar button:hover,
+  .filter-chip:hover,.scope-chip:hover
+){
+  color:var(--light-ink-950)!important;
+  background:linear-gradient(145deg,rgba(255,255,255,.43),rgba(205,231,248,.22))!important;
+  border-color:var(--light-border-strong)!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) :is(
+  #newsScopeBar button.active,#newsFilterBar button.active,.filter-bar button.active,
+  .filter-chip.active,.scope-chip.active,[aria-pressed="true"]
+){
+  color:#244a64!important;
+  background:linear-gradient(145deg,rgba(255,255,255,.50),rgba(162,213,245,.30))!important;
+  border-color:rgba(69,146,198,.46)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.92),0 10px 26px rgba(67,132,175,.13)!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .filter-bar{
+  gap:14px;
+}
+
+/* Settings bottom bevel: leave breathing room and draw an uncut optical edge. */
+.view#settings{
+  overflow:visible!important;
+  padding-bottom:52px!important;
+}
+.settings-panel{
+  position:relative;
+  overflow:visible!important;
+  clip-path:none!important;
+  margin-bottom:46px!important;
+  isolation:isolate;
+}
+.settings-panel::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  border:1px solid rgba(255,255,255,.34);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.52),inset 0 -1px 0 rgba(39,67,87,.16);
+  pointer-events:none;
+  z-index:8;
+}
+.settings-layout,.settings-section,.settings-actions{
+  overflow:visible!important;
+  clip-path:none!important;
+}
+.settings-actions{
+  margin:22px 0 12px!important;
+  padding-bottom:10px!important;
+}
+.main{
+  padding-bottom:max(64px,env(safe-area-inset-bottom))!important;
+}
+
+/* All settings controls stay readable without becoming solid black. */
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) :is(
+  .settings-jumpbar button,.settings-card-actions button,.settings-section-head button,
+  .settings-actions button,.paper-training-actions button
+){
+  color:var(--light-ink-900)!important;
+  background:linear-gradient(145deg,rgba(255,255,255,.31),rgba(216,235,247,.15))!important;
+  border-color:var(--light-border)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.82),0 8px 20px rgba(50,86,109,.08)!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) :is(
+  .settings-jumpbar button:hover,.settings-card-actions button:hover,
+  .settings-section-head button:hover,.settings-actions button:hover,.paper-training-actions button:hover
+){
+  color:var(--light-ink-950)!important;
+  background:rgba(255,255,255,.45)!important;
+  border-color:var(--light-border-strong)!important;
+}
+
+/* Paper-training panel. */
+.paper-training-panel{margin-top:18px}
+.paper-training-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
+}
+.paper-training-controls{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(120px,1fr));
+  gap:10px;
+  align-items:end;
+  margin:16px 0;
+}
+.paper-training-controls label{display:grid;gap:6px;color:var(--muted);font-size:12px;font-weight:700}
+.paper-training-controls input,.paper-training-controls select{width:100%;min-width:0}
+.paper-training-actions{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+.paper-training-status{min-height:24px;color:var(--muted);line-height:1.55}
+.paper-training-ledger{display:grid;gap:8px;margin-top:14px}
+.paper-training-ledger .event{margin:0}
+.paper-training-policy{margin-top:12px;padding:12px;border:1px solid var(--line);border-radius:var(--radius);background:rgba(255,255,255,.06)}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .paper-training-policy{
+  color:var(--light-ink-700)!important;
+  background:rgba(255,255,255,.24)!important;
+  border-color:var(--light-border)!important;
+}
+@media(max-width:1100px){
+  .paper-training-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .paper-training-controls{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:700px){
+  .paper-training-grid,.paper-training-controls{grid-template-columns:1fr}
+}
+
+/* --------------------------------------------------------------------------
+   Light-theme coherence pass v3
+   New runtime, research, and paper-trading surfaces use one readable material.
+   -------------------------------------------------------------------------- */
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]){
+  --light-surface-panel:linear-gradient(145deg,rgba(255,255,255,.64),rgba(226,240,249,.36) 56%,rgba(211,229,241,.26));
+  --light-surface-nested:linear-gradient(145deg,rgba(255,255,255,.54),rgba(226,240,249,.27));
+  --light-surface-control:rgba(255,255,255,.52);
+  --light-surface-border:rgba(43,73,95,.20);
+  --light-surface-border-soft:rgba(43,73,95,.14);
+  --light-shadow:inset 0 1px 0 rgba(255,255,255,.92),0 15px 34px rgba(55,88,111,.11);
+  --light-shadow-nested:inset 0 1px 0 rgba(255,255,255,.82),0 9px 22px rgba(55,88,111,.075);
+}
+
+/* Main surfaces added after the original theme system. */
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) body :is(
+  .agent-runtime-panel,
+  .agent-trading-home-panel,
+  .paper-trading-view .paper-training-panel,
+  .view#openstock>.panel,
+  .view#catalog>.panel
+){
+  color:var(--light-ink-800)!important;
+  background:var(--light-surface-panel)!important;
+  border-color:var(--light-surface-border)!important;
+  border-top-color:rgba(255,255,255,.96)!important;
+  box-shadow:var(--light-shadow)!important;
+  text-shadow:none!important;
+}
+
+/* Nested Agent Runtime and settings surfaces. */
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) body :is(
+  .agent-settings-toolbar,
+  .agent-provider-group,
+  .agent-provider-panel,
+  .agent-capability-details,
+  .agent-task-pane,
+  .agent-activity-pane,
+  .agent-active-driver,
+  .agent-activity-item,
+  .agent-runtime-answer,
+  .agent-trading-status-row,
+  .agent-trading-answer,
+  .agent-decision-head>div,
+  .agent-order-draft,
+  .agent-decision-lists>div,
+  .view#openstock .mini-card,
+  .view#openstock .event,
+  .view#catalog .mini-card,
+  .view#catalog .event,
+  .view#catalog .technical-details
+){
+  color:var(--light-ink-800)!important;
+  background:var(--light-surface-nested)!important;
+  border-color:var(--light-surface-border-soft)!important;
+  border-top-color:rgba(255,255,255,.88)!important;
+  box-shadow:var(--light-shadow-nested)!important;
+  text-shadow:none!important;
+}
+
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) body :is(
+  .agent-settings-toolbar strong,
+  .agent-settings-summary strong,
+  .agent-provider-group legend,
+  .agent-provider-panel legend,
+  .agent-current-task strong,
+  .agent-active-driver strong,
+  .agent-activity-head strong,
+  .agent-activity-item strong,
+  .agent-runtime-answer strong,
+  .agent-trading-answer strong,
+  .view#openstock .mini-card strong,
+  .view#openstock .event h4
+){
+  color:var(--light-ink-950)!important;
+  opacity:1!important;
+}
+
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) body :is(
+  .agent-native-capability-copy,
+  .agent-setting-field,
+  .agent-provider-panel label,
+  .agent-provider-panel small,
+  .agent-settings-summary small,
+  .agent-current-task span,
+  .agent-mode-control,
+  .agent-safety-copy,
+  .agent-active-driver small,
+  .agent-activity-head small,
+  .agent-activity-empty,
+  .agent-activity-item time,
+  .agent-activity-item p,
+  .agent-rationale,
+  .agent-next-check,
+  .agent-trading-status-row small,
+  .agent-order-draft span,
+  .agent-order-draft small
+){
+  color:var(--light-ink-600)!important;
+  opacity:1!important;
+}
+
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) body :is(
+  .agent-mode-control select,
+  .agent-setting-field input,
+  .agent-setting-field select,
+  .agent-provider-panel input,
+  .agent-provider-panel select,
+  .agent-trading-home-command input,
+  .agent-trading-paper-grid input,
+  .agent-trading-paper-grid textarea,
+  .paper-trading-view input,
+  .paper-trading-view select,
+  .paper-trading-view textarea
+){
+  color:var(--light-ink-900)!important;
+  background:var(--light-surface-control)!important;
+  border-color:var(--light-surface-border)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.94),0 7px 17px rgba(55,88,111,.07)!important;
+}
+
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) body .agent-provider-panel{
+  background:linear-gradient(145deg,rgba(255,255,255,.58),rgba(210,231,244,.31))!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) body .agent-provider-panel legend{
+  color:var(--light-ink-950)!important;
+  text-shadow:0 1px 0 rgba(255,255,255,.72)!important;
+  opacity:1!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) body .agent-provider-panel :is(label,small,.agent-inline-check){
+  color:var(--light-ink-700)!important;
+  opacity:1!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) body .agent-provider-panel input::placeholder{
+  color:var(--light-ink-600)!important;
+  opacity:1!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) body .agent-model-input-row button{
+  color:var(--light-ink-900)!important;
+  background:var(--light-surface-control)!important;
+  border-color:var(--light-surface-border)!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) body :is(
+  .agent-capability-details summary,
+  .agent-capability-details p,
+  .agent-settings-actions span,
+  .agent-native-capability-copy
+){
+  color:var(--light-ink-700)!important;
+  opacity:1!important;
+}
+
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) body .agent-settings-summary>span{
+  border-left-color:rgba(43,73,95,.14)!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) body .agent-activity-counts span{
+  color:#36566d!important;
+  background:rgba(255,255,255,.45)!important;
+  border-color:rgba(43,73,95,.15)!important;
+  opacity:1!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) body .agent-activity-counts b{
+  color:#20394b!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) body .agent-activity-meta span,
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) body .agent-run-meta span{
+  color:#276d68!important;
+  background:rgba(25,145,132,.09)!important;
+}
+
+/* Paper workspace: override later dynamically loaded dark-theme declarations. */
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) body .paper-trading-view .paper-broker-card,
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) body .paper-trading-view :is(
+  .paper-order-section,.paper-linked-section,.paper-account-section,.paper-learning-section
+){
+  color:var(--light-ink-800)!important;
+  background:var(--light-surface-panel)!important;
+  border-color:var(--light-surface-border)!important;
+  border-top-color:rgba(255,255,255,.94)!important;
+  box-shadow:var(--light-shadow)!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) body .paper-trading-view :is(
+  .paper-training-grid .mini-card,
+  .paper-ticket-preview .mini-card,
+  .paper-risk-summary .mini-card,
+  .paper-training-ledger .event,
+  .paper-position-table .row,
+  .paper-order-table .row,
+  .paper-fill-table .row,
+  .paper-training-status,
+  .paper-side-switch,
+  .paper-training-policy
+){
+  color:var(--light-ink-800)!important;
+  background:var(--light-surface-nested)!important;
+  border-color:var(--light-surface-border-soft)!important;
+  box-shadow:var(--light-shadow-nested)!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) body .paper-trading-view :is(
+  .paper-broker-head h4,.paper-section-head h4,.mini-card strong,.row.header
+){
+  color:var(--light-ink-950)!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) body .paper-trading-view :is(
+  .paper-broker-head small,.paper-section-head small,.mini-card span,.mini-card small,.event p
+){
+  color:var(--light-ink-600)!important;
+  opacity:1!important;
+}
+
+/* Light controls remain part of the same workspace instead of becoming
+   disconnected graphite blocks. */
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) body :is(
+  .technical-details>summary,
+  .panel-head>.chip,
+  .paper-broker-head>.chip,
+  .paper-section-head>.chip,
+  #codexRuntimeChip,
+  #agentRuntimeChip,
+  #agentTradingHomeCodex,
+  #agentTradingPaperCodex
+){
+  color:var(--light-ink-900)!important;
+  background:linear-gradient(145deg,rgba(255,255,255,.66),rgba(217,235,246,.38))!important;
+  border-color:var(--light-surface-border)!important;
+  border-top-color:rgba(255,255,255,.94)!important;
+  box-shadow:var(--light-shadow-nested)!important;
+  text-shadow:none!important;
+  opacity:1!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) body :is(
+  .technical-details>summary,
+  .panel-head>.chip,
+  .paper-broker-head>.chip,
+  .paper-section-head>.chip
+) :is(span,strong,small,b){
+  color:var(--light-ink-900)!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) body .technical-details>summary{
+  display:inline-flex!important;
+  align-items:center!important;
+  min-height:44px!important;
+  padding:9px 18px!important;
+  border:1px solid rgba(19,31,41,.72)!important;
+  border-radius:16px!important;
+  font-weight:800!important;
+  line-height:1.2!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) body .technical-details[open]>summary{
+  background:linear-gradient(145deg,rgba(255,255,255,.78),rgba(199,225,241,.48))!important;
+}
+
+/* Chart and Agent Artifact parity in both light themes. Canvas pixels and
+   surrounding controls now share the same semantic surface. */
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) body :is(
+  .agent-dock,.agent-composer,.agent-operation-disclosure p,
+  .agent-operation-disclosure pre,.agent-approval-card pre,
+  .agent-dag-viewport,.agent-diagram-viewport,.agent-evidence-viewport,
+  .agent-automation-technical pre,.agent-schema-visualization,
+  .agent-artifact-card,.agent-diff-view,.agent-interaction-card
+){
+  color:var(--light-ink-800)!important;
+  background:var(--light-surface-nested)!important;
+  border-color:var(--light-surface-border-soft)!important;
+  box-shadow:var(--light-shadow-nested)!important;
+  text-shadow:none!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) body .agent-schema-radar-shape{
+  background:radial-gradient(circle,rgba(247,251,255,.96) calc((1 - var(--risk-level)) * 45%),transparent 46%),conic-gradient(var(--accent) calc(var(--risk-level) * 100%),rgba(48,82,105,.14) 0)!important;
+  filter:drop-shadow(0 8px 14px rgba(55,88,111,.12));
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) body :is(
+  .agent-schema-selectable,.agent-schema-swimlane section,
+  .agent-schema-graph article,.agent-schema-chart article,
+  .agent-schema-canvas article,.agent-schema-map article,
+  .agent-schema-evidence_graph article,.agent-schema-task_forest article
+){
+  color:var(--light-ink-800)!important;
+  background:rgba(255,255,255,.58)!important;
+  border-color:var(--light-surface-border-soft)!important;
+}
+
+/* News controls: same geometry, visible counters, and one active material. */
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) body :is(#newsScopeBar,#newsFilterBar){
+  display:flex!important;
+  align-items:center!important;
+  gap:12px!important;
+  flex-wrap:wrap!important;
+  margin-bottom:16px!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) body :is(#newsScopeBar,#newsFilterBar) .filter-chip{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:8px!important;
+  min-height:48px!important;
+  margin:0!important;
+  padding:0 20px!important;
+  border-radius:999px!important;
+  color:#29475c!important;
+  background:linear-gradient(145deg,rgba(255,255,255,.58),rgba(218,236,247,.30))!important;
+  border:1px solid rgba(48,84,109,.22)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.94),0 8px 20px rgba(57,92,117,.09)!important;
+  font-size:15px!important;
+  font-weight:760!important;
+  line-height:1!important;
+  opacity:1!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) body :is(#newsScopeBar,#newsFilterBar) .filter-chip:hover{
+  color:#17384f!important;
+  background:linear-gradient(145deg,rgba(255,255,255,.75),rgba(204,230,247,.40))!important;
+  border-color:rgba(48,113,158,.36)!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) body :is(#newsScopeBar,#newsFilterBar) .filter-chip.active{
+  color:#173f5a!important;
+  background:linear-gradient(145deg,rgba(244,251,255,.90),rgba(166,213,242,.48))!important;
+  border-color:rgba(55,139,197,.58)!important;
+  box-shadow:inset 0 1px 0 #fff,0 9px 24px rgba(55,128,177,.14)!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) body #newsFilterBar .filter-chip>span{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-width:24px!important;
+  min-height:24px!important;
+  margin:0!important;
+  padding:2px 7px!important;
+  border-radius:999px!important;
+  color:#245f87!important;
+  background:rgba(77,155,208,.14)!important;
+  font-weight:850!important;
+  opacity:1!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) body #newsFilterBar .filter-chip.active>span{
+  color:#164a6d!important;
+  background:rgba(255,255,255,.58)!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) body #newsMetaBar .meta-pill{
+  min-height:38px!important;
+  padding:7px 14px!important;
+  color:#36566c!important;
+  background:linear-gradient(145deg,rgba(255,255,255,.52),rgba(214,233,245,.28))!important;
+  border-color:rgba(48,84,109,.18)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.90),0 7px 17px rgba(57,92,117,.07)!important;
+  opacity:1!important;
+}

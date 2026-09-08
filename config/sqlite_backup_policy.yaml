@@ -1,0 +1,6 @@
+schema_version: open_stock_ai.sqlite_backup_policy.v1
+interval_hours: 24
+retention_count: 14
+off_host_required: true
+destination_uri: s3://REPLACE_WITH_OFF_HOST_BUCKET/stock-ai
+owner: platform-storage

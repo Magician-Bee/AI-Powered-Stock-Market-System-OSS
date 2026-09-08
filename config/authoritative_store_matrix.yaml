@@ -1,0 +1,106 @@
+schema_version: open_stock_ai.authoritative_store_matrix.v1
+source_of_truth: config/authoritative_store_matrix.yaml
+description: >-
+  Machine-readable ownership map for durable domain state. An entry marked
+  transitional is intentionally not a release claim: its migration blockers
+  must be cleared before the domain is promoted to canonical.
+domains:
+  - id: session
+    status: canonical
+    authoritative_store:
+      module: src/open_stock_ai/agent_runtime/session_store.py
+      symbol: AgentSessionStore
+    projections: []
+  - id: agent_run
+    status: canonical
+    authoritative_store:
+      module: src/stock_ai/agent_run_store.py
+      symbol: AgentRunStore
+    projections:
+      - module: src/stock_ai/agent_event_bus.py
+        symbol: AgentEventBus
+        read_only: true
+  - id: objective
+    status: canonical
+    authoritative_store:
+      module: src/open_stock_ai/agent_runtime/session/objective_manager.py
+      symbol: SQLiteObjectiveStore
+    projections: []
+  - id: forest
+    status: canonical
+    authoritative_store:
+      module: src/open_stock_ai/agent_runtime/forest/projector.py
+      symbol: DurableForestStore
+    projections: []
+  - id: checkpoint
+    status: canonical
+    authoritative_store:
+      module: src/open_stock_ai/agent_runtime/forest/checkpoint_store.py
+      symbol: DurableCheckpointStore
+    projections:
+      - module: src/open_stock_ai/agent_runtime/checkpoint_store.py
+        symbol: CheckpointStore
+        read_only: true
+  - id: artifact
+    status: canonical
+    authoritative_store:
+      module: src/open_stock_ai/agent_runtime/artifact_store.py
+      symbol: ArtifactStore
+    projections: []
+  - id: automation
+    status: canonical
+    authoritative_store:
+      module: src/open_stock_ai/agent_runtime/automation/store.py
+      symbol: AutomationStore
+    projections: []
+  - id: research_experiment
+    status: canonical
+    authoritative_store:
+      module: src/open_stock_ai/research/experiment_store.py
+      symbol: ExperimentStore
+    projections: []
+  - id: model
+    status: canonical
+    authoritative_store:
+      module: src/open_stock_ai/research/model_registry.py
+      symbol: ResearchModelRegistry
+    projections: []
+  - id: strategy
+    status: canonical
+    authoritative_store:
+      module: src/open_stock_ai/strategy/strategy_registry.py
+      symbol: StrategyArtifactRegistry
+    projections: []
+  - id: paper_order
+    status: canonical
+    authoritative_store:
+      module: src/open_stock_ai/execution/paper_oms.py
+      symbol: PaperOMS
+    projections:
+      - module: src/open_stock_ai/execution/order_store.py
+        symbol: OrderStore
+        read_only: true
+  - id: live_order
+    status: canonical
+    authoritative_store:
+      module: src/stock_ai/brokers/order_store.py
+      symbol: BrokerOMSStore
+    projections: []
+  - id: broker_event
+    status: canonical
+    authoritative_store:
+      module: src/stock_ai/brokers/order_store.py
+      symbol: BrokerOMSStore
+    projections: []
+  - id: memory
+    status: canonical
+    authoritative_store:
+      module: src/open_stock_ai/agent_runtime/memory/store.py
+      symbol: MemoryStore
+    projections: []
+  - id: observability
+    status: canonical
+    authoritative_store:
+      module: src/open_stock_ai/agent_runtime/observability_store.py
+      symbol: DurableRuntimeObservability
+    projections: []

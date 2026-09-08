@@ -1,0 +1,323 @@
+{
+  "schema_version": "stock_ai.stock_bias_audit.v1",
+  "baseline_commit": "94e8cb2d65c9f5d8f8de04717847d77c513cee27",
+  "generated_at": "2026-07-29T19:18:01.417729+00:00",
+  "scope": [
+    "src",
+    "config"
+  ],
+  "counts": {
+    "alias_mapping": 26,
+    "example_copy": 18
+  },
+  "items": [
+    {
+      "path": "src/stock_ai/query.py",
+      "line": 20,
+      "text": "\"台積電\": \"2330.TW\",",
+      "classification": "alias_mapping",
+      "rationale": "Explicit symbol/name normalization; allowed if never selected implicitly."
+    },
+    {
+      "path": "src/stock_ai/query.py",
+      "line": 21,
+      "text": "\"鴻海\": \"2317.TW\",",
+      "classification": "alias_mapping",
+      "rationale": "Explicit symbol/name normalization; allowed if never selected implicitly."
+    },
+    {
+      "path": "src/stock_ai/query.py",
+      "line": 22,
+      "text": "\"廣達\": \"2382.TW\",",
+      "classification": "alias_mapping",
+      "rationale": "Explicit symbol/name normalization; allowed if never selected implicitly."
+    },
+    {
+      "path": "src/stock_ai/query.py",
+      "line": 23,
+      "text": "\"元大台灣50\": \"0050.TW\",",
+      "classification": "alias_mapping",
+      "rationale": "Explicit symbol/name normalization; allowed if never selected implicitly."
+    },
+    {
+      "path": "src/stock_ai/query.py",
+      "line": 24,
+      "text": "\"台灣50\": \"0050.TW\",",
+      "classification": "alias_mapping",
+      "rationale": "Explicit symbol/name normalization; allowed if never selected implicitly."
+    },
+    {
+      "path": "src/stock_ai/realtime_data.py",
+      "line": 19,
+      "text": "entered explicitly by the user. If the user enters 2330 or 0050, default to",
+      "classification": "alias_mapping",
+      "rationale": "Explicit symbol/name normalization; allowed if never selected implicitly."
+    },
+    {
+      "path": "src/stock_ai/realtime_data.py",
+      "line": 20,
+      "text": "2330.TW / 0050.TW because that is the common TWSE format.",
+      "classification": "alias_mapping",
+      "rationale": "Explicit symbol/name normalization; allowed if never selected implicitly."
+    },
+    {
+      "path": "src/stock_ai/realtime_data.py",
+      "line": 24,
+      "text": "\"台積電\": \"2330.TW\",",
+      "classification": "alias_mapping",
+      "rationale": "Explicit symbol/name normalization; allowed if never selected implicitly."
+    },
+    {
+      "path": "src/stock_ai/realtime_data.py",
+      "line": 25,
+      "text": "\"鴻海\": \"2317.TW\",",
+      "classification": "alias_mapping",
+      "rationale": "Explicit symbol/name normalization; allowed if never selected implicitly."
+    },
+    {
+      "path": "src/stock_ai/realtime_data.py",
+      "line": 26,
+      "text": "\"廣達\": \"2382.TW\",",
+      "classification": "alias_mapping",
+      "rationale": "Explicit symbol/name normalization; allowed if never selected implicitly."
+    },
+    {
+      "path": "src/stock_ai/realtime_data.py",
+      "line": 27,
+      "text": "\"元大台灣50\": \"0050.TW\",",
+      "classification": "alias_mapping",
+      "rationale": "Explicit symbol/name normalization; allowed if never selected implicitly."
+    },
+    {
+      "path": "src/stock_ai/realtime_data.py",
+      "line": 28,
+      "text": "\"0050\": \"0050.TW\",",
+      "classification": "alias_mapping",
+      "rationale": "Explicit symbol/name normalization; allowed if never selected implicitly."
+    },
+    {
+      "path": "src/stock_ai/realtime_data.py",
+      "line": 121,
+      "text": "\"2330.TW\": \"台積電\",",
+      "classification": "alias_mapping",
+      "rationale": "Explicit symbol/name normalization; allowed if never selected implicitly."
+    },
+    {
+      "path": "src/stock_ai/realtime_data.py",
+      "line": 122,
+      "text": "\"2317.TW\": \"鴻海\",",
+      "classification": "alias_mapping",
+      "rationale": "Explicit symbol/name normalization; allowed if never selected implicitly."
+    },
+    {
+      "path": "src/stock_ai/realtime_data.py",
+      "line": 123,
+      "text": "\"2382.TW\": \"廣達\",",
+      "classification": "alias_mapping",
+      "rationale": "Explicit symbol/name normalization; allowed if never selected implicitly."
+    },
+    {
+      "path": "src/stock_ai/realtime_data.py",
+      "line": 124,
+      "text": "\"0050.TW\": \"元大台灣50\",",
+      "classification": "alias_mapping",
+      "rationale": "Explicit symbol/name normalization; allowed if never selected implicitly."
+    },
+    {
+      "path": "src/stock_ai/services.py",
+      "line": 62,
+      "text": "\"台積電\": \"2330\",",
+      "classification": "alias_mapping",
+      "rationale": "Explicit company-name normalization; allowed if never selected implicitly."
+    },
+    {
+      "path": "src/stock_ai/services.py",
+      "line": 63,
+      "text": "\"鴻海\": \"2317\",",
+      "classification": "alias_mapping",
+      "rationale": "Explicit company-name normalization; allowed if never selected implicitly."
+    },
+    {
+      "path": "src/stock_ai/services.py",
+      "line": 64,
+      "text": "\"廣達\": \"2382\",",
+      "classification": "alias_mapping",
+      "rationale": "Explicit company-name normalization; allowed if never selected implicitly."
+    },
+    {
+      "path": "src/stock_ai/services.py",
+      "line": 65,
+      "text": "\"聯發科\": \"2454\",",
+      "classification": "alias_mapping",
+      "rationale": "Explicit company-name normalization; allowed if never selected implicitly."
+    },
+    {
+      "path": "src/stock_ai/services.py",
+      "line": 66,
+      "text": "\"台達電\": \"2308\",",
+      "classification": "alias_mapping",
+      "rationale": "Explicit company-name normalization; allowed if never selected implicitly."
+    },
+    {
+      "path": "src/stock_ai/services.py",
+      "line": 67,
+      "text": "\"富邦金\": \"2881\",",
+      "classification": "alias_mapping",
+      "rationale": "Explicit company-name normalization; allowed if never selected implicitly."
+    },
+    {
+      "path": "src/stock_ai/services.py",
+      "line": 68,
+      "text": "\"國泰金\": \"2882\",",
+      "classification": "alias_mapping",
+      "rationale": "Explicit company-name normalization; allowed if never selected implicitly."
+    },
+    {
+      "path": "src/stock_ai/services.py",
+      "line": 69,
+      "text": "\"中華電\": \"2412\",",
+      "classification": "alias_mapping",
+      "rationale": "Explicit company-name normalization; allowed if never selected implicitly."
+    },
+    {
+      "path": "src/stock_ai/services.py",
+      "line": 70,
+      "text": "\"南亞\": \"1303\",",
+      "classification": "alias_mapping",
+      "rationale": "Explicit company-name normalization; allowed if never selected implicitly."
+    },
+    {
+      "path": "src/stock_ai/services.py",
+      "line": 71,
+      "text": "\"元大台灣50\": \"0050\",",
+      "classification": "alias_mapping",
+      "rationale": "Explicit company-name normalization; allowed if never selected implicitly."
+    },
+    {
+      "path": "src/stock_ai/ui/static/i18n/en-dynamic-06.json",
+      "line": 65,
+      "text": "\"例如 2330.TW\": \"e.g. 2330.TW\",",
+      "classification": "example_copy",
+      "rationale": "User-facing example only; allowed after defaults are removed."
+    },
+    {
+      "path": "src/stock_ai/ui/static/i18n/en-dynamic-08.json",
+      "line": 45,
+      "text": "\"請輸入交易所/資料源支援的代號或名稱，例如 2330、0050、AAPL、NVDA。\": \"Enter a ticker or name supported by the exchange or data source, such as 2330, 0050, AAPL, or NVDA.\",",
+      "classification": "example_copy",
+      "rationale": "User-facing example only; allowed after defaults are removed."
+    },
+    {
+      "path": "src/stock_ai/ui/static/index.html",
+      "line": 258,
+      "text": "<input id=\"dailyHistorySymbol\" type=\"text\" inputmode=\"text\" autocomplete=\"off\" placeholder=\"例如 0050.TW\" aria-label=\"歷史日 K 股票代號\" />",
+      "classification": "example_copy",
+      "rationale": "User-facing example only; allowed after defaults are removed."
+    },
+    {
+      "path": "src/stock_ai/ui/static/index.html",
+      "line": 402,
+      "text": "<input id=\"monthlyRevenueSymbol\" placeholder=\"例如 2330.TW\" />",
+      "classification": "example_copy",
+      "rationale": "User-facing example only; allowed after defaults are removed."
+    },
+    {
+      "path": "src/stock_ai/ui/static/index.html",
+      "line": 422,
+      "text": "<input id=\"incomeStatementSymbol\" placeholder=\"例如 2330.TW\" />",
+      "classification": "example_copy",
+      "rationale": "User-facing example only; allowed after defaults are removed."
+    },
+    {
+      "path": "src/stock_ai/ui/static/index.html",
+      "line": 442,
+      "text": "<input id=\"balanceSheetSymbol\" placeholder=\"例如 2330.TW\" />",
+      "classification": "example_copy",
+      "rationale": "User-facing example only; allowed after defaults are removed."
+    },
+    {
+      "path": "src/stock_ai/ui/static/index.html",
+      "line": 462,
+      "text": "<input id=\"cashFlowSymbol\" placeholder=\"例如 2330.TW\" />",
+      "classification": "example_copy",
+      "rationale": "User-facing example only; allowed after defaults are removed."
+    },
+    {
+      "path": "src/stock_ai/ui/static/index.html",
+      "line": 482,
+      "text": "<input id=\"financialRatioSymbol\" placeholder=\"例如 2330.TW\" />",
+      "classification": "example_copy",
+      "rationale": "User-facing example only; allowed after defaults are removed."
+    },
+    {
+      "path": "src/stock_ai/ui/static/index.html",
+      "line": 501,
+      "text": "<input id=\"growthSymbol\" placeholder=\"例如 2330.TW\" />",
+      "classification": "example_copy",
+      "rationale": "User-facing example only; allowed after defaults are removed."
+    },
+    {
+      "path": "src/stock_ai/ui/static/index.html",
+      "line": 529,
+      "text": "<input id=\"tradingSymbol\" placeholder=\"股票代號，例如 2330.TW\" />",
+      "classification": "example_copy",
+      "rationale": "User-facing example only; allowed after defaults are removed."
+    },
+    {
+      "path": "src/stock_ai/ui/static/index.html",
+      "line": 552,
+      "text": "<input id=\"assistantSymbol\" placeholder=\"股票代號，例如 2330.TW\" />",
+      "classification": "example_copy",
+      "rationale": "User-facing example only; allowed after defaults are removed."
+    },
+    {
+      "path": "src/stock_ai/ui/static/index.html",
+      "line": 573,
+      "text": "<input id=\"openStockSymbol\" placeholder=\"股票代號，例如 2330.TW\" />",
+      "classification": "example_copy",
+      "rationale": "User-facing example only; allowed after defaults are removed."
+    },
+    {
+      "path": "src/stock_ai/ui/static/index.html",
+      "line": 618,
+      "text": "<input id=\"riskSymbol\" placeholder=\"股票代號，例如 2330.TW\" />",
+      "classification": "example_copy",
+      "rationale": "User-facing example only; allowed after defaults are removed."
+    },
+    {
+      "path": "src/stock_ai/ui/static/index.html",
+      "line": 737,
+      "text": "<input id=\"entityIdentifierInput\" type=\"text\" placeholder=\"例如：2330、2330.TW 或 ENT-…\" autocomplete=\"off\" />",
+      "classification": "example_copy",
+      "rationale": "User-facing example only; allowed after defaults are removed."
+    },
+    {
+      "path": "src/stock_ai/ui/static/js/core/preferences.js",
+      "line": 126,
+      "text": "'直接下指令，例如：分析 2330 現在該買、賣還是等': 'Enter an instruction, for example: analyze whether to buy, sell, or wait on 2330',",
+      "classification": "example_copy",
+      "rationale": "User-facing example only; allowed after defaults are removed."
+    },
+    {
+      "path": "src/stock_ai/ui/static/js/core/preferences.js",
+      "line": 206,
+      "text": "'股票代號，例如 2330.TW': 'Ticker, e.g. 2330.TW',",
+      "classification": "example_copy",
+      "rationale": "User-facing example only; allowed after defaults are removed."
+    },
+    {
+      "path": "src/stock_ai/ui/static/js/core/preferences.js",
+      "line": 247,
+      "text": "'例如 2330.TW': 'e.g. 2330.TW',",
+      "classification": "example_copy",
+      "rationale": "User-facing example only; allowed after defaults are removed."
+    },
+    {
+      "path": "src/stock_ai/ui/static/js/features/explorer.js",
+      "line": 16,
+      "text": "$('entityTable').innerHTML = `<div class=\"row header\"><div>${explorerText('代號', 'Symbol')}</div><div>${explorerText('名稱', 'Name')}</div><div>${explorerText('市場', 'Market')}</div><div>${explorerText('操作', 'Action')}</div></div>` + (rows || `<div class=\"event\"><h4>${explorerText('查無資料', 'No Results')}</h4><p>${explorerText('請輸入交易所/資料源支援的代號或名稱，例如 2330、0050、AAPL、NVDA。', 'Enter a symbol or name supported by the exchange or data source, such as 2330, 0050, AAPL, or NVDA.')}</p></div>`);",
+      "classification": "example_copy",
+      "rationale": "User-facing example only; allowed after defaults are removed."
+    }
+  ]
+}

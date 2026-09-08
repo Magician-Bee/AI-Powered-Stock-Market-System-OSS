@@ -1,0 +1,63 @@
+name: Hosted rate limit policy
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rate-limit-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  policy-and-429-recovery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install project
+        run: python -m pip install -e .
+
+      - name: Exercise policy concurrency windows and real 429 recovery
+        env:
+          EVIDENCE_DIR: ${{ runner.temp }}/stock-ai-rate-limit/evidence
+        run: |
+          mkdir -p "$(dirname "${EVIDENCE_DIR}")"
+          python scripts/run_hosted_rate_limit_gate.py \
+            --output-dir "${EVIDENCE_DIR}" \
+            --commit-sha "${GITHUB_SHA}" \
+            --allow-rate-limit-test
+
+      - name: Verify rate limit receipt independently
+        env:
+          EVIDENCE_DIR: ${{ runner.temp }}/stock-ai-rate-limit/evidence
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          from open_stock_ai.governance import verify_hosted_rate_limit_gate_receipt
+
+          receipt = json.loads((Path(os.environ["EVIDENCE_DIR"]) / "rate-limit-gate-receipt.json").read_text())
+          if receipt["commit_sha"] != os.environ["GITHUB_SHA"]:
+              raise SystemExit("rate-limit candidate SHA mismatch")
+          if not receipt["passed"] or not verify_hosted_rate_limit_gate_receipt(receipt):
+              raise SystemExit("hosted rate-limit receipt failed verification")
+          PY
+
+      - name: Upload rate limit evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: stock-ai-rate-limit-${{ github.sha }}
+          path: ${{ runner.temp }}/stock-ai-rate-limit/evidence
+          if-no-files-found: error
+          retention-days: 30

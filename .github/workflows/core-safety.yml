@@ -1,0 +1,63 @@
+name: Core research and Agent safety
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: core-safety-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  core-safety:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout complete history for secret scanning
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Scan complete Git history for secrets
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Reject repository bloat and generated files
+        run: python scripts/check_repo_hygiene.py
+
+      - name: Install project and test dependencies
+        run: python -m pip install -e ".[dev]"
+
+      - name: Compile first-party Python
+        run: python -m compileall -q src scripts
+
+      - name: Reject stock bias and false AI provenance
+        run: python scripts/check_neutrality_ci.py
+
+      - name: Validate first-party JavaScript
+        shell: bash
+        run: find src/stock_ai/ui/static -type f -name '*.js' -print0 | xargs -0 -n1 node --check
+
+      - name: Run cross-provider conformance E2E
+        run: python -m pytest -q tests/e2e/test_provider_conformance_e2e.py
+
+      - name: Run complete test suite once
+        run: python -m pytest -q --tb=short --junitxml=/tmp/test-results.xml
+
+      - name: Upload failure diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: core-safety-results
+          path: /tmp/test-results.xml
+          if-no-files-found: ignore
+          retention-days: 3

@@ -1,0 +1,24 @@
+schema_version: stock_ai.data_observability_rules.v1
+
+# These are operational data contracts, not assumed successful ingestions.  A
+# missing checkpoint is deliberately surfaced as an alert instead of being
+# silently treated as a fresh source.
+defaults:
+  window_hours: 24
+  success_rate_minimum: 0.95
+  lag_multiplier: 3
+  revision_anomaly_minimum: 3
+
+partition_expectations:
+  - source_id: twse_openapi
+    dataset: security_master
+    partition_keys: [twse_companies]
+  - source_id: tpex_openapi
+    dataset: security_master
+    partition_keys: [tpex_companies]
+  - source_id: twse_official_web
+    dataset: prices_daily
+    partition_keys: [all]
+  - source_id: tpex_official_web
+    dataset: prices_daily
+    partition_keys: [all]

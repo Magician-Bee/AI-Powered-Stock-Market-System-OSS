@@ -1,0 +1,145 @@
+name: Signed release SBOM and provenance
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "37 6 * * 2"
+
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  SIGNING_IDENTITY: https://github.com/${{ github.repository }}/.github/workflows/release-attestation.yml@refs/heads/main
+  OIDC_ISSUER: https://token.actions.githubusercontent.com
+
+jobs:
+  build-and-sign:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pinned Sigstore cosign
+        uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
+        with:
+          cosign-release: v3.0.5
+
+      - name: Build deterministic archive, provenance, and CycloneDX SBOM
+        env:
+          RELEASE_DIR: ${{ runner.temp }}/stock-ai-release
+        run: |
+          mkdir -p "${RELEASE_DIR}"
+          python scripts/build_release_archive.py --commit "${GITHUB_SHA}" --output "${RELEASE_DIR}/stock-ai-source.tar.gz"
+          python scripts/build_sbom.py --output "${RELEASE_DIR}/stock-ai-sbom.cdx.json"
+          python scripts/build_release_provenance.py \
+            --archive "${RELEASE_DIR}/stock-ai-source.tar.gz" \
+            --commit-sha "${GITHUB_SHA}" --signer "${SIGNING_IDENTITY}" \
+            --output "${RELEASE_DIR}/stock-ai-provenance.json"
+          (cd "${RELEASE_DIR}" && sha256sum stock-ai-source.tar.gz stock-ai-provenance.json stock-ai-sbom.cdx.json > SHA256SUMS)
+
+      - name: Keyless-sign release evidence with GitHub Actions OIDC
+        env:
+          RELEASE_DIR: ${{ runner.temp }}/stock-ai-release
+        run: |
+          cosign sign-blob --yes --bundle "${RELEASE_DIR}/source.sigstore.json" "${RELEASE_DIR}/stock-ai-source.tar.gz"
+          cosign sign-blob --yes --bundle "${RELEASE_DIR}/provenance.sigstore.json" "${RELEASE_DIR}/stock-ai-provenance.json"
+          cosign sign-blob --yes --bundle "${RELEASE_DIR}/sbom.sigstore.json" "${RELEASE_DIR}/stock-ai-sbom.cdx.json"
+
+      - name: Record signing identity and hosted candidate
+        env:
+          RELEASE_DIR: ${{ runner.temp }}/stock-ai-release
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          Path(os.environ["RELEASE_DIR"], "attestation-metadata.json").write_text(json.dumps({
+              "commit_sha": os.environ["GITHUB_SHA"],
+              "run_id": os.environ["GITHUB_RUN_ID"],
+              "signing_identity": os.environ["SIGNING_IDENTITY"],
+              "oidc_issuer": os.environ["OIDC_ISSUER"],
+              "transparency_log": "https://rekor.sigstore.dev",
+          }, sort_keys=True) + "\n")
+          PY
+
+      - name: Upload signed release package
+        uses: actions/upload-artifact@v4
+        with:
+          name: stock-ai-signed-release-${{ github.sha }}
+          path: ${{ runner.temp }}/stock-ai-release
+          if-no-files-found: error
+          retention-days: 90
+
+  clean-runner-verify:
+    needs: build-and-sign
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pinned Sigstore cosign
+        uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
+        with:
+          cosign-release: v3.0.5
+      - uses: actions/download-artifact@v4
+        with:
+          name: stock-ai-signed-release-${{ github.sha }}
+          path: ${{ runner.temp }}/stock-ai-release
+
+      - name: Verify deterministic evidence against exact candidate
+        env:
+          RELEASE_DIR: ${{ runner.temp }}/stock-ai-release
+        run: |
+          python scripts/build_sbom.py --output "${RUNNER_TEMP}/rebuilt-sbom.json"
+          cmp "${RUNNER_TEMP}/rebuilt-sbom.json" "${RELEASE_DIR}/stock-ai-sbom.cdx.json"
+          python scripts/build_release_provenance.py \
+            --archive "${RELEASE_DIR}/stock-ai-source.tar.gz" \
+            --commit-sha "${GITHUB_SHA}" --signer "${SIGNING_IDENTITY}" \
+            --output "${RUNNER_TEMP}/rebuilt-provenance.json"
+          cmp "${RUNNER_TEMP}/rebuilt-provenance.json" "${RELEASE_DIR}/stock-ai-provenance.json"
+          (cd "${RELEASE_DIR}" && sha256sum --check SHA256SUMS)
+
+      - name: Cryptographically verify all Sigstore bundles
+        env:
+          RELEASE_DIR: ${{ runner.temp }}/stock-ai-release
+          VERIFY_DIR: ${{ runner.temp }}/stock-ai-release-verification
+        run: |
+          mkdir -p "${VERIFY_DIR}"
+          cosign verify-blob "${RELEASE_DIR}/stock-ai-source.tar.gz" \
+            --bundle "${RELEASE_DIR}/source.sigstore.json" \
+            --certificate-identity "${SIGNING_IDENTITY}" --certificate-oidc-issuer "${OIDC_ISSUER}" \
+            > "${VERIFY_DIR}/source-verification.txt" 2>&1
+          cosign verify-blob "${RELEASE_DIR}/stock-ai-provenance.json" \
+            --bundle "${RELEASE_DIR}/provenance.sigstore.json" \
+            --certificate-identity "${SIGNING_IDENTITY}" --certificate-oidc-issuer "${OIDC_ISSUER}" \
+            > "${VERIFY_DIR}/provenance-verification.txt" 2>&1
+          cosign verify-blob "${RELEASE_DIR}/stock-ai-sbom.cdx.json" \
+            --bundle "${RELEASE_DIR}/sbom.sigstore.json" \
+            --certificate-identity "${SIGNING_IDENTITY}" --certificate-oidc-issuer "${OIDC_ISSUER}" \
+            > "${VERIFY_DIR}/sbom-verification.txt" 2>&1
+          python scripts/verify_release_attestations.py \
+            --archive "${RELEASE_DIR}/stock-ai-source.tar.gz" \
+            --provenance "${RELEASE_DIR}/stock-ai-provenance.json" \
+            --sbom "${RELEASE_DIR}/stock-ai-sbom.cdx.json" \
+            --source-verification "${VERIFY_DIR}/source-verification.txt" \
+            --provenance-verification "${VERIFY_DIR}/provenance-verification.txt" \
+            --sbom-verification "${VERIFY_DIR}/sbom-verification.txt" \
+            --commit-sha "${GITHUB_SHA}" --run-id "${GITHUB_RUN_ID}" \
+            --repository "${GITHUB_REPOSITORY}" \
+            --output "${VERIFY_DIR}/release-attestation-gate.json"
+
+      - name: Upload clean-runner verification
+        uses: actions/upload-artifact@v4
+        with:
+          name: stock-ai-release-verification-${{ github.sha }}
+          path: ${{ runner.temp }}/stock-ai-release-verification
+          if-no-files-found: error
+          retention-days: 90

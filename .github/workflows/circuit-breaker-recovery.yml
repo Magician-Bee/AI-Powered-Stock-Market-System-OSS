@@ -1,0 +1,63 @@
+name: Hosted circuit breaker recovery
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: circuit-breaker-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  failure-storm-recovery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install project
+        run: python -m pip install -e .
+
+      - name: Exercise provider source and broker failure storms
+        env:
+          EVIDENCE_DIR: ${{ runner.temp }}/stock-ai-circuit/evidence
+        run: |
+          mkdir -p "$(dirname "${EVIDENCE_DIR}")"
+          python scripts/run_hosted_circuit_gate.py \
+            --output-dir "${EVIDENCE_DIR}" \
+            --commit-sha "${GITHUB_SHA}" \
+            --allow-failure-storm
+
+      - name: Verify recovery receipt independently
+        env:
+          EVIDENCE_DIR: ${{ runner.temp }}/stock-ai-circuit/evidence
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          from open_stock_ai.governance import verify_hosted_circuit_gate_receipt
+
+          receipt = json.loads((Path(os.environ["EVIDENCE_DIR"]) / "circuit-gate-receipt.json").read_text())
+          if receipt["commit_sha"] != os.environ["GITHUB_SHA"]:
+              raise SystemExit("circuit gate candidate SHA mismatch")
+          if not receipt["passed"] or not verify_hosted_circuit_gate_receipt(receipt):
+              raise SystemExit("hosted circuit gate receipt failed verification")
+          PY
+
+      - name: Upload failure storm evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: stock-ai-circuit-recovery-${{ github.sha }}
+          path: ${{ runner.temp }}/stock-ai-circuit/evidence
+          if-no-files-found: error
+          retention-days: 30

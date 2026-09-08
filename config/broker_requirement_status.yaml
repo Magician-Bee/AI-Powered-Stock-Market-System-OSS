@@ -1,0 +1,143 @@
+schema_version: stock_ai.broker_requirement_status.v1
+updated_at: "2026-07-26T00:00:00+08:00"
+source:
+  attachment_sha256: 64b25cbd15af09852a1714e82ff95a00b97a17ff700eb72fab0cd61b19976b51
+  title: 五券商即時行情、帳務與交易 API 全面整合目標規劃表
+policy:
+  static_code_is_not_real_broker_acceptance: true
+  mock_is_not_real_broker_acceptance: true
+  unverified_capabilities_remain_null: true
+  live_trading_enabled: false
+  model_direct_submit: false
+statuses:
+  TEST-B01:
+    title: 五家唯讀登入
+    implementation_status: contract_ready
+    acceptance_status: blocked_external_evidence
+    blocker: five account-owner authorizations, official SDKs and real Session Receipts
+  TEST-B02:
+    title: 五家即時成交
+    implementation_status: canonical_pipeline_ready
+    acceptance_status: blocked_external_evidence
+    blocker: five real intraday broker feeds
+  TEST-B03:
+    title: 五家五檔
+    implementation_status: canonical_contract_ready
+    acceptance_status: blocked_external_evidence
+    blocker: five real order-book payload samples and normalization receipts
+  TEST-B04:
+    title: 時間排序
+    implementation_status: offline_structural_test_passed
+    acceptance_status: pending_real_event_validation
+    evidence:
+      - tests/test_broker_framework.py::test_reconciliation_uses_exchange_time_and_never_averages_prices
+      - tests/test_broker_framework.py::test_verified_exchange_timestamp_has_priority_over_unverified_timestamp
+  TEST-B05:
+    title: 去重
+    implementation_status: offline_structural_test_passed
+    acceptance_status: pending_real_event_validation
+    evidence:
+      - tests/test_broker_framework.py::test_event_bus_retains_raw_payload_hash_and_rejects_unrelated_payload
+  TEST-B06:
+    title: Feed 切換
+    implementation_status: offline_structural_test_passed
+    acceptance_status: pending_real_disconnect_validation
+    evidence:
+      - tests/test_broker_framework.py::test_feed_score_requires_observed_essentials_and_source_switches_are_audited
+  TEST-B07:
+    title: 衝突偵測
+    implementation_status: offline_structural_test_passed
+    acceptance_status: pending_real_event_validation
+    evidence:
+      - tests/test_broker_framework.py::test_reconciliation_exposes_same_coordinate_conflicts_and_blocks_trading
+      - tests/test_broker_framework.py::test_reconciliation_detects_orderbook_or_size_conflicts_at_same_coordinate
+  TEST-B08:
+    title: 速率限制
+    implementation_status: per_broker_governor_and_429_backoff_ready
+    acceptance_status: pending_real_rate_limit_validation
+    blocker: official per-broker rate-limit headers and sustained real API test
+    evidence:
+      - tests/test_broker_framework.py::test_rate_limit_governor_is_per_broker_and_honors_429_backoff
+  TEST-B09:
+    title: 斷線恢復
+    implementation_status: sequence_gap_detection_and_recovery_gate_ready
+    acceptance_status: blocked_external_evidence
+    blocker: real WebSocket reconnect and snapshot replay
+    evidence:
+      - tests/test_broker_framework.py::test_sequence_tracker_requires_recovery_after_gap_and_never_mixes_sessions
+      - tests/test_broker_framework.py::test_reconnect_requires_snapshot_recovery_before_feed_is_connected
+  TEST-B10:
+    title: 帳務查詢
+    implementation_status: host_ledger_reconciliation_ready
+    acceptance_status: blocked_external_evidence
+    blocker: five masked real account snapshots and broker-screen comparison
+    evidence:
+      - tests/test_broker_framework.py::test_account_reconciliation_never_infers_missing_values_and_isolates_accounts
+  TEST-B11:
+    title: 委託查詢
+    implementation_status: oms_reconciliation_ready
+    acceptance_status: blocked_external_evidence
+    blocker: five real or official-sandbox open-order query receipts
+    evidence:
+      - tests/test_broker_framework.py::test_order_reconciliation_marks_missing_open_orders_unknown
+  TEST-B12:
+    title: 模擬下單
+    implementation_status: sandbox_registry_ready
+    acceptance_status: blocked_external_evidence
+    blocker: account-owner sandbox access and official SDK workers
+  TEST-B13:
+    title: Idempotency
+    implementation_status: offline_structural_test_passed
+    acceptance_status: pending_official_sandbox_validation
+    evidence:
+      - tests/test_broker_framework.py::test_oms_idempotency_and_unknown_state_prevent_duplicate_retry
+  TEST-B14:
+    title: 部分成交
+    implementation_status: offline_structural_test_passed
+    acceptance_status: pending_official_sandbox_validation
+    evidence:
+      - tests/test_broker_framework.py::test_order_reports_drive_partial_fill_to_fill_and_retain_raw_evidence
+  TEST-B15:
+    title: 委託未知
+    implementation_status: offline_structural_test_passed
+    acceptance_status: pending_official_sandbox_validation
+    evidence:
+      - tests/test_broker_framework.py::test_order_reconciliation_marks_missing_open_orders_unknown
+      - tests/test_broker_framework.py::test_broker_monitor_warns_on_feed_quality_and_stops_on_unknown_orders
+  TEST-B16:
+    title: Kill Switch
+    implementation_status: offline_structural_test_passed
+    acceptance_status: pending_official_sandbox_validation
+    evidence:
+      - tests/test_broker_framework.py::test_broker_monitor_emergency_activates_global_kill_switch
+  TEST-B17:
+    title: 權限隔離
+    implementation_status: offline_security_test_passed
+    acceptance_status: structurally_verified
+    evidence:
+      - tests/test_broker_framework.py::test_broker_agent_manifest_is_scoped_and_never_exposes_forbidden_operations
+      - tests/test_broker_framework.py::test_broker_agent_tools_enforce_project_and_account_isolation
+  TEST-B18:
+    title: 秘密掃描
+    implementation_status: current_tree_secret_remediated_and_secure_reference_contract_ready
+    acceptance_status: blocked_historical_secret_rewrite_and_runtime_scan
+    blocker: the vendored Shioaji downloader no longer contains automatic login or
+      embedded credentials in the current tree, but sensitive values remain reachable
+      in existing Git history; an authorized history rewrite plus release-time Git,
+      log, and prompt scans are still required
+    evidence:
+      - tests/test_broker_framework.py::test_auth_contract_rejects_plaintext_secrets_and_account_snapshot_requires_masking
+      - tests/test_broker_framework.py::test_vendored_shioaji_downloader_never_embeds_or_performs_login
+  TEST-B19:
+    title: Browser E2E
+    implementation_status: automated_unconnected_state_and_static_api_tests_passed
+    acceptance_status: pending_real_account_owner_authorization_and_resume_validation
+    evidence:
+      - tests/test_broker_framework.py::test_broker_settings_ui_lists_five_brokers_and_never_adds_direct_submit
+      - tests/test_broker_framework.py::test_broker_authorization_endpoint_requires_explicit_click
+      - docs/validation/five-broker-browser-e2e-20260726.json
+  TEST-B20:
+    title: 實盤受控測試
+    implementation_status: safety_gates_ready
+    acceptance_status: blocked_external_evidence
+    blocker: all read-only and sandbox acceptance, then explicit single-broker small-order approval

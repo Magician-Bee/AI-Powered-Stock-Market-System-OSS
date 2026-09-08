@@ -1,0 +1,45 @@
+schema_version: open_stock_ai.external_sources_lock.v1
+snapshot_mode: vendored_or_bootstrapped
+projects:
+  tradingagents:
+    name: TradingAgents
+    path: external/TradingAgents
+    origin: https://github.com/TauricResearch/TradingAgents.git
+    branch: main
+    head: 85946c2f60768ab2dae23a5a36cd927662feef94
+  finrobot:
+    name: FinRobot
+    path: external/FinRobot
+    origin: https://github.com/AI4Finance-Foundation/FinRobot.git
+    branch: master
+    head: 6a8161ff5cfa66ec3df9c11a0bf7a84a1ac11f01
+  fingpt:
+    name: FinGPT
+    path: external/FinGPT
+    origin: https://github.com/AI4Finance-Foundation/FinGPT.git
+    branch: master
+    head: 608a496781faf2705b9a59c89f80e6c04b15d76e
+  finrl_trading:
+    name: FinRL-Trading
+    path: external/FinRL-Trading
+    origin: https://github.com/AI4Finance-Foundation/FinRL-Trading.git
+    branch: master
+    head: e65d6f0483ead7d2ef4a5fc940cdf960392a25c1
+  finrl:
+    name: FinRL
+    path: external/FinRL
+    origin: https://github.com/AI4Finance-Foundation/FinRL.git
+    branch: master
+    head: 220f9e490996a6e5c84cfad914ff14f2e0c42d22
+  qlib:
+    name: qlib
+    path: external/qlib
+    origin: https://github.com/microsoft/qlib.git
+    branch: main
+    head: d5379c520f66a39953bad76234a7019a72796fd0
+  ai_trader:
+    name: AI-Trader
+    path: external/AI-Trader
+    origin: https://github.com/HKUDS/AI-Trader.git
+    branch: main
+    head: d03ff6c056b32ced735adf7c19ed8175adb1c8df

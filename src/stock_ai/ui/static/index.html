@@ -1,0 +1,1584 @@
+<!doctype html>
+<html lang="zh-Hant" data-codex-auth="checking">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>股市AI系統 | 市場操作台</title>
+  <style id="codex-auth-first-paint-guard">
+    html:is([data-codex-auth="checking"],[data-codex-auth="required"]) body {
+      background:#000!important;
+    }
+    html:is([data-codex-auth="checking"],[data-codex-auth="required"]) body > :not(#authGate):not(script) {
+      display:none!important;
+    }
+  </style>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%232dd4bf'/%3E%3Cstop offset='.62' stop-color='%237cc7ff'/%3E%3Cstop offset='1' stop-color='%23f6b94b'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='%2307111f'/%3E%3Crect x='1' y='1' width='30' height='30' rx='7' fill='url(%23g)' fill-opacity='.9'/%3E%3Ctext x='16' y='21' text-anchor='middle' font-size='12' font-family='Arial' font-weight='700' fill='%23031512'%3ETW%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="/static/vendor/glinui-theme.css?v=20260713-codex-core-v69" />
+  <link rel="stylesheet" href="/static/css/core/base.css?v=20260722-distinct-optics-v5" />
+  <link rel="stylesheet" href="/static/css/features/workspaces.css?v=20260813-light-theme-v1" />
+  <link rel="stylesheet" href="/static/css/features/market-workspace.css?v=20260813-responsive-density-v1" />
+  <link rel="stylesheet" href="/static/css/shell/material.css?v=20260722-market-wallpaper-v3" />
+  <link rel="stylesheet" href="/static/css/features/preferences.css?v=20260803-ui-contract-v1" />
+  <link rel="stylesheet" href="/static/css/features/codex-home.css?v=20260722-agent-provider-v1" />
+  <link rel="stylesheet" href="/static/css/features/agent-dock.css?v=20260813-agent-console-navigation-v4" />
+  <link rel="stylesheet" href="/static/css/shell/responsive.css?v=20260718-multi-provider-v1" />
+  <link rel="stylesheet" href="/static/css/features/themes.css?v=20260722-distinct-optics-v5" />
+  <link rel="stylesheet" href="/static/css/shell/adaptive-glass.css?v=20260722-stock-events-v3" />
+  <link rel="stylesheet" href="/static/liquid-glass-system.css?v=20260801-selectable-text-v2" />
+  <link rel="stylesheet" href="/static/css/shell/freefrontend-liquid-glass.css?v=20260722-material-opacity-v7" />
+  <link rel="stylesheet" href="/static/ui-fixes-v2.css?v=20260813-responsive-density-v1" />
+</head>
+<body>
+  <div class="ambient-grid" aria-hidden="true"></div>
+  <div class="liquid-backdrop" aria-hidden="true" data-glass-optical-background>
+    <div class="market-tile-field" data-market-tile-field></div>
+  </div>
+  <div id="glassSampleLayer" class="glass-sample-layer" data-liquid-sample-source-root data-liquid-sample-document aria-hidden="true" inert></div>
+  <section id="authGate" class="auth-gate" aria-labelledby="authTitle" aria-live="polite">
+    <div class="auth-surface glass-navigation" data-liquid-ignore>
+      <div class="auth-brand"><span class="auth-brand-icon"><img class="brand-icon-light" src="/static/assets/stock-ai-icon-light.png" alt="" /><img class="brand-icon-dark" src="/static/assets/stock-ai-icon-dark.png" alt="" /></span><div><strong>股市AI系統</strong><small>Codex 核心登入</small></div></div>
+      <div class="auth-copy">
+        <p class="auth-kicker">STOCK AI SYSTEM</p>
+        <h1 id="authTitle">登入後開始市場決策</h1>
+        <p>使用 ChatGPT 帳號連接 Codex。系統不會要求你貼上 API 金鑰，也不會在頁面中接觸密碼。</p>
+      </div>
+      <div id="authState" class="auth-state">正在檢查登入狀態…</div>
+      <button id="loginWithChatGPT" class="primary auth-primary" type="button">使用 ChatGPT 登入</button>
+      <button id="loginWithDeviceCode" class="auth-secondary" type="button">改用裝置代碼</button>
+      <button id="continueWithoutCodex" class="auth-secondary auth-skip" type="button">不使用 Codex 繼續</button>
+      <small class="auth-skip-note">可先使用市場與研究功能，之後再到「設定 → Agent、模型與 API」登入 Codex 或連接其他模型。</small>
+      <div id="deviceCodeBox" class="device-code-box" hidden>
+        <span>裝置代碼</span><strong id="deviceUserCode">-</strong>
+        <a id="deviceVerificationLink" href="#" target="_blank" rel="noopener">開啟驗證頁</a>
+      </div>
+    </div>
+  </section>
+  <div class="app-shell">
+    <aside class="sidebar glass-navigation glass-group" data-liquid-surface="chrome" data-glass-component="GlassNavigation" data-liquid-ignore>
+      <div id="liquidSidebarLens" class="liquid-webgl-lens liquid-sidebar-lens" aria-hidden="true"></div>
+      <div class="liquid-content sidebar-content">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"><img class="brand-icon-light" src="/static/assets/stock-ai-icon-light.png" alt="" /><img class="brand-icon-dark" src="/static/assets/stock-ai-icon-dark.png" alt="" /></div>
+        <div>
+          <h1>股市AI系統</h1>
+          <p>市場操作台</p>
+        </div>
+      </div>
+
+      <nav class="nav-menu" aria-label="主功能導覽">
+        <button class="nav-btn active" data-view="home"><span aria-hidden="true">⌂</span>首頁</button>
+        <button class="nav-btn" data-view="market"><span aria-hidden="true">◫</span>市場</button>
+        <button class="nav-btn" data-view="instrument"><span aria-hidden="true">⌁</span>個股</button>
+        <button class="nav-btn" data-view="portfolio"><span aria-hidden="true">▣</span>投資組合</button>
+        <button class="nav-btn" data-view="research"><span aria-hidden="true">⌘</span>研究</button>
+        <button class="nav-btn" data-view="system"><span aria-hidden="true">⚙</span>系統</button>
+        <button id="agentConsoleNav" class="nav-btn agent-console-nav" type="button" aria-label="開啟 Agent 控制台" aria-expanded="false" aria-pressed="false" aria-controls="agentDock"><span aria-hidden="true">AI</span><strong>開啟 Agent 控制台</strong></button>
+      </nav>
+
+      <div class="side-card">
+        <div class="status-line"><span class="status-dot"></span><strong>TWSE / TPEx / Yahoo</strong></div>
+        <small>資料源狀態、即時行情、新聞事件與研究工作區整合在同一個操作面板。</small>
+      </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar glass-navigation glass-group" data-liquid-surface="chrome" data-glass-component="GlassNavigation" data-liquid-ignore>
+        <div id="liquidChromeLens" class="liquid-webgl-lens liquid-topbar-lens" aria-hidden="true"></div>
+        <div class="liquid-content topbar-content">
+        <div class="title-stack">
+          <p class="eyebrow">行情資料 · 策略研究 · 風控執行 · 投資工作區</p>
+          <h2 id="viewTitle">AI 全市場決策中心</h2>
+          <p id="viewSubtitle" class="workspace-subtitle">全市場多因子分析、AI 深度判斷、中央風控與持倉適配</p>
+        </div>
+        <div class="searchbar agent-global-composer glass-surface glass-group" data-glass-component="GlassGroup" data-glass-variant="clear" data-liquid-preserve>
+          <span id="globalAgentPulse" class="global-agent-pulse" aria-hidden="true"></span>
+          <input id="globalAgentPrompt" autocomplete="off" aria-label="與 AI Agent 對話" placeholder="交給 AI Agent：查行情、找資料、分析風險或操作專案…" />
+          <button id="globalAgentSend" class="primary" type="button">傳送</button>
+        </div>
+        <button id="accountMenuBtn" class="account-menu-btn" type="button" title="Codex 帳號"><span id="accountAvatar">C</span><span id="accountLabel">Codex</span></button>
+        </div>
+      </header>
+
+      <nav id="workspaceTabs" class="workspace-tabs" aria-label="目前工作區分頁"></nav>
+
+      <section class="view active" id="home" data-ui-id="home.root">
+        <div class="workspace-market-status" aria-live="polite">
+          <div>
+            <span id="homeMarketSessionBadge" class="workspace-status-badge">台股資料</span>
+            <strong id="homeMarketStatusText">正在讀取最近成功市場快照…</strong>
+            <small id="homeMarketFreshness">既有結果會保留到新版快照完成</small>
+          </div>
+          <div class="workspace-market-actions">
+            <button id="refreshMarketSnapshot" class="primary" type="button">執行市場掃描</button>
+            <button id="compareWorkspaceStocks" type="button">比較股票</button>
+          </div>
+        </div>
+
+        <div class="market-workspace-grid">
+          <aside class="market-navigation-panel panel" aria-label="市場決策導航">
+            <div class="market-navigation-head">
+              <div><span>全市場決策清單</span><strong id="marketNavigationTitle">可買</strong></div>
+              <button id="compactMarketNavigation" type="button" aria-pressed="false" title="切換精簡模式">精簡</button>
+            </div>
+            <label class="market-workspace-search">
+              <span class="sr-only">搜尋股票、產業或輸入 Agent 指令</span>
+              <input id="homeMarketSearch" type="search" autocomplete="off" placeholder="股票、產業或 Agent 指令" />
+            </label>
+            <nav class="market-list-tabs" aria-label="市場清單分類">
+              <button class="is-active" type="button" data-market-list="buy_now">可買</button>
+              <button type="button" data-market-list="sell_reduce">可賣／減碼</button>
+              <button type="button" data-market-list="watch">觀察</button>
+              <button type="button" data-market-list="future_buy">未來可買</button>
+              <button type="button" data-market-list="avoid_now">暫不介入</button>
+              <button type="button" data-market-list="watchlist">自選</button>
+            </nav>
+            <div id="marketNavigationList" class="market-navigation-list" role="list">
+              <div class="workspace-loading">正在恢復最近市場快照…</div>
+            </div>
+          </aside>
+
+          <div class="market-workspace-center">
+            <section id="marketRegimeStrip" class="market-regime-strip" aria-label="市場總結">
+              <div><span>市場 Regime</span><strong id="marketRegimeLabel">讀取中</strong></div>
+              <div><span>市場寬度</span><strong id="marketBreadthValue">-</strong></div>
+              <div><span>可投資 Universe</span><strong id="marketUniverseCount">-</strong></div>
+              <div><span>有效資料</span><strong id="marketValidCount">-</strong></div>
+              <div><span>深度分析</span><strong id="marketModelCount">0</strong></div>
+              <div><span>快照</span><strong id="marketSnapshotTime">-</strong></div>
+            </section>
+            <section id="marketDecisionStats" class="market-decision-stats" aria-label="全市場決策統計">
+              <div><span>可投資股票</span><strong id="marketInvestableCount">-</strong></div>
+              <div><span>全市場已分類</span><strong id="marketClassifiedCount">-</strong></div>
+              <div><span>現在可買</span><strong id="marketBuyNowCount">-</strong></div>
+              <div><span>持續觀察</span><strong id="marketWatchCount">-</strong></div>
+              <div><span>未來可買</span><strong id="marketFutureBuyCount">-</strong></div>
+              <div><span>暫不介入</span><strong id="marketAvoidCount">-</strong></div>
+              <div><span>持倉可賣／減碼</span><strong id="marketSellReduceCount">-</strong></div>
+            </section>
+
+            <section class="workspace-chart-section" aria-label="中央行情工作區">
+              <div class="workspace-context-line">
+                <div>
+                  <span>共用股票 Context</span>
+                  <strong id="workspaceSelectedInstrument">加權指數 ^TWII</strong>
+                </div>
+                <div id="workspaceContextBadges" class="workspace-context-badges"></div>
+              </div>
+              <div id="homeChartHost" class="home-chart-host" data-home-chart-host></div>
+            </section>
+
+            <details class="market-decision-section" aria-labelledby="marketDecisionTitle">
+              <summary>展開完整市場決策明細與排序</summary>
+              <div class="market-decision-head">
+                <div>
+                  <span>MARKET DECISION BOARD</span>
+                  <h3 id="marketDecisionTitle">AI 全市場決策中心</h3>
+                  <p id="marketDecisionSummary">全市場分類與 AI 深度分析分開呈現；模型失敗不會清空量化分類。</p>
+                </div>
+                <label>排序
+                  <select id="marketDecisionSort">
+                    <option value="rank">綜合排名</option>
+                    <option value="trigger">距離觸發</option>
+                    <option value="risk">風險</option>
+                    <option value="quality">資料品質</option>
+                    <option value="volume">成交金額</option>
+                  </select>
+                </label>
+              </div>
+              <div class="market-decision-board">
+                <article class="market-decision-lane actionable">
+                  <header><div><span>BUY_NOW</span><h4>現在可買</h4></div><strong id="actionableCount">0</strong></header>
+                  <div id="actionableDecisionList" class="market-decision-list"></div>
+                </article>
+                <article class="market-decision-lane avoid">
+                  <header><div><span>AVOID_NOW</span><h4>現在暫不介入</h4></div><strong id="avoidCount">0</strong></header>
+                  <div id="avoidDecisionList" class="market-decision-list"></div>
+                </article>
+                <article class="market-decision-lane waiting">
+                  <header><div><span>WATCH</span><h4>持續觀察</h4></div><strong id="watchCount">0</strong></header>
+                  <div id="watchDecisionList" class="market-decision-list"></div>
+                </article>
+                <article class="market-decision-lane future">
+                  <header><div><span>FUTURE_BUY</span><h4>未來可買</h4></div><strong id="futureBuyCount">0</strong></header>
+                  <div id="futureDecisionList" class="market-decision-list"></div>
+                </article>
+                <article class="market-decision-lane portfolio">
+                  <header><div><span>PORTFOLIO</span><h4>持倉可賣／減碼</h4></div><strong id="portfolioActionCount">0</strong></header>
+                  <div id="portfolioDecisionList" class="market-decision-list"></div>
+                </article>
+              </div>
+            </details>
+
+            <section class="workspace-detail-panel panel" aria-label="統一個股資料">
+              <div class="workspace-detail-tabs" role="tablist">
+                <button class="is-active" type="button" data-workspace-detail="overview">總覽</button>
+                <button type="button" data-workspace-detail="technical">技術</button>
+                <button type="button" data-workspace-detail="chips">籌碼</button>
+                <button type="button" data-workspace-detail="financials">財務</button>
+                <button type="button" data-workspace-detail="valuation">估值</button>
+                <button type="button" data-workspace-detail="news">新聞</button>
+                <button type="button" data-workspace-detail="events">事件</button>
+                <button type="button" data-workspace-detail="risk">風險</button>
+                <button type="button" data-workspace-detail="evidence">證據</button>
+              </div>
+              <div id="workspaceDecisionDetail" class="workspace-decision-detail">
+                選擇左側股票或決策卡後，這裡會顯示行動、原因、觸發、失效、資料品質與證據。
+              </div>
+              <div id="homeActionFeedback" class="home-action-feedback" role="status" aria-live="polite"></div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section class="view" id="market" data-workspace="market" data-default-tab="overview" data-native-tabs="overview" data-ui-id="market.overview.root">
+        <div class="grid stats">
+          <article class="metric"><span>證券資料</span><strong id="entityCount">-</strong><small>TWSE + TPEx + index</small></article>
+          <article class="metric"><span>市場指數</span><strong id="overviewIndexCount">7</strong><small>台股、美股、半導體與匯率觀察</small></article>
+          <article class="metric"><span>資料源</span><strong id="sourceActiveCount">-</strong><small>啟用 / 部分 / 規劃中</small></article>
+          <article class="metric"><span>系統狀態</span><strong class="green">線上</strong><small id="healthText">檢查中...</small></article>
+        </div>
+        <div class="grid two-col">
+          <article class="panel">
+            <div class="panel-head"><h3>每日市場摘要</h3><span class="chip">儀表板</span></div>
+            <div id="dailyReportBox" class="event-list"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-head"><h3>重大新聞與事件</h3><span class="chip">新聞與事件</span></div>
+            <div id="overviewNewsBox" class="event-list"></div>
+          </article>
+        </div>
+        <div class="grid dashboard-phase1">
+          <article class="panel">
+            <div class="panel-head"><h3>跨市場指數</h3><span class="chip">市場指數</span></div>
+            <div id="overviewIndicesBox" class="table compact"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-head"><h3>籌碼排行</h3><span class="chip">法人籌碼</span></div>
+            <div id="overviewLeadersBox" class="table compact"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-head"><h3>資料源註冊表</h3><span class="chip">來源註冊</span></div>
+            <div id="sourceStatusBox" class="event-list"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="workspace-panel" id="watchlist" data-workspace-parent="market" data-workspace-tab="watchlists" data-ui-id="market.watchlists.root">
+        <div class="grid two-col">
+          <article class="panel">
+            <div class="panel-head"><h3>自選群組</h3><span class="chip">自選清單</span></div>
+            <div id="watchlistGroupsBox" class="event-list"></div>
+            <div id="watchlistTable" class="table compact"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-head"><h3>提醒規則</h3><span class="chip">提醒框架</span></div>
+            <div id="watchlistAlertsBox" class="event-list"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="workspace-panel" id="marketRankings" data-workspace-parent="market" data-workspace-tab="rankings" data-ui-id="market.rankings.root">
+        <article class="panel"><div class="panel-head"><div><h3>市場排行</h3><p class="panel-copy">依法人資金、成交量與市場強弱整理；顯示資料日期與來源。</p></div><button type="button" data-ui-action="market.snapshot.refresh">重新整理</button></div><div class="workspace-page-content" data-route-content role="status">正在讀取最新市場排行…</div></article>
+      </section>
+
+      <section class="view" id="instrument" data-workspace="instrument" data-default-tab="overview" data-native-tabs="overview chart technical">
+        <section id="instrumentOverview" class="workspace-panel instrument-overview-panel" data-workspace-parent="instrument" data-workspace-tab="overview" data-ui-id="instrument.overview.root">
+          <div class="workspace-context-line">
+            <div><span>個股決策摘要與精簡走勢</span><strong>完整繪圖工具僅放在「個股 → 圖表」</strong></div>
+          </div>
+          <div id="instrumentOverviewChartHost" class="home-chart-host" data-instrument-overview-chart-host></div>
+        </section>
+        <div id="stockPrimaryLayout" class="stock-primary-layout workspace-panel" data-workspace-parent="instrument" data-workspace-tab="chart" data-ui-id="instrument.chart.root" data-events-open="false">
+          <article class="panel chart-panel">
+            <div class="panel-head chart-primary-head">
+              <div><h3 id="chartTitle">個股 K 線與技術指標</h3><p class="chart-data-status">資料狀態：<span id="chartDataStatus">正在確認可用歷史資料</span></p></div>
+              <div class="stock-chart-actions chart-primary-controls">
+                <select id="symbolSelect"><option value="">請先搜尋並選擇股票</option></select>
+                <label class="intraday-control">
+                  <span>週期</span>
+                  <select id="intradayTimeframe" aria-label="K 線週期">
+                    <option value="D">日 K</option>
+                    <option value="1">1 分 K</option>
+                    <option value="5">5 分 K</option>
+                    <option value="15">15 分 K</option>
+                    <option value="30">30 分 K</option>
+                    <option value="60">60 分 K</option>
+                  </select>
+                </label>
+                <label class="intraday-control">
+                  <span>交易日</span>
+                  <input id="intradayTradeDate" type="date" aria-label="盤中 K 線交易日" />
+                </label>
+                <button id="loadIntradayCandles" type="button">載入分 K</button>
+                <details class="stock-chart-advanced daily-history-control">
+                  <summary>進階歷史資料</summary>
+                  <div class="stock-chart-advanced-fields">
+                    <label class="intraday-control">
+                      <span>價格基準</span>
+                      <select id="dailyHistoryPriceBasis" aria-label="歷史日 K 價格基準">
+                        <option value="unadjusted">原始未復權</option>
+                        <option value="forward_adjusted">前復權</option>
+                        <option value="backward_adjusted">後復權</option>
+                      </select>
+                    </label>
+                    <label class="intraday-control">
+                      <span>日 K 起日</span>
+                      <input id="dailyHistoryStart" type="date" aria-label="歷史日 K 起始日" />
+                    </label>
+                    <label class="intraday-control">
+                      <span>迄日</span>
+                      <input id="dailyHistoryEnd" type="date" aria-label="歷史日 K 結束日" />
+                    </label>
+                    <button id="loadDailyHistory" type="button">查詢完整區間</button>
+                  </div>
+                </details>
+                <button id="stockEventToggle" type="button" class="stock-event-toggle" aria-controls="stockEventPanel" aria-expanded="false">
+                  <span data-i18n="stock.events.open">開啟個股事件</span>
+                  <span class="stock-event-toggle-icon" aria-hidden="true">›</span>
+                </button>
+                <button id="chartFocusMode" type="button" title="聚焦圖表（Esc 返回）">聚焦圖表</button>
+              </div>
+            </div>
+            <div class="sr-only">時間橫軸 價格縱軸</div>
+            <div class="chart-workbench" aria-label="圖表互動工具">
+              <div class="chart-workbench-group chart-type-row" role="group" aria-label="圖表類型">
+                <span class="chart-workbench-label">圖型</span>
+                <button type="button" class="chart-tool-button is-active" data-chart-type="candles" data-ui-id="instrument.chart.type.candles" data-ui-action="chart.type.set" data-ui-scope="instrument" data-ui-version="1" aria-label="顯示蠟燭 K 線" aria-pressed="true">K 線</button>
+                <button type="button" class="chart-tool-button" data-chart-type="bars" data-ui-id="instrument.chart.type.bars" data-ui-action="chart.type.set" data-ui-scope="instrument" data-ui-version="1" aria-label="顯示美國線" aria-pressed="false">美國線</button>
+                <button type="button" class="chart-tool-button" data-chart-type="line" data-ui-id="instrument.chart.type.line" data-ui-action="chart.type.set" data-ui-scope="instrument" data-ui-version="1" aria-label="顯示折線圖" aria-pressed="false">折線</button>
+                <button type="button" class="chart-tool-button" data-chart-type="area" data-ui-id="instrument.chart.type.area" data-ui-action="chart.type.set" data-ui-scope="instrument" data-ui-version="1" aria-label="顯示面積圖" aria-pressed="false">面積</button>
+                <button type="button" class="chart-tool-button" data-chart-type="heikin" data-ui-id="instrument.chart.type.heikin" data-ui-action="chart.type.set" data-ui-scope="instrument" data-ui-version="1" aria-label="顯示 Heikin-Ashi" aria-pressed="false">Heikin-Ashi</button>
+              </div>
+              <div class="chart-workbench-group chart-range-row" role="group" aria-label="顯示區間">
+                <span class="chart-workbench-label">區間</span>
+                <button type="button" class="chart-range-button" data-chart-range="1">1 日</button>
+                <button type="button" class="chart-range-button" data-chart-range="5">5 日</button>
+                <button type="button" class="chart-range-button" data-chart-range="30">1 月</button>
+                <button type="button" class="chart-range-button" data-chart-range="90">3 月</button>
+                <button type="button" class="chart-range-button" data-chart-range="180">6 月</button>
+                <button type="button" class="chart-range-button is-active" data-chart-range="250">1 年</button>
+                <button type="button" class="chart-range-button" data-chart-range="750">3 年</button>
+                <button type="button" class="chart-range-button" data-chart-range="1250">5 年</button>
+                <button type="button" class="chart-range-button" data-chart-range="all">全部</button>
+              </div>
+              <div class="chart-workbench-group chart-indicator-row" role="group" aria-label="技術線與資料顯示">
+                <span class="chart-workbench-label">指標</span>
+                <button type="button" class="chart-indicator-button" data-chart-indicator="ma5" data-ui-id="instrument.chart.indicator.ma5" data-ui-action="chart.indicator.toggle" data-ui-scope="instrument" data-ui-version="1" aria-label="切換 MA5" aria-pressed="true">MA5</button>
+                <button type="button" class="chart-indicator-button" data-chart-indicator="ma10" data-ui-id="instrument.chart.indicator.ma10" data-ui-action="chart.indicator.toggle" data-ui-scope="instrument" data-ui-version="1" aria-label="切換 MA10" aria-pressed="true">MA10</button>
+                <button type="button" class="chart-indicator-button" data-chart-indicator="ma20" data-ui-id="instrument.chart.indicator.ma20" data-ui-action="chart.indicator.toggle" data-ui-scope="instrument" data-ui-version="1" aria-label="切換 MA20" aria-pressed="true">MA20</button>
+                <button type="button" class="chart-indicator-button" data-chart-indicator="ma60" data-ui-id="instrument.chart.indicator.ma60" data-ui-action="chart.indicator.toggle" data-ui-scope="instrument" data-ui-version="1" aria-label="切換 MA60" aria-pressed="true">MA60</button>
+                <button type="button" class="chart-indicator-button" data-chart-indicator="boll" data-ui-id="instrument.chart.indicator.boll" data-ui-action="chart.indicator.toggle" data-ui-scope="instrument" data-ui-version="1" aria-label="切換布林通道" aria-pressed="true">布林通道</button>
+                <button type="button" class="chart-indicator-button" data-chart-indicator="volume" data-ui-id="instrument.chart.indicator.volume" data-ui-action="chart.indicator.toggle" data-ui-scope="instrument" data-ui-version="1" aria-label="切換成交量" aria-pressed="true">成交量</button>
+                <button type="button" class="chart-indicator-button" data-chart-indicator="macd" data-ui-id="instrument.chart.indicator.macd" data-ui-action="chart.indicator.toggle" data-ui-scope="instrument" data-ui-version="1" aria-label="切換 MACD" aria-pressed="true">MACD</button>
+              </div>
+              <div class="chart-interaction-help">
+                <span>滾輪縮放 · 游標模式拖曳平移 · 方向鍵移動十字線</span>
+                <span id="chartAnnotationCount" class="chart-annotation-count">0 個標註</span>
+              </div>
+            </div>
+            <div class="chart-canvas-layout">
+              <aside class="chart-drawing-tools" role="toolbar" aria-label="圖表標註工具">
+                <span class="chart-workbench-label">繪圖</span>
+                <button type="button" class="chart-tool-button is-active" data-chart-tool="cursor" aria-pressed="true" title="游標：查看價格、拖曳平移">⌖<span class="sr-only">游標</span></button>
+                <button type="button" class="chart-tool-button" data-chart-tool="trend" aria-pressed="false" title="趨勢線：依序點選兩個價位">╱<span class="sr-only">趨勢線</span></button>
+                <button type="button" class="chart-tool-button" data-chart-tool="horizontal" aria-pressed="false" title="水平線：點選要追蹤的價位">―<span class="sr-only">水平線</span></button>
+                <button type="button" class="chart-tool-button" data-chart-tool="rectangle" aria-pressed="false" title="矩形：依序點選兩個角">□<span class="sr-only">矩形</span></button>
+                <button type="button" class="chart-tool-button" data-chart-tool="text" aria-pressed="false" title="文字：輸入標註後點選位置">T<span class="sr-only">文字</span></button>
+                <button type="button" class="chart-tool-button" data-chart-tool="marker" aria-pressed="false" title="標記：點選 K 線交點">●<span class="sr-only">標記</span></button>
+                <details class="chart-drawing-settings">
+                  <summary title="標註設定與復原">•••<span class="sr-only">標註設定與復原</span></summary>
+                  <div class="chart-drawing-settings-popover">
+                    <label class="chart-annotation-label">
+                      <span>文字標註</span>
+                      <input id="chartAnnotationLabel" type="text" maxlength="40" placeholder="標註文字（選填）" aria-label="標註文字" />
+                    </label>
+                    <button id="chartUndoAnnotation" type="button" class="chart-tool-button">復原上一個標註</button>
+                    <button id="chartClearAnnotations" type="button" class="chart-tool-button">清除全部標註</button>
+                    <button id="chartResetViewport" type="button" class="chart-tool-button">重設圖表視圖</button>
+                  </div>
+                </details>
+              </aside>
+              <div class="chart-canvas-glass">
+                <div id="chartInteractionSurface" class="chart-interaction-surface" data-chart-tool="cursor">
+                  <canvas id="priceChart" width="1040" height="620" aria-label="K 線、均線、布林通道與 MACD 圖表"></canvas>
+                  <canvas id="priceChartOverlay" class="price-chart-overlay" width="1040" height="620" tabindex="0"
+                    aria-label="互動式股票圖表。移動游標查看價格，滾輪縮放，拖曳平移，並可使用標註工具。"></canvas>
+                  <div id="chartHoverCard" class="chart-hover-card" hidden aria-hidden="true"></div>
+                </div>
+              </div>
+            </div>
+            <div id="chartInteractionStatus" class="chart-interaction-status" role="status" aria-live="polite">
+              游標模式：移到圖表可查看日期、開高低收與成交量。
+            </div>
+            <div id="intradayCandleStatus" class="intraday-candle-status" role="status">
+              日 K 模式；選擇 1、5、15、30 或 60 分 K 可重建已保存交易日。
+            </div>
+            <div id="summaryCards" class="summary-cards wide"></div>
+          </article>
+          <article id="stockEventPanel" class="panel stock-event-panel" aria-hidden="true" tabindex="-1">
+            <div class="panel-head">
+              <div><h3>個股事件流</h3><span class="stock-event-panel-copy" data-i18n="stock.events.copy">公司公告與相關新聞</span></div>
+              <div class="corporate-action-controls">
+                <button id="corporateActionSync" type="button">同步模擬持倉</button>
+                <span id="corporateActionSyncStatus" role="status" aria-live="polite">僅套用官方驗證且條款完整的到期事件</span>
+              </div>
+            </div>
+            <div id="eventList" class="event-list" data-liquid-preserve tabindex="0" aria-label="個股事件清單"></div>
+          </article>
+        </div>
+        <div class="grid dashboard-phase1 instrument-technical-grid workspace-panel" data-workspace-parent="instrument" data-workspace-tab="technical" data-ui-id="instrument.technical.root" data-instrument-section="technical">
+          <article class="panel">
+            <div class="panel-head">
+              <div><h3>異常交易事件</h3><span class="chip">官方日 K · 規則偵測</span></div>
+              <button id="scanTradingAnomalies" type="button">掃描近半年</button>
+            </div>
+            <div id="tradingAnomalyStatus" class="intraday-candle-status" role="status" aria-live="polite">
+              尚未掃描；只保存符合公開門檻的爆量、跳空、價量背離與急漲急跌。
+            </div>
+            <div id="tradingAnomalyList" class="event-list" role="list" aria-label="異常交易事件清單"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-head"><h3>流動性與可交易性</h3><span class="chip">官方成交資料 + 即時五檔</span></div>
+            <div class="condition-row">
+              <label>評估股數 <input id="liquidityOrderQuantity" type="number" min="1" step="1" placeholder="輸入委託股數" /></label>
+              <button id="assessLiquidity" type="button">評估滑價</button>
+            </div>
+            <div id="liquidityBox" class="event-list" role="status" aria-live="polite">選擇股票後載入；輸入股數可估計滑價與量能占比。</div>
+          </article>
+          <article class="panel">
+            <div class="panel-head"><h3>基本面與籌碼</h3><span class="chip">基本面與籌碼</span></div>
+            <div id="fundamentalsBox" class="event-list"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-head"><h3>AI 策略草案</h3><span class="chip">訊號規劃</span></div>
+            <div id="stockAiPlanBox" class="event-list"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="workspace-panel" id="monitor" data-workspace-parent="market" data-workspace-tab="monitor" data-ui-id="market.monitor.root">
+        <div class="grid two-col">
+          <article class="panel">
+            <div class="panel-head"><h3>即時行情監控</h3><span class="chip">即時資料</span></div>
+            <div id="realtimePanel" class="realtime-panel"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-head"><h3>監控訊號</h3><span class="chip">monitoring</span></div>
+            <div id="monitorSignalsBox" class="event-list"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="workspace-panel" id="entities" data-workspace-parent="system" data-workspace-tab="securities" data-ui-id="system.securities.root">
+        <article class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>證券資料庫搜尋</h3>
+              <p class="panel-copy">搜尋證券代號或名稱，確認交易所、識別資料並直接開啟個股圖表。</p>
+            </div>
+            <span id="entityPageStatus" class="chip">證券主檔</span>
+          </div>
+          <form id="entitySearchForm" class="linkage-controls" role="search">
+            <label for="entitySearchInput">證券代號或名稱</label>
+            <input id="entitySearchInput" type="search" placeholder="例如：2330、台積電、0050" autocomplete="off" />
+            <button class="primary" type="submit">搜尋證券</button>
+            <button id="entitySearchReset" type="button">顯示全部</button>
+          </form>
+          <p id="entitySearchHint" class="panel-copy" role="status">正在載入可搜尋的證券主檔…</p>
+          <div id="entityTable" class="table" aria-live="polite"></div>
+        </article>
+      </section>
+
+      <section class="workspace-panel" id="screener" data-workspace-parent="market" data-workspace-tab="screener" data-ui-id="market.screener.root">
+        <article class="panel">
+          <div class="panel-head"><h3>條件選股</h3><button id="runScreener" class="primary">執行篩選</button></div>
+          <div class="condition-row">
+            <label><input type="checkbox" data-screener-condition="realtime == true" checked /> 即時成交行情</label>
+            <label><input type="checkbox" data-screener-condition="change_percent > 0" checked /> 即時漲幅為正</label>
+            <label><input type="checkbox" data-screener-condition="volume >= 100000" checked /> 即時成交量至少 100,000 股</label>
+            <label><input type="checkbox" data-screener-condition="buy_liquidity_confirmed == true" /> 有可確認委賣流動性</label>
+          </div>
+          <label class="panel-copy" for="screenerCustomConditions">自訂條件（每行一條；例如 <code>revenue_yoy &gt; 15</code>、<code>institutional_buy_5d &gt; 0</code>、<code>pe_percentile &lt; 30</code>、<code>avg_turnover_20d &gt; 50000000</code>、<code>close &gt; sma_60</code>）</label>
+          <textarea id="screenerCustomConditions" rows="3" placeholder="可使用即時、官方已快取的基本面／法人／估值／日 K 欄位；未知或尚未快取的欄位會明確拒絕或不通過。"></textarea>
+          <div id="screenerTable" class="table"></div>
+        </article>
+      </section>
+
+      <section class="workspace-panel" id="news" data-workspace-parent="market" data-workspace-tab="events" data-ui-id="market.events.root">
+        <article class="panel">
+          <div class="panel-head"><h3>新聞中心</h3><span class="chip">市場與個股</span></div>
+          <div id="newsScopeBar" class="filter-bar"></div>
+          <div id="newsFilterBar" class="filter-bar"></div>
+          <div id="newsMetaBar" class="meta-bar"></div>
+          <div id="newsCenterBox" class="event-list"></div>
+        </article>
+      </section>
+
+      <section class="workspace-panel" id="chips" data-workspace-parent="instrument" data-workspace-tab="ownership" data-ui-id="instrument.ownership.root">
+        <article class="panel">
+          <div class="panel-head"><h3>籌碼與融資券</h3><span class="chip">法人與融資券</span></div>
+          <div id="institutionalTable" class="table compact"></div>
+        </article>
+        <article class="panel">
+          <div class="panel-head"><h3>法人與融資券歷史</h3><span class="chip">連續買賣超 · 累計趨勢 · 券資比</span></div>
+          <div class="filter-bar">
+            <label>股票<input id="chipHistorySymbol" placeholder="例如 2330.TW" /></label>
+            <label>近期日數<input id="chipHistoryDays" type="number" value="20" min="1" max="60" /></label>
+            <button id="loadChipHistoryBtn" type="button">回補並分析官方歷史</button>
+          </div>
+          <div id="chipHistoryStatus" class="meta-bar" role="status">不以零補非交易日；外資、投信、自營商與融資、融券分開呈現。</div>
+          <div id="chipHistoryTable" class="table compact"></div>
+        </article>
+        <article class="panel">
+          <div class="panel-head"><h3>借券與當沖歷史</h3><span class="chip">借券賣出 · 還券 · 餘額 · 當沖比</span></div>
+          <div class="filter-bar">
+            <label>股票<input id="shortDaytradeSymbol" placeholder="輸入上市 .TW 或上櫃 .TWO 代號" /></label>
+            <label>近期日數<input id="shortDaytradeDays" type="number" value="14" min="1" max="60" /></label>
+            <button id="loadShortDaytradeBtn" type="button">回補並分析官方資料</button>
+          </div>
+          <div id="shortDaytradeStatus" class="meta-bar" role="status">借券與融券分開呈現；當沖熱度只是機械式區間，不是投資訊號。近期當沖資料可能於 T+2 前修訂。</div>
+          <div id="shortDaytradeSummary" class="grid stats" style="grid-template-columns:repeat(2,minmax(0,1fr))"></div>
+          <div id="shortDaytradeTable" class="table compact" style="overflow-x:auto"></div>
+        </article>
+        <article class="panel">
+          <div class="panel-head"><h3>TDCC 每週持股分布</h3><span class="chip">股東人數 · 千張大戶 · 散戶 · 集中度</span></div>
+          <div class="filter-bar">
+            <label>股票<input id="tdccHistorySymbol" placeholder="輸入上市 .TW 或上櫃 .TWO 代號" /></label>
+            <label>近期週數<input id="tdccHistoryWeeks" type="number" value="52" min="1" max="104" /></label>
+            <button id="loadTdccHistoryBtn" type="button">更新並分析官方週資料</button>
+          </div>
+          <div id="tdccHistoryStatus" class="meta-bar" role="status">散戶在本畫面明確定義為 1–10,000 股；集中度採 400,001 股以上比例，是機械式顯示指標，不是投資訊號。</div>
+          <div id="tdccHistorySummary" class="grid stats" style="grid-template-columns:repeat(2,minmax(0,1fr))"></div>
+          <div id="tdccHistoryTable" class="table compact" style="overflow-x:auto"></div>
+        </article>
+      </section>
+
+      <section class="workspace-panel" id="fundamentals" data-workspace-parent="instrument" data-workspace-tab="financials valuation" data-ui-id="instrument.financials.root">
+        <article class="panel">
+          <div class="panel-head"><h3>基本面中心</h3><span class="chip">營收與財務</span></div>
+          <div id="fundamentalsCenterBox" class="event-list"></div>
+        </article>
+        <article class="panel">
+          <div class="panel-head"><h3>產業特有指標</h3><span class="chip">金融 · 半導體 · 航運 · 營建</span></div>
+          <div class="filter-bar">
+            <label>股票
+              <input id="industryMetricsSymbol" placeholder="例如 2330.TW" />
+            </label>
+            <label>產業（可由主檔判斷）
+              <select id="industryMetricsProfile">
+                <option value="">自動判斷</option>
+                <option value="金融業">金融業</option>
+                <option value="半導體業">半導體業</option>
+                <option value="航運業">航運業</option>
+                <option value="營建業">營建業</option>
+              </select>
+            </label>
+            <label>季度（非金融）
+              <input id="industryMetricsPeriod" placeholder="例如 2025-Q4" value="2025-Q4" />
+            </label>
+            <button id="loadIndustryMetricsBtn" type="button">套用產業指標</button>
+          </div>
+          <div id="industryMetricsStatus" class="meta-bar" role="status" aria-live="polite">
+            系統依證券主檔選擇產業專屬公式；缺少官方欄位時顯示不可用，不套用通用模板。
+          </div>
+          <div id="industryMetricsTable" class="table compact"></div>
+        </article>
+        <article class="panel">
+          <div class="panel-head"><h3>財測與指引追蹤</h3><span class="chip">預測區間 vs 實際結果</span></div>
+          <div class="filter-bar">
+            <label>股票
+              <input id="financialGuidanceSymbol" placeholder="例如 2412.TW" />
+            </label>
+            <button id="loadFinancialGuidanceBtn" type="button">比較財測與實際</button>
+          </div>
+          <div id="financialGuidanceStatus" class="meta-bar" role="status" aria-live="polite">
+            只比較有官方數值區間及同期間查核／核閱實際數的財測；質化展望不強行量化。
+          </div>
+          <div id="financialGuidanceTable" class="table compact"></div>
+        </article>
+        <article class="panel">
+          <div class="panel-head"><h3>財報異常標記</h3><span class="chip">應收 · 存貨 · 現金流 · 毛利 · 一次性損益</span></div>
+          <div class="filter-bar"><label>股票<input id="financialAnomalySymbol" placeholder="例如 2330.TW" /></label><button id="loadFinancialAnomaliesBtn" type="button">掃描相鄰季度</button></div>
+          <div id="financialAnomalyStatus" class="meta-bar" role="status">使用公開門檻掃描；缺少官方欄位時標示不可判斷。</div>
+          <div id="financialAnomalyTable" class="table compact"></div>
+        </article>
+        <article class="panel" data-instrument-section="valuation" data-ui-id="instrument.valuation.root">
+          <div class="panel-head"><h3>基本估值</h3><span class="chip">PE · PB · PS · 殖利率 · EV/EBITDA · FCF Yield</span></div>
+          <div class="filter-bar">
+            <label>股票<input id="basicValuationSymbol" placeholder="例如 2330.TW" /></label>
+            <button id="loadBasicValuationBtn" type="button">計算一致估值</button>
+          </div>
+          <div id="basicValuationStatus" class="meta-bar" role="status">
+            使用同一估值日、官方收盤價、股數版本與同期間三張財報；缺值不以零或總負債替代。
+          </div>
+          <div id="basicValuationTable" class="table compact"></div>
+        </article>
+        <article class="panel" data-instrument-section="valuation">
+          <div class="panel-head"><h3>歷史估值分位</h3><span class="chip">1 年 · 3 年 · 5 年 · 10 年</span></div>
+          <div class="filter-bar">
+            <label>股票<input id="valuationPercentileSymbol" placeholder="例如 2330.TW" /></label>
+            <button id="loadValuationPercentilesBtn" type="button">同步並計算歷史分位</button>
+          </div>
+          <div id="valuationPercentileStatus" class="meta-bar" role="status">
+            每月保存交易所最後可用 PE／PB／殖利率；公開樣本數與日期，不以目前值補歷史。
+          </div>
+          <div id="valuationPercentileTable" class="table compact"></div>
+        </article>
+        <article class="panel" data-instrument-section="valuation">
+          <div class="panel-head"><h3>同業估值與營運比較</h3><span class="chip">明確選擇依據 · 最多 5 家</span></div>
+          <div class="filter-bar">
+            <label>目標股票<input id="peerComparisonSymbol" placeholder="例如 2330.TW" /></label>
+            <label>比較同業<input id="peerComparisonPeers" placeholder="例如 2303.TW, 2454.TW" /></label>
+            <button id="loadPeerComparisonBtn" type="button">驗證同業並比較</button>
+          </div>
+          <div id="peerComparisonStatus" class="meta-bar" role="status">
+            只接受官方證券主檔相同產業、仍交易中的普通股；名單由你明確指定，不暗中自動挑選。
+          </div>
+          <div id="peerComparisonTable" class="table compact"></div>
+        </article>
+        <article class="panel" data-instrument-section="valuation">
+          <div class="panel-head"><h3>DCF 情境估值與敏感度</h3><span class="chip">悲觀 · 中性 · 樂觀 · 不輸出單一目標價</span></div>
+          <div class="filter-bar">
+            <label>基期營收（千元）<input id="dcfRevenue" type="number" value="1000000" min="1" /></label>
+            <label>毛利率 %<input id="dcfGrossMargin" type="number" value="50" step="0.1" /></label>
+            <label>毛利轉 FCF %<input id="dcfConversion" type="number" value="35" step="0.1" /></label>
+            <label>營收成長 %<input id="dcfGrowth" type="number" value="8" step="0.1" /></label>
+            <label>折現率 %<input id="dcfDiscount" type="number" value="10" step="0.1" /></label>
+            <label>終值成長 %<input id="dcfTerminal" type="number" value="2" step="0.1" /></label>
+            <label>淨負債（千元）<input id="dcfNetDebt" type="number" value="100000" /></label>
+            <label>流通股數（千股）<input id="dcfShares" type="number" value="100000" min="1" /></label>
+            <label>預測年數<input id="dcfYears" type="number" value="5" min="1" max="10" /></label>
+            <button id="runDcfValuationBtn" type="button">計算三情境與矩陣</button>
+          </div>
+          <div id="dcfValuationStatus" class="meta-bar" role="status">
+            全部輸入均為使用者模型假設；不混入公司指引或分析師預估，結果只顯示範圍與矩陣。
+          </div>
+          <div id="dcfValuationTable" class="table compact"></div>
+          <div id="dcfSensitivityTables" class="table compact"></div>
+        </article>
+        <article class="panel" data-instrument-section="valuation">
+          <div class="panel-head"><h3>估值模型選擇與證據分層</h3><span class="chip">不對所有公司套同一公式</span></div>
+          <div class="filter-bar">
+            <label>產業特性<input id="valuationPolicyIndustry" value="半導體" /></label>
+            <label><input id="valuationPolicyProfitable" type="checkbox" checked /> 正獲利</label>
+            <label><input id="valuationPolicyFcf" type="checkbox" checked /> 正自由現金流</label>
+            <label><input id="valuationPolicyDividend" type="checkbox" checked /> 支付股利</label>
+            <label><input id="valuationPolicyAssetHeavy" type="checkbox" /> 重資產</label>
+            <label><input id="valuationPolicyHighGrowth" type="checkbox" /> 高成長</label>
+            <button id="runValuationPolicyBtn" type="button">選擇適用模型</button>
+          </div>
+          <div id="valuationPolicyStatus" class="meta-bar" role="status">
+            歷史事實、公司指引、分析師預估與模型假設分開保存與顯示，不合併成單一數字。
+          </div>
+          <div id="valuationPolicyTable" class="table compact"></div>
+        </article>
+        <article class="panel">
+          <div class="panel-head"><h3>月營收歷史</h3><span class="chip">MOPS 官方封存 · 千元 TWD</span></div>
+          <div class="filter-bar">
+            <label>股票
+              <input id="monthlyRevenueSymbol" placeholder="例如 2330.TW" />
+            </label>
+            <label>起始月份
+              <input id="monthlyRevenueStart" type="month" min="2010-01" value="2010-01" />
+            </label>
+            <label>結束月份
+              <input id="monthlyRevenueEnd" type="month" />
+            </label>
+            <button id="loadMonthlyRevenueHistoryBtn" type="button">查詢已保存歷史</button>
+            <button id="syncMonthlyRevenueHistoryBtn" type="button">同步官方歷史</button>
+          </div>
+          <div id="monthlyRevenueHistoryStatus" class="meta-bar" role="status" aria-live="polite">
+            選擇股票與月份；同步只下載尚未保存的官方封存月份。
+          </div>
+          <div id="monthlyRevenueHistoryTable" class="table compact"></div>
+        </article>
+        <article class="panel">
+          <div class="panel-head"><h3>損益表歷史</h3><span class="chip">MOPS 官方 IFRS · 2013 起</span></div>
+          <div class="filter-bar">
+            <label>股票
+              <input id="incomeStatementSymbol" placeholder="例如 2330.TW" />
+            </label>
+            <label>起始季度
+              <select id="incomeStatementStart"></select>
+            </label>
+            <label>結束季度
+              <select id="incomeStatementEnd"></select>
+            </label>
+            <button id="loadIncomeStatementHistoryBtn" type="button">查詢已保存歷史</button>
+            <button id="syncIncomeStatementHistoryBtn" type="button">同步官方歷史</button>
+          </div>
+          <div id="incomeStatementHistoryStatus" class="meta-bar" role="status" aria-live="polite">
+            選擇股票與季度；預設涵蓋 2013 年起超過十年的官方 IFRS 損益表。
+          </div>
+          <div id="incomeStatementHistoryTable" class="table compact"></div>
+        </article>
+        <article class="panel">
+          <div class="panel-head"><h3>資產負債表歷史</h3><span class="chip">MOPS 官方 IFRS · 季度比較</span></div>
+          <div class="filter-bar">
+            <label>股票
+              <input id="balanceSheetSymbol" placeholder="例如 2330.TW" />
+            </label>
+            <label>起始季度
+              <select id="balanceSheetStart"></select>
+            </label>
+            <label>結束季度
+              <select id="balanceSheetEnd"></select>
+            </label>
+            <button id="loadBalanceSheetHistoryBtn" type="button">查詢已保存歷史</button>
+            <button id="syncBalanceSheetHistoryBtn" type="button">同步官方歷史</button>
+          </div>
+          <div id="balanceSheetHistoryStatus" class="meta-bar" role="status" aria-live="polite">
+            選擇股票與季度；每季保存官方期末值，並比較相鄰季度的差額與變動率。
+          </div>
+          <div id="balanceSheetHistoryTable" class="table compact"></div>
+        </article>
+        <article class="panel">
+          <div class="panel-head"><h3>現金流量表歷史</h3><span class="chip">MOPS 官方 IFRS · 獲利品質</span></div>
+          <div class="filter-bar">
+            <label>股票
+              <input id="cashFlowSymbol" placeholder="例如 2330.TW" />
+            </label>
+            <label>起始季度
+              <select id="cashFlowStart"></select>
+            </label>
+            <label>結束季度
+              <select id="cashFlowEnd"></select>
+            </label>
+            <button id="loadCashFlowHistoryBtn" type="button">查詢已保存歷史</button>
+            <button id="syncCashFlowHistoryBtn" type="button">同步官方歷史</button>
+          </div>
+          <div id="cashFlowHistoryStatus" class="meta-bar" role="status" aria-live="polite">
+            選擇股票與季度；自由現金流使用營業現金流減資本支出，並與同期間稅後利益判斷現金轉換品質。
+          </div>
+          <div id="cashFlowHistoryTable" class="table compact"></div>
+        </article>
+        <article class="panel">
+          <div class="panel-head"><h3>財務比率歷史</h3><span class="chip">一致公式 · 雙來源對照</span></div>
+          <div class="filter-bar">
+            <label>股票
+              <input id="financialRatioSymbol" placeholder="例如 2330.TW" />
+            </label>
+            <label>起始季度
+              <select id="financialRatioStart"></select>
+            </label>
+            <label>結束季度
+              <select id="financialRatioEnd"></select>
+            </label>
+            <button id="loadFinancialRatioHistoryBtn" type="button">計算已保存資料</button>
+          </div>
+          <div id="financialRatioHistoryStatus" class="meta-bar" role="status" aria-live="polite">
+            先同步損益表與資產負債表；系統只合併同期間官方數值，並公開公式與來源。
+          </div>
+          <div id="financialRatioHistoryTable" class="table compact"></div>
+        </article>
+        <article class="panel">
+          <div class="panel-head"><h3>成長率歷史</h3><span class="chip">月 · 季 · 年 · CAGR</span></div>
+          <div class="filter-bar">
+            <label>股票
+              <input id="growthSymbol" placeholder="例如 2330.TW" />
+            </label>
+            <label>月資料起點
+              <input id="growthMonthlyStart" type="month" min="2010-01" value="2024-01" />
+            </label>
+            <label>月資料終點
+              <input id="growthMonthlyEnd" type="month" />
+            </label>
+            <label>季資料起點
+              <select id="growthQuarterlyStart"></select>
+            </label>
+            <label>季資料終點
+              <select id="growthQuarterlyEnd"></select>
+            </label>
+            <button id="loadGrowthHistoryBtn" type="button">計算成長率</button>
+          </div>
+          <div id="growthHistoryStatus" class="meta-bar" role="status" aria-live="polite">
+            月成長採官方揭露；季成長只比較連續官方單季值；年成長與 3／5／10 年 CAGR 使用官方年度端點。
+          </div>
+          <div id="growthHistoryTable" class="table compact"></div>
+        </article>
+        <article class="panel">
+          <div class="panel-head"><h3>財報修訂與當時版本</h3><span class="chip">不可變版本鏈 · Point-in-time</span></div>
+          <div class="filter-bar">
+            <label>股票
+              <input id="financialRevisionSymbol" placeholder="例如 2330.TW" />
+            </label>
+            <label>報表
+              <select id="financialRevisionKind">
+                <option value="income_statement">損益表</option>
+                <option value="balance_sheet">資產負債表</option>
+                <option value="cash_flow_statement">現金流量表</option>
+                <option value="monthly_revenue">月營收</option>
+              </select>
+            </label>
+            <label>期間
+              <input id="financialRevisionPeriod" placeholder="2025-Q4 或 2025-12" />
+            </label>
+            <label>當時已知時間（選填）
+              <input id="financialRevisionKnowledgeAt" type="datetime-local" />
+            </label>
+            <button id="loadFinancialRevisionHistoryBtn" type="button">查詢修訂鏈</button>
+          </div>
+          <div id="financialRevisionHistoryStatus" class="meta-bar" role="status" aria-live="polite">
+            輸入股票與期間；未指定當時已知時間時顯示目前版本，指定後則回到研究當時真正可得的版本。
+          </div>
+          <div id="financialRevisionHistoryTable" class="table compact"></div>
+        </article>
+      </section>
+
+      <section class="workspace-panel" id="instrumentEvents" data-workspace-parent="instrument" data-workspace-tab="events" data-ui-id="instrument.events.root">
+        <article class="panel"><div class="panel-head"><div><h3>個股新聞與事件</h3><p class="panel-copy">公司公告、重大訊息與相關新聞，保留來源與發生時間。</p></div></div><div class="workspace-page-content" data-route-content role="status">正在整理目前股票的新聞與公告…</div></article>
+      </section>
+      <section class="workspace-panel" id="instrumentEvidence" data-workspace-parent="instrument" data-workspace-tab="evidence" data-ui-id="instrument.evidence.root">
+        <article class="panel"><div class="panel-head"><div><h3>風險與證據</h3><p class="panel-copy">顯示資料品質、可追溯證據、Host 驗證與風控限制。</p></div></div><div class="workspace-page-content" data-route-content role="status">正在讀取證據與風險記錄…</div></article>
+      </section>
+
+      <section class="view" id="portfolio" data-workspace="portfolio" data-default-tab="overview" data-native-tabs="orders" data-ui-id="portfolio.orders.root">
+        <div class="grid two-col trade-grid">
+          <article class="panel market-panel">
+            <div class="panel-head"><h3>I. 交易功能</h3><span class="chip">僅供預覽</span></div>
+            <div class="trade-controls">
+              <input id="tradingSymbol" placeholder="股票代號，例如 2330.TW" />
+              <select id="tradingSide"><option value="buy">買進</option><option value="sell">賣出</option><option value="short_sell">融券放空</option><option value="buy_to_cover">買回回補</option></select>
+              <input id="tradingLots" type="number" min="1" max="999" step="1" value="1" />
+              <button id="refreshTradingBtn">更新交易預覽</button>
+            </div>
+            <div id="tradingStatusBox" class="event-list"></div>
+            <div id="tradingPreviewCards" class="summary-cards workspace-cards"></div>
+            <div id="tradingEstimateBox" class="event-list"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-head"><h3>風險與資產連動</h3><span class="chip">風控與資產</span></div>
+            <div id="tradingLinkedSummary" class="summary-cards workspace-cards"></div>
+            <div id="tradingPositionsTable" class="table compact"></div>
+            <div id="tradingMetaBox" class="event-list"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="view" id="research" data-workspace="research" data-default-tab="compare" data-native-tabs="deep-research" data-ui-id="research.deep-research.root">
+        <div class="grid two-col trade-grid">
+          <article class="panel market-panel">
+            <div class="panel-head"><h3>模型研究</h3><span class="chip">規則、模型與證據分離</span></div>
+            <div class="trade-controls">
+              <input id="assistantSymbol" placeholder="股票代號，例如 2330.TW" />
+              <button id="refreshAssistantBtn">更新規則參考</button>
+            </div>
+            <div id="assistantSummaryCards" class="summary-cards workspace-cards"></div>
+            <div id="assistantContextBox" class="event-list"></div>
+            <div id="assistantCardsBox" class="event-list"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-head"><h3>通知與自選脈絡</h3><span class="chip">通知與自選</span></div>
+            <div id="assistantWatchlistBox" class="event-list"></div>
+            <div id="assistantNotificationBox" class="event-list"></div>
+            <div id="assistantMetaBox" class="event-list"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="workspace-panel research-comparison-panel" id="researchComparison" data-workspace-parent="research" data-workspace-tab="compare" data-ui-id="research.compare.root">
+        <article class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>股票比較</h3>
+              <p class="panel-copy">以官方證券主檔驗證同產業標的，比較同日估值與同期間財務比率；不會用未驗證的相似名稱替代。</p>
+            </div>
+            <span class="chip">最多 6 檔</span>
+          </div>
+          <form id="researchComparisonForm" class="trade-controls research-comparison-controls">
+            <label>基準標的<input id="researchComparisonTarget" aria-label="比較基準標的" placeholder="例如 2330.TW" /></label>
+            <label>同業標的<input id="researchComparisonPeers" aria-label="比較同業標的" placeholder="以逗號分隔，例如 2303.TW, 2454.TW" /></label>
+            <button id="runResearchComparison" class="primary-btn" type="submit">開始比較</button>
+          </form>
+          <p id="researchComparisonStatus" class="workspace-subtitle" role="status">選擇 2～6 檔同產業股票後即可比較；目前標的會自動帶入。</p>
+          <div id="researchComparisonCandidates" class="research-comparison-candidates" aria-live="polite"></div>
+          <div id="researchComparisonTable" class="table compact research-comparison-table"></div>
+        </article>
+      </section>
+
+      <section class="workspace-panel" id="openstock" data-workspace-parent="research" data-workspace-tab="strategy-lab" data-ui-id="research.strategy-lab.root">
+        <div class="grid two-col trade-grid openstock-grid">
+          <article class="panel market-panel">
+            <div class="panel-head"><h3>量化策略研究</h3><span class="chip">策略與轉接器</span></div>
+            <div class="trade-controls">
+              <input id="openStockSymbol" placeholder="股票代號，例如 2330.TW" />
+              <select id="openStockMarket">
+                <option value="TW">TW</option>
+                <option value="US">US</option>
+                <option value="CRYPTO">CRYPTO</option>
+              </select>
+              <select id="openStockHorizon">
+                <option value="swing">波段</option>
+                <option value="intraday">當沖</option>
+                <option value="weekly">週線</option>
+                <option value="monthly">月線</option>
+              </select>
+              <button id="runOpenStockAI">執行研究</button>
+            </div>
+            <div class="trade-controls">
+              <select id="openStockSession">
+                <option value="pre_market">盤前觀察</option>
+                <option value="intraday">盤中提醒</option>
+                <option value="after_market">收盤檢討</option>
+              </select>
+              <button id="runOpenStockSession">執行批次</button>
+            </div>
+            <div id="openStockDecisionCards" class="summary-cards workspace-cards"></div>
+            <div id="openStockSessionBox" class="summary-cards workspace-cards"></div>
+            <div id="openStockFlowBox" class="process-flow" aria-label="策略決策流程"></div>
+            <div id="openStockSignalBox" class="event-list"></div>
+            <div id="openStockRiskBox" class="event-list"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-head"><h3>研究來源與證據</h3><span class="chip">資料轉接器</span></div>
+            <div id="openStockSourcesBox" class="summary-cards workspace-cards"></div>
+            <div id="openStockAdapterBox" class="event-list"></div>
+            <details class="technical-details">
+              <summary>技術細節</summary>
+              <pre id="openStockRawBox" class="json-box openstock-json"></pre>
+            </details>
+          </article>
+        </div>
+      </section>
+
+      <section class="workspace-panel" id="risk" data-workspace-parent="portfolio" data-workspace-tab="risk" data-ui-id="portfolio.risk.root">
+        <div class="grid two-col trade-grid">
+          <article class="panel">
+            <div class="panel-head"><h3>K. 風控功能</h3><span class="chip">風險摘要</span></div>
+            <div class="trade-controls">
+              <input id="riskSymbol" placeholder="股票代號，例如 2330.TW" />
+              <select id="riskSide"><option value="buy">買進</option><option value="sell">賣出</option></select>
+              <input id="riskLots" type="number" min="1" max="999" step="1" value="1" />
+              <button id="refreshRiskBtn">更新風險摘要</button>
+            </div>
+            <div id="riskSummaryCards" class="summary-cards workspace-cards"></div>
+            <div id="riskAlertsBox" class="event-list"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-head"><h3>持倉快照</h3><span class="chip">部位快照</span></div>
+            <div id="riskPositionsTable" class="table compact"></div>
+            <div id="riskMetaBox" class="event-list"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="workspace-panel paper-trading-view" id="assets" data-workspace-parent="portfolio" data-workspace-tab="overview positions simulation" data-ui-id="portfolio.overview.root">
+        <div class="grid two-col trade-grid">
+          <article class="panel">
+            <div class="panel-head"><h3>L. 帳務與資產</h3><span class="chip">本地預覽</span></div>
+            <div class="trade-controls">
+              <div class="trade-hint">本區整合 I/J/K 的交易、建議、風控脈絡，並呈現本地資產預覽。</div>
+              <button id="refreshAssetsBtn">更新資產摘要</button>
+            </div>
+            <div id="assetSummaryCards" class="summary-cards workspace-cards"></div>
+            <div id="assetStatusBox" class="event-list"></div>
+          </article>
+          <article class="panel" data-ui-id="portfolio.positions.root">
+            <div class="panel-head"><h3>持倉明細</h3><span class="chip">部位</span></div>
+            <div id="assetPositionsTable" class="table compact"></div>
+            <div id="assetMetaBox" class="event-list"></div>
+          </article>
+        </div>
+
+        <article id="paperTrainingPanel" class="panel paper-training-panel" data-ui-id="portfolio.simulation.root">
+          <div class="panel-head">
+            <div>
+              <h3>AI 虛擬資金訓練場</h3>
+              <p class="panel-copy">使用者與 Codex 都可用真實市場價格進行紙上買賣；研究與風控只提示、不阻擋實驗。</p>
+            </div>
+            <span class="chip">REAL PRICE · PAPER ONLY</span>
+          </div>
+          <div id="paperTrainingSummary" class="summary-cards paper-training-grid"></div>
+          <div class="paper-training-controls">
+            <label>初始虛擬資金<input id="paperTrainingInitialCash" type="number" min="1" step="1000" value="10000" /></label>
+            <label>真實股票代號<input id="paperTrainingSymbol" value="" placeholder="選擇或輸入股票代號" /></label>
+            <label>動作<select id="paperTrainingSide"><option value="buy">買進</option><option value="add">加碼</option><option value="sell">全部賣出</option><option value="reduce">減碼百分比</option></select></label>
+            <label>買進金額 / 減碼 %<input id="paperTrainingAmount" type="number" min="1" step="1" value="1000" /></label>
+            <label>回合 ID<input id="paperTrainingEpisodeId" readonly placeholder="系統自動建立" /></label>
+          </div>
+          <label class="paper-training-policy">實驗目標<input id="paperTrainingObjective" value="讓 Codex 測試選股、進出場與持倉管理假設" /></label>
+          <label class="paper-training-policy">買賣理由<textarea id="paperTrainingRationale" rows="3" placeholder="在成交前留下原始理由，避免事後改寫。"></textarea></label>
+          <div class="paper-training-actions">
+            <button id="paperTrainingReset" type="button">重設虛擬資金</button>
+            <button id="paperTrainingStartEpisode" type="button">開始學習回合</button>
+            <button id="paperTrainingSubmitOrder" class="primary" type="button">用真實價格模擬成交</button>
+            <button id="paperTrainingRefreshPrices" type="button">真實行情重新估值</button>
+            <button id="paperTrainingEvaluate" type="button">計算本回合 Reward</button>
+            <button id="paperTrainingCloseEpisode" type="button">結束回合</button>
+          </div>
+          <div id="paperTrainingStatus" class="paper-training-status">正在讀取虛擬帳戶…</div>
+          <div class="grid two-col">
+            <div id="paperTrainingPositions" class="paper-training-ledger"></div>
+            <div id="paperTrainingLearning" class="paper-training-ledger"></div>
+          </div>
+          <label class="paper-training-policy">回合反思<textarea id="paperTrainingReflection" rows="4" placeholder="記錄成功、失敗、資料缺口、下一次要驗證的規則。"></textarea></label>
+          <div class="paper-training-actions"><button id="paperTrainingSaveReflection" type="button">保存反思</button></div>
+          <div class="paper-training-policy">只有真實存在的標的與已驗證的最後成交價／官方收盤價才能成交。Codex 不受研究或風控 Gate 阻擋，但不能超支、不能無券賣出，也不能自行填入價格。</div>
+        </article>
+      </section>
+
+      <section class="workspace-panel" id="portfolioPerformance" data-workspace-parent="portfolio" data-workspace-tab="performance" data-ui-id="portfolio.performance.root">
+        <article class="panel"><div class="panel-head"><div><h3>績效與歸因</h3><p class="panel-copy">從已保存的 Paper OMS 帳務計算報酬、回撤與持倉貢獻。</p></div></div><div class="workspace-page-content" data-route-content role="status">正在讀取績效所需的資產與成交記錄…</div></article>
+      </section>
+
+      <section class="workspace-panel" id="notifications" data-workspace-parent="market" data-workspace-tab="monitor" data-ui-id="market.monitor.notifications">
+        <div class="grid two-col">
+          <article class="panel">
+            <div class="panel-head"><h3>M. 通知通道</h3><span class="chip">Telegram / LINE</span></div>
+            <div id="notificationStatusBox" class="event-list"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-head"><h3>訊息預覽</h3><span class="chip">僅供預覽</span></div>
+            <button id="sendNotificationDryRunBtn" class="primary-btn small-btn">發送 dry-run 檢查</button>
+            <div id="notificationSendResultBox" class="event-list"></div>
+            <div id="notificationPreviewBox" class="event-list"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="workspace-panel" id="linkage" data-workspace-parent="research" data-workspace-tab="relationships" data-ui-id="research.relationships.root">
+        <article class="panel">
+          <div class="panel-head"><h3>關聯推演</h3><span class="chip">知識圖譜原型</span></div>
+          <div class="linkage-controls">
+            <select id="sourceFactor"><option>SOX</option><option>US10Y</option><option>USD/TWD</option><option>OIL</option></select>
+            <span>影響</span>
+            <select id="targetSymbol"><option value="">請先搜尋並選擇股票</option></select>
+            <button id="runLinkage">推演關聯</button>
+          </div>
+          <div id="linkageResult" class="linkage-result"></div>
+        </article>
+      </section>
+
+      <section class="workspace-panel" id="researchFactors" data-workspace-parent="research" data-workspace-tab="factor-lab" data-ui-id="research.factor-lab.root">
+        <article class="panel"><div class="panel-head"><div><h3>因子研究</h3><p class="panel-copy">檢視量價、基本面與籌碼因子的可用性、衰減與關聯。</p></div></div><div class="workspace-page-content" data-route-content role="status">正在讀取可用因子資料…</div></article>
+      </section>
+      <section class="workspace-panel" id="researchReports" data-workspace-parent="research" data-workspace-tab="reports" data-ui-id="research.reports.root">
+        <article class="panel"><div class="panel-head"><div><h3>研究報告</h3><p class="panel-copy">管理研究結論、Agent Artifact、來源與可重現資訊。</p></div></div><div class="workspace-page-content" data-route-content role="status">正在讀取研究報告…</div></article>
+      </section>
+
+      <section class="workspace-panel" id="catalog" data-workspace-parent="system" data-workspace-tab="data-platform" data-ui-id="system.data-platform.root">
+        <article class="panel" aria-labelledby="dataPlatformTitle">
+          <div class="panel-head">
+            <div>
+              <h3 id="dataPlatformTitle">統一市場資料平台</h3>
+              <p class="panel-copy">顯示唯一資料入口、來源註冊、Point-in-time 版本、增量 checkpoint、品質與血緣。</p>
+            </div>
+            <button id="refreshDataPlatform" type="button">重新整理</button>
+          </div>
+          <div id="dataPlatformSummary" class="summary-cards wide"></div>
+          <section aria-labelledby="entityRegistryResolverTitle">
+            <div class="panel-head">
+              <div>
+                <h4 id="entityRegistryResolverTitle">Entity Registry 代號解析</h4>
+                <p class="panel-copy">以正式代號、交易所代碼、統編或內部 ENT ID 查詢同一標的；代號重用時會揭露候選，不會靜默覆蓋。</p>
+              </div>
+              <span id="entityRegistryStatusChip" class="chip">載入中</span>
+            </div>
+            <div class="linkage-controls">
+              <label for="entityIdentifierInput">代號或 Entity ID</label>
+              <input id="entityIdentifierInput" type="text" placeholder="例如：2330、2330.TW 或 ENT-…" autocomplete="off" />
+              <button id="resolveEntityIdentifier" type="button">解析標的</button>
+            </div>
+            <div id="entityResolutionResult" class="event-list" aria-live="polite"></div>
+          </section>
+          <div class="grid two-col">
+            <section>
+              <div class="panel-head"><h4>資料集與更新狀態</h4><span id="dataPlatformStatusChip" class="chip">載入中</span></div>
+              <div id="dataPlatformDatasets" class="event-list"></div>
+            </section>
+            <section>
+              <div class="panel-head"><h4>來源註冊與快取政策</h4><span class="chip">Source Registry</span></div>
+              <div id="dataPlatformSources" class="event-list"></div>
+            </section>
+          </div>
+          <details class="technical-details" open>
+            <summary>資料來源可觀測性與自動告警</summary>
+            <div class="panel-head compact">
+              <p class="panel-copy">以實際來源成功時間評估資料新鮮度，並把結果寫入不可變 SLO 收據；缺資料或逾時會失敗關閉。</p>
+              <button id="notifySourceObservability" type="button">評估並通知</button>
+            </div>
+            <div id="sourceObservabilityActionResult" class="event-list" aria-live="polite"></div>
+            <div id="dataSourceObservability" class="event-list" aria-live="polite"></div>
+          </details>
+          <details class="technical-details" open>
+            <summary>新聞歷史回放覆蓋證據</summary>
+            <div id="newsHistoryCoverage" class="event-list" aria-live="polite"></div>
+          </details>
+          <details class="technical-details" open>
+            <summary>跨來源校驗衝突</summary>
+            <div id="dataReconciliationConflicts" class="event-list" aria-live="polite"></div>
+          </details>
+          <details class="technical-details" open>
+            <summary>最新完整資料血緣</summary>
+            <div id="dataPlatformLineage" class="event-list"></div>
+          </details>
+        </article>
+        <article class="panel">
+          <div class="panel-head"><h3>系統規格覆蓋</h3><span class="chip">規格覆蓋</span></div>
+          <div id="requirementContractBox" class="summary-cards wide"></div>
+          <div id="scheduleGuardBox" class="summary-cards wide"></div>
+          <div id="sourcePolicyBox" class="summary-cards wide"></div>
+          <div id="officialEventsBox" class="summary-cards wide"></div>
+          <div id="officialDerivativesBox" class="summary-cards wide"></div>
+          <div id="updateRunnerBox" class="summary-cards wide"></div>
+          <div id="requirementSafetyBox" class="event-list"></div>
+        </article>
+        <article class="panel">
+          <div class="panel-head"><h3>資料目錄</h3><span class="chip">config/data_catalog.yaml</span></div>
+          <details class="technical-details">
+            <summary>資料目錄 JSON</summary>
+            <pre id="catalogBox" class="json-box"></pre>
+          </details>
+        </article>
+      </section>
+
+      <section class="view" id="system" data-workspace="system" data-default-tab="agent-models" data-native-tabs="brokers agent-models tools interface">
+        <article class="panel settings-panel">
+          <div class="panel-head settings-heading">
+            <div>
+              <p class="settings-kicker">SYSTEM CONTROL CENTER</p>
+              <h3 id="settingsPageTitle" data-i18n="settings.title">Agent 與模型</h3>
+              <p id="settingsPageSubtitle" class="panel-copy">每個系統分頁只管理自己的設定與健康狀態，不再混合其他功能。</p>
+            </div>
+            <span class="chip" id="settingsProfileChip">系統狀態</span>
+          </div>
+
+          <div class="settings-layout">
+            <section class="settings-section system-agent-connection" data-system-section="agent-models" data-ui-id="system.agent-models.root" aria-labelledby="settingsAgentConnectionTitle">
+              <div class="settings-section-head">
+                <div>
+                  <h4 id="settingsAgentConnectionTitle">Codex 執行工作階段</h4>
+                  <p>確認此工作站的 Codex 帳號、執行核心與 Computer Use 能力；市場 API、Skills 與 MCP 不在本頁重複顯示。</p>
+                </div>
+                <button id="refreshAgentStatus" type="button">重新檢查</button>
+              </div>
+              <div class="settings-integration-grid">
+                <article class="settings-integration-card settings-codex-card">
+                  <div class="settings-card-head"><span class="settings-card-icon">AI</span><div><h5>Codex 帳號與專案</h5><p>ChatGPT 登入、執行核心與工作目錄</p></div><span id="settingsCodexBadge" class="settings-state-badge">檢查中</span></div>
+                  <dl class="project-facts settings-project-facts">
+                    <div><dt>執行核心</dt><dd id="settingsCodexRuntime">Codex App Server</dd></div>
+                    <div><dt>登入帳號</dt><dd id="settingsCodexIdentity">檢查中</dd></div>
+                    <div><dt>專案範圍</dt><dd id="settingsCodexProject">完整工作目錄</dd></div>
+                    <div><dt>UI 操作</dt><dd id="settingsComputerUse">Computer Use</dd></div>
+                  </dl>
+                  <div id="codexProjectSummary" class="project-sync-result">專案已由目前工作目錄載入。</div>
+                  <div class="settings-card-actions">
+                    <button id="syncCodexProject" type="button">重新同步專案</button>
+                    <button id="settingsLoginCodex" type="button">登入 Codex</button>
+                    <button id="logoutCodex" class="logout-button" type="button">登出 Codex</button>
+                  </div>
+                </article>
+              </div>
+            </section>
+
+            <section class="settings-section system-skills" data-system-section="tools" data-ui-id="system.tools.root" aria-labelledby="settingsSkillsTitle">
+              <div class="settings-section-head">
+                <div>
+                  <h4 id="settingsSkillsTitle">Skills／MCP 工具服務</h4>
+                  <p>檢視本機 Skills、MCP Server 與工具橋接健康狀態；模型與 API 連線不會混入本頁。</p>
+                </div>
+                <button id="refreshSkillsStatus" type="button">重新檢查</button>
+              </div>
+              <div class="settings-overview-strip system-page-summary" aria-label="Skills 與 MCP 摘要">
+                <div><span>Skills</span><strong id="settingsSkillCount">-</strong><small>本機可用能力</small></div>
+                <div><span>MCP</span><strong id="settingsMcpCount">-</strong><small>工具伺服器</small></div>
+              </div>
+              <div class="settings-integration-grid">
+                <article class="settings-integration-card settings-skills-card">
+                  <div class="settings-card-head"><span class="settings-card-icon">SK</span><div><h5>Skills</h5><p>Codex 與專案本機技能</p></div><span id="settingsSkillsBadge" class="settings-state-badge">檢查中</span></div>
+                  <div id="settingsSkillsBox" class="settings-status-list"><p>正在掃描本機 Skills…</p></div>
+                </article>
+
+                <article class="settings-integration-card settings-mcp-card">
+                  <div class="settings-card-head"><span class="settings-card-icon">MCP</span><div><h5>MCP 工具連線</h5><p>由 Codex App Server 管理</p></div><span id="settingsMcpBadge" class="settings-state-badge">檢查中</span></div>
+                  <div id="settingsMcpBox" class="settings-status-list"><p>正在檢查 MCP 設定…</p></div>
+                </article>
+              </div>
+            </section>
+
+            <section class="settings-section system-api-connections" data-system-section="brokers" data-ui-id="system.brokers.root" aria-labelledby="settingsApiTitle">
+              <div class="settings-section-head">
+                <div>
+                  <h4 id="settingsApiTitle">資料 API 與通知</h4>
+                  <p>查看市場資料、通知與本機服務的健康狀態；金鑰、Token 與帳戶資料不會顯示。</p>
+                </div>
+                <button id="refreshApiStatus" type="button">重新檢查</button>
+              </div>
+              <div class="settings-overview-strip system-page-summary" aria-label="資料 API 摘要">
+                <div><span>API</span><strong id="settingsApiCount">-</strong><small>資料與通知連線</small></div>
+              </div>
+              <div class="settings-integration-grid">
+                <article class="settings-integration-card settings-api-card">
+                  <div class="settings-card-head"><span class="settings-card-icon">API</span><div><h5>資料 API 與通知</h5><p>只顯示連線狀態，不顯示金鑰</p></div><span id="settingsApiBadge" class="settings-state-badge">檢查中</span></div>
+                  <div id="settingsApiBox" class="settings-status-list"><p>正在檢查 API 狀態…</p></div>
+                </article>
+              </div>
+            </section>
+
+            <section class="settings-section agent-runtime-settings" data-system-section="agent-models" aria-labelledby="settingsAgentRuntime">
+              <div class="settings-section-head">
+                <div>
+                  <h4 id="settingsAgentRuntime">Stock AI Agent 執行核心</h4>
+                  <p>Stock AI Agent Runtime 保留相同工具、權限與稽核層；你可以替換負責規劃的模型或外部 Agent。</p>
+                </div>
+                <span id="settingsAgentBadge" class="settings-state-badge">載入中</span>
+              </div>
+              <div class="agent-settings-toolbar glass-group">
+                <div class="agent-setting-field">
+                  <label for="agentDefaultDriver">模型提供者</label>
+                  <select id="agentDefaultDriver">
+                    <option value="codex">Codex App Server</option>
+                    <option value="openai-compatible">OpenAI 相容／本地模型</option>
+                    <option value="external-agent">外部 Agent Framework</option>
+                  </select>
+                </div>
+                <div class="agent-settings-summary">
+                  <span><small>Agent</small><strong id="settingsAgentDriverSummary">Stock AI Agent</strong></span>
+                  <span><small>工具</small><strong id="settingsAgentToolCount">-</strong></span>
+                  <span><small>原生能力</small><strong>保留</strong></span>
+                  <span><small>真實交易</small><strong>關閉</strong></span>
+                </div>
+              </div>
+              <div class="agent-provider-settings-grid">
+                <fieldset class="agent-provider-panel" data-agent-provider-panel="openai-compatible" hidden>
+                  <legend>OpenAI 相容／本地模型連線</legend>
+                  <label>API Base URL<input id="agentOpenAIBaseUrl" type="url" inputmode="url" placeholder="http://127.0.0.1:11434/v1" autocomplete="off" /></label>
+                  <div class="agent-model-field">
+                    <label for="agentOpenAIModel">模型名稱</label>
+                    <div class="agent-model-input-row">
+                      <input id="agentOpenAIModel" type="text" placeholder="先讀取或輸入模型 ID" autocomplete="off" />
+                      <button id="discoverAgentModels" type="button">讀取模型</button>
+                    </div>
+                    <label id="agentDiscoveredModelsField" class="agent-discovered-model-field" for="agentDiscoveredModels" hidden>
+                      <span>可用模型（選擇後帶入模型名稱）</span>
+                      <select id="agentDiscoveredModels" aria-label="已載入的模型" size="6" disabled>
+                        <option value="">尚未讀取模型</option>
+                      </select>
+                    </label>
+                    <small id="agentModelDiscoveryState">輸入 API Base URL 後讀取 Ollama 或 OpenAI 相容服務中的模型。</small>
+                  </div>
+                  <label>API Key<input id="agentOpenAIKey" type="password" placeholder="留空會保留既有金鑰" autocomplete="new-password" /></label>
+                  <label class="agent-inline-check"><input id="agentOpenAINoKey" type="checkbox" /> 本機服務不需要金鑰</label>
+                  <label class="agent-inline-check"><input id="agentOpenAIClearKey" type="checkbox" /> 移除已保存的金鑰</label>
+                  <label>逾時秒數<input id="agentOpenAITimeout" type="number" min="5" max="600" step="1" value="120" /></label>
+                  <small id="agentOpenAIKeyState">金鑰只保存於 macOS Keychain，不會回傳到頁面。</small>
+                </fieldset>
+                <fieldset class="agent-provider-panel" data-agent-provider-panel="external-agent" hidden>
+                  <legend>外部 Agent Framework</legend>
+                  <label>Agent Endpoint<input id="agentExternalEndpoint" type="url" inputmode="url" placeholder="http://127.0.0.1:9000/agent/turn" autocomplete="off" /></label>
+                  <label>Framework<input id="agentExternalFramework" type="text" placeholder="Hermes、LangGraph、AutoGen…" autocomplete="off" /></label>
+                  <label>模型名稱<input id="agentExternalModel" type="text" placeholder="選填" autocomplete="off" /></label>
+                  <label>Bearer Token<input id="agentExternalToken" type="password" placeholder="留空會保留既有 Token" autocomplete="new-password" /></label>
+                  <label class="agent-inline-check"><input id="agentExternalClearToken" type="checkbox" /> 移除已保存的 Token</label>
+                  <small id="agentExternalTokenState">Token 只保存於 macOS Keychain，不會回傳到頁面。</small>
+                </fieldset>
+              </div>
+              <p class="agent-native-capability-copy">被選定的模型只負責規劃與推理；專案、終端機、網站、Skills、MCP、UI、風控與排程仍由 Stock AI Agent Runtime 執行並留下相同事件紀錄。Codex 原生能力不會因切換模型而移除。</p>
+              <details class="agent-capability-details glass-group">
+                <summary>支援的連接方式</summary>
+                <p>OpenAI-compatible 可連接相容雲端 API、Ollama gateway、vLLM 或其他本機服務；外部 Agent protocol 可連接 Hermes、LangGraph、AutoGen、CrewAI 或自訂 Agent server。Anthropic／Gemini 可透過相容 gateway 或外部 Agent 接入。</p>
+              </details>
+              <details class="agent-capability-details glass-group">
+                <summary>查看主系統工具分類</summary>
+                <div id="settingsAgentToolSummary" class="agent-tool-capability-summary"></div>
+              </details>
+              <div class="settings-card-actions agent-settings-actions">
+                <button id="testAgentProvider" type="button">測試目前連線</button>
+                <button id="saveAgentRuntimeSettings" class="primary" type="button">儲存 Agent 設定</button>
+                <span id="agentSettingsStatus" role="status" aria-live="polite">正在載入模型提供者設定。</span>
+              </div>
+            </section>
+
+            <section class="settings-section broker-gateway-settings" data-system-section="brokers" aria-labelledby="settingsBrokerGateway">
+              <div class="settings-section-head">
+                <div>
+                  <h4 id="settingsBrokerGateway">五券商 API 與人工授權</h4>
+                  <p>集中查看台新、富邦、永豐、元大與元富的 SDK、帳號授權及唯讀驗證狀態。開戶、簽署、憑證與 API Key 都必須由帳戶本人在券商官方頁面完成。</p>
+                </div>
+                <button id="refreshBrokerConnections" type="button">重新檢查</button>
+              </div>
+              <div class="broker-safety-banner" role="note">
+                <strong>真實交易保持關閉</strong>
+                <span>Agent 只能讀取已授權資料及建立待核准提案，不能登入帳戶、讀取密碼／憑證、直接送單或轉帳。</span>
+              </div>
+              <div id="brokerConnectionGrid" class="broker-connection-grid" aria-live="polite">
+                <article class="broker-connection-card is-loading">
+                  <div class="settings-card-head"><span class="settings-card-icon">API</span><div><h5>正在讀取券商閘道</h5><p>檢查隔離程序、SDK 與人工授權狀態</p></div><span class="settings-state-badge">檢查中</span></div>
+                </article>
+              </div>
+              <section id="taishinReadonlyPlan" class="taishin-readonly-plan" hidden aria-live="polite"></section>
+              <p id="brokerGatewayStatus" class="broker-gateway-status" role="status">尚未連接任何券商帳戶；這不影響市場研究與其他功能。</p>
+            </section>
+
+            <section class="settings-section" data-system-section="interface" data-ui-id="system.interface.root" aria-labelledby="themeSettingsTitle">
+              <div class="settings-section-head">
+                <div>
+                  <h4 id="themeSettingsTitle" data-i18n="settings.themeTitle">介面風格</h4>
+                  <p data-i18n="settings.themeCopy">依照工作環境選擇整套配色；文字對比、玻璃明暗與市場訊號會同步調整。</p>
+                </div>
+              </div>
+              <div class="theme-picker" id="themePicker" role="radiogroup" aria-label="背景與介面風格">
+                <label class="theme-choice theme-exchange">
+                  <input type="radio" name="uiTheme" value="exchange" checked />
+                  <span class="theme-preview" aria-hidden="true"><i></i><i></i><i></i></span>
+                  <strong data-i18n="theme.exchange">交易所夜色</strong>
+                  <small data-i18n="theme.exchangeCopy">適合長時間盯盤，清楚辨識多色市場訊號</small>
+                </label>
+                <label class="theme-choice theme-graphite">
+                  <input type="radio" name="uiTheme" value="graphite" />
+                  <span class="theme-preview" aria-hidden="true"><i></i><i></i><i></i></span>
+                  <strong data-i18n="theme.graphite">石墨黑</strong>
+                  <small data-i18n="theme.graphiteCopy">降低色彩干擾，專注閱讀數據與報表</small>
+                </label>
+                <label class="theme-choice theme-clarity">
+                  <input type="radio" name="uiTheme" value="clarity" />
+                  <span class="theme-preview" aria-hidden="true"><i></i><i></i><i></i></span>
+                  <strong data-i18n="theme.clarity">清透玻璃</strong>
+                  <small data-i18n="theme.clarityCopy">提升折射與高光，呈現更清楚的玻璃層次</small>
+                </label>
+                <label class="theme-choice theme-terminal">
+                  <input type="radio" name="uiTheme" value="terminal" />
+                  <span class="theme-preview" aria-hidden="true"><i></i><i></i><i></i></span>
+                  <strong data-i18n="theme.terminal">終端綠</strong>
+                  <small data-i18n="theme.terminalCopy">以綠色焦點突出系統狀態與密集資訊</small>
+                </label>
+                <label class="theme-choice theme-aurora">
+                  <input type="radio" name="uiTheme" value="aurora" />
+                  <span class="theme-preview" aria-hidden="true"><i></i><i></i><i></i></span>
+                  <strong data-i18n="theme.aurora">極光紫</strong>
+                  <small data-i18n="theme.auroraCopy">以紫藍色調區分研究內容與市場訊號</small>
+                </label>
+                <label class="theme-choice theme-pearl">
+                  <input type="radio" name="uiTheme" value="pearl" />
+                  <span class="theme-preview" aria-hidden="true"><i></i><i></i><i></i></span>
+                  <strong data-i18n="theme.pearl">珍珠白</strong>
+                  <small data-i18n="theme.pearlCopy">溫暖淺色介面，適合明亮環境與長篇閱讀</small>
+                </label>
+                <label class="theme-choice theme-daylight">
+                  <input type="radio" name="uiTheme" value="daylight" />
+                  <span class="theme-preview" aria-hidden="true"><i></i><i></i><i></i></span>
+                  <strong data-i18n="theme.daylight">日光藍</strong>
+                  <small data-i18n="theme.daylightCopy">冷白藍色對比，適合日間分析工作</small>
+                </label>
+              </div>
+            </section>
+
+            <section class="settings-section" data-system-section="interface" aria-labelledby="backdropSettingsTitle">
+              <div class="settings-section-head">
+                <div>
+                  <h4 id="backdropSettingsTitle" data-i18n="settings.backdropTitle">背景光學</h4>
+                  <p data-i18n="settings.backdropCopy">選擇光線穿過玻璃時的焦點與空間深度；只改變視覺氣氛，不影響資料與功能。</p>
+                </div>
+              </div>
+              <div class="backdrop-picker" id="backdropPicker" role="radiogroup" aria-label="背景光學效果">
+                <label class="backdrop-choice backdrop-constellation">
+                  <input type="radio" name="uiBackdrop" value="constellation" checked />
+                  <span class="backdrop-preview" aria-hidden="true"></span>
+                  <strong data-i18n="backdrop.constellation">柔光焦點</strong>
+                  <small data-i18n="backdrop.constellationCopy">左上冷白柔光與右下青色光域</small>
+                </label>
+                <label class="backdrop-choice backdrop-grid">
+                  <input type="radio" name="uiBackdrop" value="grid" />
+                  <span class="backdrop-preview" aria-hidden="true"></span>
+                  <strong data-i18n="backdrop.grid">稜鏡折射</strong>
+                  <small data-i18n="backdrop.gridCopy">斜向透明折射面與冷暖分光</small>
+                </label>
+                <label class="backdrop-choice backdrop-waves">
+                  <input type="radio" name="uiBackdrop" value="waves" />
+                  <span class="backdrop-preview" aria-hidden="true"></span>
+                  <strong data-i18n="backdrop.waves">景深流光</strong>
+                  <small data-i18n="backdrop.wavesCopy">中央保持清晰，四周逐步加深</small>
+                </label>
+                <label class="backdrop-choice backdrop-bands">
+                  <input type="radio" name="uiBackdrop" value="bands" />
+                  <span class="backdrop-preview" aria-hidden="true"></span>
+                  <strong data-i18n="backdrop.bands">色散微光</strong>
+                  <small data-i18n="backdrop.bandsCopy">藍、紫、金三色柔光分散畫面</small>
+                </label>
+                <label class="backdrop-choice backdrop-tiles">
+                  <input type="radio" name="uiBackdrop" value="tiles" />
+                  <span class="backdrop-preview" aria-hidden="true"></span>
+                  <strong data-i18n="backdrop.tiles">市場聚光</strong>
+                  <small data-i18n="backdrop.tilesCopy">中央亮區搭配明顯暗角收斂</small>
+                </label>
+                <label class="backdrop-choice backdrop-none">
+                  <input type="radio" name="uiBackdrop" value="none" />
+                  <span class="backdrop-preview" aria-hidden="true"></span>
+                  <strong data-i18n="backdrop.none">原生壁紙</strong>
+                  <small data-i18n="backdrop.noneCopy">只保留主題壁紙與玻璃折射</small>
+                </label>
+              </div>
+            </section>
+
+            <section class="settings-section" data-system-section="interface" aria-labelledby="displaySettingsTitle">
+              <div class="settings-section-head">
+                <div>
+                  <h4 id="displaySettingsTitle" data-i18n="settings.displayTitle">顯示與語言</h4>
+                  <p data-i18n="settings.displayCopy">調整介面語言、資訊密度與閱讀比例。</p>
+                </div>
+              </div>
+              <div class="settings-rows">
+                <label class="setting-row" for="uiLanguage">
+                  <span><strong data-i18n="settings.language">介面語言</strong><small data-i18n="settings.languageCopy">切換導覽、標題與設定介面的語言</small></span>
+                  <select id="uiLanguage"><option value="zh-Hant">繁體中文</option><option value="en">English</option></select>
+                </label>
+                <label class="setting-row" for="uiDensity">
+                  <span><strong data-i18n="settings.density">資訊密度</strong><small data-i18n="settings.densityCopy">控制卡片、表格與導覽間距</small></span>
+                  <select id="uiDensity"><option value="comfortable" data-i18n="density.comfortable">舒適</option><option value="compact" data-i18n="density.compact">緊湊</option></select>
+                </label>
+                <label class="setting-row" for="uiFontScale">
+                  <span><strong data-i18n="settings.fontScale">文字比例</strong><small data-i18n="settings.fontScaleCopy">放大主要資料與操作文字</small></span>
+                  <span class="range-control"><input id="uiFontScale" type="range" min="90" max="115" step="0.1" value="100" /><output id="uiFontScaleValue">100%</output></span>
+                </label>
+                <label class="setting-row" for="uiGlassTransparency">
+                  <span><strong data-i18n="settings.glassTransparency">玻璃透明度</strong><small data-i18n="settings.glassTransparencyCopy">向右增加通透感，向左提高內容後方的遮蔽</small></span>
+                  <span class="range-control"><input id="uiGlassTransparency" type="range" min="0" max="95" step="0.1" value="70" /><output id="uiGlassTransparencyValue">70%</output></span>
+                </label>
+              </div>
+            </section>
+
+          </div>
+
+          <div class="settings-actions">
+            <span id="settingsStatus" role="status" aria-live="polite" data-i18n="settings.preview">正在即時預覽，套用後會保存到這台裝置。</span>
+            <div>
+              <button id="resetSettingsBtn" type="button" data-i18n="settings.reset">恢復預設</button>
+              <button id="saveSettingsBtn" type="button" class="primary" data-i18n="settings.save">套用設定</button>
+            </div>
+          </div>
+        </article>
+      </section>
+    </main>
+    <aside id="agentDock" class="agent-dock" role="complementary" aria-label="Stock AI Agent" data-agent-dock-v2>
+      <div id="agentDockResizer" class="agent-dock-resizer" role="separator" aria-label="調整 Stock AI Agent 寬度" aria-orientation="vertical" tabindex="0"></div>
+      <header id="agentDockHeader" class="agent-dock-header">
+        <div class="agent-dock-title">
+          <span class="agent-dock-mark" aria-hidden="true">AI</span>
+          <div>
+            <strong>Stock AI Agent</strong>
+            <span id="agentDockIdentity">Runtime 載入中</span>
+            <small id="agentDockConnection">Advisory · Offline</small>
+          </div>
+        </div>
+        <div class="agent-dock-header-actions">
+          <button id="agentDockNewSession" type="button" aria-label="新增 Agent Session">新對話</button>
+          <button id="agentDockHistory" type="button" aria-label="開啟 Agent Session 歷史">歷史</button>
+          <button id="agentTechnicalViewToggle" type="button" aria-label="切換 Agent 技術檢視" aria-pressed="false">技術檢視</button>
+        </div>
+        <strong id="agentDockSessionTitle" class="agent-session-title">Stock AI Agent</strong>
+        <div id="agentSessionMenu" class="agent-session-menu" hidden></div>
+      </header>
+      <section id="agentContextBar" class="agent-context-bar" aria-label="Agent Environment Snapshot"></section>
+      <section id="agentRunStatus" class="agent-run-status" role="status" aria-live="polite">○ 等待新任務</section>
+      <section id="agentPinnedPlan" class="agent-pinned-plan" aria-label="目前執行計畫" aria-live="polite"></section>
+      <section id="agentDecisionCards" class="agent-decision-cards" aria-label="Decision Cards" aria-live="polite"></section>
+      <nav id="agentDockTabs" class="agent-dock-tabs" aria-label="Agent Dock 分頁" role="tablist">
+        <button type="button" class="active" data-agent-dock-tab="chat" role="tab" aria-selected="true">對話</button>
+        <button type="button" data-agent-dock-tab="tasks" role="tab" aria-selected="false">任務</button>
+        <button type="button" data-agent-dock-tab="artifacts" role="tab" aria-selected="false">產物</button>
+      </nav>
+      <div id="agentDockContent" class="agent-dock-content">
+        <section id="agentChatPanel" class="agent-dock-panel" role="tabpanel">
+          <div class="agent-chat-layout">
+            <div id="agentChatFeed" class="agent-chat-feed" aria-label="Agent 對話與工作摘要"></div>
+            <section id="agentObservabilityDashboard" class="agent-observability-dashboard" aria-label="Observability Dashboard"></section>
+            <section id="agentRuntimeTimeline" class="agent-runtime-timeline" aria-label="Host Runtime Status"></section>
+            <section id="agentInteractiveArtifacts" class="agent-interactive-artifacts" aria-label="Interactive Artifacts"></section>
+          </div>
+        </section>
+        <section id="agentTasksPanel" class="agent-dock-panel" role="tabpanel" hidden>
+          <div id="agentTasksTree"></div>
+        </section>
+        <section id="agentArtifactsPanel" class="agent-dock-panel" role="tabpanel" hidden>
+          <div id="agentArtifactsList"></div>
+          <div id="agentArtifactCanvas" class="agent-artifact-canvas"></div>
+        </section>
+      </div>
+      <section id="agentRunControls" class="agent-run-controls" aria-label="Agent Run 控制"></section>
+      <footer id="agentComposer" class="agent-composer">
+        <div class="agent-composer-context">
+          <span id="agentComposerSymbol" class="sr-only">目前頁面 Context</span>
+          <div id="agentComposerContextChip" aria-live="polite"><span class="agent-composer-context-idle">目前頁面 Context</span></div>
+          <select id="agentAutonomySelect" aria-label="Agent 自主層級">
+            <option value="advisory">分析與預覽</option>
+            <option value="project_execute">允許專案修改</option>
+            <option value="external_execute">允許外部操作</option>
+            <option value="paper_execute">允許模擬下單</option>
+            <option value="full_execute">允許全部模擬操作</option>
+          </select>
+          <!-- The Host routes a natural follow-up to the active Run.  This is
+               deliberately not a user-facing choice: people describe the
+               result they want, rather than the runtime topology. -->
+          <input id="agentComposerMode" type="hidden" value="current_run">
+        </div>
+        <form id="agentComposerForm">
+          <label class="sr-only" for="agentComposerInput">與 Stock AI Agent 對話</label>
+          <textarea id="agentComposerInput" rows="2" placeholder="輸入任務；Enter 傳送，Shift+Enter 換行"></textarea>
+          <div>
+            <button type="submit" class="primary" aria-label="傳送 Agent 訊息">傳送</button>
+          </div>
+        </form>
+      </footer>
+    </aside>
+  </div>
+  <script src="/static/vendor/html2canvas.min.js?v=20260713-codex-core-v69"></script>
+  <script src="/static/vendor/liquidGL.js?v=20260718-jepxmgw-shader-v1"></script>
+  <!-- Core state and shared presentation -->
+  <script src="/static/js/core/dom-state.js?v=20260813-chart-restore-v1"></script>
+  <script src="/static/js/core/cache-store.js?v=20260730-market-workspace-v1"></script>
+  <script src="/static/js/core/workspace-context-store.js?v=20260803-ui-contract-v1"></script>
+  <script src="/static/js/core/preferences.js?v=20260813-light-theme-v1"></script>
+  <script src="/static/js/shell/glass.js?v=20260803-ui-contract-v1"></script>
+  <script src="/static/js/shell/freefrontend-liquid-glass.js?v=20260722-smooth-range-v5"></script>
+  <script src="/static/js/features/codex.js?v=20260803-ui-contract-v1"></script>
+  <script src="/static/js/core/presentation.js?v=20260716-frontend-modules-v1"></script>
+  <script src="/static/js/features/agent-model-discovery.js?v=20260801-visible-picker-v1"></script>
+  <script src="/static/js/features/agent-runtime.js?v=20260803-ui-contract-v1"></script>
+  <script src="/static/js/features/agent/agent-formatters.js?v=20260810-agent-interactive-graphs-v1"></script>
+  <script src="/static/js/features/agent/agent-event-reducer.js?v=20260810-agent-interactive-graphs-v1"></script>
+  <script src="/static/js/features/agent/agent-dock-store.js?v=20260810-agent-interactive-graphs-v1"></script>
+  <script src="/static/js/features/agent/agent-stream-controller.js?v=20260810-agent-interactive-graphs-v1"></script>
+  <script src="/static/js/features/agent/agent-session-controller.js?v=20260810-agent-interactive-graphs-v1"></script>
+  <script src="/static/js/features/agent/agent-tool-view.js?v=20260728-agent-dock-v2"></script>
+  <script src="/static/js/features/agent/agent-skill-view.js?v=20260728-agent-dock-v2"></script>
+  <script src="/static/js/features/agent/agent-approval-view.js?v=20260729-agent-verification-v3"></script>
+  <script src="/static/js/features/agent/agent-artifact-selection.js?v=20260810-agent-interactive-graphs-v1"></script>
+  <script src="/static/js/features/agent/agent-composer-context.js?v=20260810-agent-interactive-graphs-v1"></script>
+  <script src="/static/js/features/agent/agent-artifact-view.js?v=20260810-agent-interactive-graphs-v1"></script>
+  <script src="/static/js/features/agent/agent-plan-view.js?v=20260810-agent-interactive-graphs-v1"></script>
+  <script src="/static/js/features/agent/agent-task-tree-view.js?v=20260810-agent-interactive-graphs-v1"></script>
+  <script src="/static/js/features/agent/agent-task-forest.js?v=20260808-agent-forest-ui-v1"></script>
+  <script src="/static/js/features/agent/agent-runtime-timeline.js?v=20260808-agent-forest-ui-v1"></script>
+  <script src="/static/js/features/agent/agent-decision-card.js?v=20260810-agent-interactive-graphs-v1"></script>
+  <script src="/static/js/features/agent/agent-automation-view.js?v=20260810-agent-interactive-graphs-v1"></script>
+  <script src="/static/js/features/agent/agent-observability-dashboard.js?v=20260808-observability-v1"></script>
+  <script src="/static/js/features/agent/agent-evidence-graph.js?v=20260810-agent-interactive-graphs-v1"></script>
+  <script src="/static/js/features/agent/agent-diff-view.js?v=20260810-agent-interactive-graphs-v1"></script>
+  <script src="/static/js/features/agent/agent-schema-visualization.js?v=20260810-agent-interactive-graphs-v1"></script>
+  <script src="/static/js/features/agent/agent-artifact-canvas.js?v=20260808-agent-forest-ui-v1"></script>
+  <script src="/static/js/features/agent/agent-conversation-view.js?v=20260809-p0p105-native-ui-v1"></script>
+  <script src="/static/js/features/agent/agent-context-bar.js?v=20260803-ui-contract-v1"></script>
+  <script src="/static/js/features/agent/agent-control-bar.js?v=20260810-agent-interactive-graphs-v1"></script>
+  <script src="/static/js/features/agent/agent-composer.js?v=20260728-agent-dock-v2"></script>
+  <script src="/static/js/features/agent/agent-dock-controller.js?v=20260813-single-dock-toggle-v3"></script>
+  <script src="/static/js/features/broker-gateway.js?v=20260726-five-broker-v1"></script>
+  <script src="/static/js/features/agent-ui-bridge.js?v=20260803-ui-contract-v1"></script>
+  <!-- Feature workspaces -->
+  <script src="/static/js/features/trading-workspaces.js?v=20260803-ui-contract-v2"></script>
+  <script src="/static/js/features/quant-research.js?v=20260811-historical-universe-v1"></script>
+  <script src="/static/js/shell/navigation.js?v=20260803-ui-contract-v5"></script>
+  <script src="/static/js/features/market-chart.js?v=20260813-chart-restore-v1"></script>
+  <script src="/static/js/features/market-chart-interactions.js?v=20260813-chart-restore-v1"></script>
+  <script src="/static/js/features/market-intelligence/snapshot-service.js?v=20260730-market-workspace-v1"></script>
+  <script src="/static/js/features/market-intelligence/decision-board.js?v=20260730-market-workspace-v1"></script>
+  <script src="/static/js/features/market-intelligence/market-navigation.js?v=20260730-market-workspace-v1"></script>
+  <script src="/static/js/features/market-intelligence/workspace-home.js?v=20260813-light-theme-v1"></script>
+  <script src="/static/js/features/explorer.js?v=20260907-operator-alert-delivery-v1"></script>
+  <script src="/static/js/features/system-status.js?v=20260728-intraday-candles-v2"></script>
+  <script src="/static/js/features/dashboard.js?v=20260803-ui-contract-v1"></script>
+  <!-- Event binding and application startup must remain last. -->
+  <script src="/static/js/bootstrap.js?v=20260728-intraday-candles-v2"></script>
+  <script src="/static/paper-training.js?v=20260820-t-plus-2-settlement-v1"></script>
+</body>
+</html>

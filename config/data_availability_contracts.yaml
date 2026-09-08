@@ -1,0 +1,390 @@
+schema_version: stock_ai.data_availability_contracts.v1
+
+# Dataset IDs admitted by the production PIT feature contract. A source/dataset
+# pair still needs an explicit contract below; source defaults are display/live
+# fallbacks and never certify a research feature.
+research_contract_scope:
+  prices: [prices_daily, prices_intraday, prices_adjusted_daily]
+  financials: [fundamentals, fundamentals_quarterly, revenues_monthly, valuation_metrics]
+  flows: [institutional_flows, margin_trading, borrowed_short, ownership, tdcc_holding_distribution, derivatives, taifex_derivatives]
+  events: [events, company_events, documents, event_impacts, price_adjustment_events]
+  macro: [macro, macro_series]
+
+# Every registered source is declared here.  Source defaults are intentionally
+# conservative; a warehouse dataset only becomes PIT-eligible through a more
+# specific reviewed contract below.
+source_defaults:
+  - source_id: twse_openapi
+    basis: acquisition_only
+    historical_pit_eligible: false
+    reason: original_publication_time_not_attested_by_current_openapi
+  - source_id: tpex_openapi
+    basis: acquisition_only
+    historical_pit_eligible: false
+    reason: original_publication_time_not_attested_by_current_openapi
+  - source_id: tpex_official_web
+    basis: acquisition_only
+    historical_pit_eligible: false
+    reason: original_publication_time_not_attested_by_current_official_page
+  - source_id: mops
+    basis: unverified
+    historical_pit_eligible: false
+    reason: dataset_specific_disclosure_contract_required
+  - source_id: mops_archive
+    basis: acquisition_only
+    historical_pit_eligible: false
+    reason: historical_archive_does_not_supply_original_publication_time
+  - source_id: tdcc
+    basis: unverified
+    historical_pit_eligible: false
+    reason: dataset_specific_depository_contract_required
+  - source_id: tdcc_openapi
+    basis: acquisition_only
+    historical_pit_eligible: false
+    reason: latest_snapshot_api_does_not_attest_historical_availability
+  - source_id: taifex_openapi
+    basis: acquisition_only
+    historical_pit_eligible: false
+    reason: original_publication_time_not_attested_by_current_openapi
+  - source_id: twse_mis
+    basis: acquisition_only
+    historical_pit_eligible: false
+    reason: live_quote_capture_has_no_historical_replay_attestation
+  - source_id: yahoo_finance
+    basis: acquisition_only
+    historical_pit_eligible: false
+    reason: auxiliary_history_is_retrieved_now_not_historically_attested
+  - source_id: twse_official_web
+    basis: acquisition_only
+    historical_pit_eligible: false
+    reason: original_publication_time_not_attested_by_current_official_page
+  - source_id: fugle_marketdata
+    basis: acquisition_only
+    historical_pit_eligible: false
+    reason: licensed_live_capture_has_no_historical_replay_attestation
+  - source_id: fugle_stream
+    basis: acquisition_only
+    historical_pit_eligible: false
+    reason: live_stream_capture_has_no_historical_replay_attestation
+  - source_id: google_news
+    basis: unverified
+    historical_pit_eligible: false
+    reason: dataset_specific_publisher_contract_required
+
+endpoint_contracts:
+  # These source/domain rules cover every active endpoint in
+  # market_data_sources.yaml.  They are distinct from warehouse contracts:
+  # an endpoint may be operationally useful while remaining ineligible for
+  # historical PIT research.
+  - {source_id: fugle_marketdata, domain: prices_intraday, basis: acquisition_only, historical_pit_eligible: false, reason: licensed_live_capture_has_no_historical_replay_attestation}
+  - {source_id: fugle_stream, domain: prices_intraday, basis: acquisition_only, historical_pit_eligible: false, reason: live_stream_capture_has_no_historical_replay_attestation}
+  - {source_id: google_news, domain: news, basis: source_published, historical_pit_eligible: true, requires_published_at: true, reason: publisher_timestamp_required_for_news_replay}
+  - {source_id: mops, domain: material_events, basis: source_published, historical_pit_eligible: true, requires_published_at: true, reason: original_disclosure_publication_timestamp_required}
+  - {source_id: mops_archive, domain: fundamentals, basis: acquisition_only, historical_pit_eligible: false, reason: archive_financial_endpoint_does_not_attest_original_publication_time}
+  - {source_id: mops_archive, domain: revenue, basis: acquisition_only, historical_pit_eligible: false, reason: archive_revenue_endpoint_does_not_attest_original_publication_time}
+  - {source_id: taifex_openapi, domain: institutional_derivatives, basis: acquisition_only, historical_pit_eligible: false, reason: original_publication_time_not_attested_by_current_openapi}
+  # TDCC's public stock-distribution page retains only one year of historical
+  # query files and the current OpenAPI does not attest historical publication
+  # time.  Do not certify a caller-supplied published_at as an independently
+  # reviewed, production PIT source.
+  - {source_id: tdcc, domain: holding_distribution, basis: source_published, historical_pit_eligible: false, requires_published_at: true, source_retention_days: 365, reason: tdcc_public_history_is_limited_to_one_year_and_publication_time_is_not_independently_attested}
+  - {source_id: tdcc_openapi, domain: holding_distribution, basis: acquisition_only, historical_pit_eligible: false, reason: latest_snapshot_api_does_not_attest_historical_availability}
+  - {source_id: tpex_official_web, domain: borrowed_short, basis: market_schedule, historical_pit_eligible: true, timezone: Asia/Taipei, scheduled_time: "15:00", reason: official_daily_borrowed_short_data_available_after_reviewed_close_window}
+  - {source_id: tpex_official_web, domain: corporate_actions, basis: source_published, historical_pit_eligible: true, requires_published_at: true, reason: original_corporate_action_publication_timestamp_required}
+  - {source_id: tpex_official_web, domain: daytrade, basis: acquisition_only, historical_pit_eligible: false, reason: daytrade_endpoint_can_be_revised_without_original_publication_attestation}
+  - {source_id: tpex_official_web, domain: fundamentals, basis: acquisition_only, historical_pit_eligible: false, reason: valuation_history_endpoint_does_not_attest_original_publication_time}
+  - {source_id: tpex_official_web, domain: prices_daily, basis: market_schedule, historical_pit_eligible: true, timezone: Asia/Taipei, scheduled_time: "15:00", reason: official_tpex_daily_market_data_available_after_reviewed_close_window}
+  - {source_id: tpex_official_web, domain: security_master, basis: acquisition_only, historical_pit_eligible: false, reason: security_master_snapshot_has_no_historical_publication_attestation}
+  - {source_id: tpex_openapi, domain: fundamentals, basis: acquisition_only, historical_pit_eligible: false, reason: valuation_openapi_does_not_attest_original_publication_time}
+  - {source_id: tpex_openapi, domain: indices, basis: market_schedule, historical_pit_eligible: true, timezone: Asia/Taipei, scheduled_time: "15:00", reason: official_tpex_index_available_after_reviewed_close_window}
+  - {source_id: tpex_openapi, domain: security_master, basis: acquisition_only, historical_pit_eligible: false, reason: security_master_snapshot_has_no_historical_publication_attestation}
+  - {source_id: twse_mis, domain: prices_intraday, basis: acquisition_only, historical_pit_eligible: false, reason: live_quote_capture_has_no_historical_replay_attestation}
+  - {source_id: twse_official_web, domain: borrowed_short, basis: market_schedule, historical_pit_eligible: true, timezone: Asia/Taipei, scheduled_time: "15:00", reason: official_daily_borrowed_short_data_available_after_reviewed_close_window}
+  - {source_id: twse_official_web, domain: corporate_actions, basis: source_published, historical_pit_eligible: true, requires_published_at: true, reason: original_corporate_action_publication_timestamp_required}
+  - {source_id: twse_official_web, domain: daytrade, basis: acquisition_only, historical_pit_eligible: false, reason: daytrade_endpoint_can_be_revised_without_original_publication_attestation}
+  - {source_id: twse_official_web, domain: fundamentals, basis: acquisition_only, historical_pit_eligible: false, reason: valuation_history_endpoint_does_not_attest_original_publication_time}
+  - {source_id: twse_official_web, domain: institutional_flow, basis: market_schedule, historical_pit_eligible: true, timezone: Asia/Taipei, scheduled_time: "15:00", reason: official_daily_flow_available_after_reviewed_close_window}
+  - {source_id: twse_official_web, domain: prices_daily, basis: market_schedule, historical_pit_eligible: true, timezone: Asia/Taipei, scheduled_time: "15:00", reason: official_twse_daily_market_data_available_after_reviewed_close_window}
+  - {source_id: twse_openapi, domain: fundamentals, basis: acquisition_only, historical_pit_eligible: false, reason: valuation_openapi_does_not_attest_original_publication_time}
+  - {source_id: twse_openapi, domain: indices, basis: market_schedule, historical_pit_eligible: true, timezone: Asia/Taipei, scheduled_time: "15:00", reason: official_twse_index_available_after_reviewed_close_window}
+  - {source_id: twse_openapi, domain: margin, basis: market_schedule, historical_pit_eligible: true, timezone: Asia/Taipei, scheduled_time: "15:00", reason: official_daily_margin_data_available_after_reviewed_close_window}
+  - {source_id: twse_openapi, domain: revenue, basis: acquisition_only, historical_pit_eligible: false, reason: revenue_openapi_does_not_attest_original_publication_time}
+  - {source_id: twse_openapi, domain: security_master, basis: acquisition_only, historical_pit_eligible: false, reason: security_master_snapshot_has_no_historical_publication_attestation}
+  - {source_id: yahoo_finance, domain: prices_daily, basis: acquisition_only, historical_pit_eligible: false, reason: auxiliary_history_is_retrieved_now_not_historically_attested}
+  - {source_id: yahoo_finance, domain: prices_intraday, basis: acquisition_only, historical_pit_eligible: false, reason: auxiliary_live_capture_has_no_historical_replay_attestation}
+
+# Exact endpoint-level contracts.  The source/domain rules above remain the
+# reviewed policy family; these entries bind that policy to every concrete
+# dataset ID so a newly added endpoint cannot inherit a broad rule silently.
+endpoint_dataset_contracts:
+  - {source_id: fugle_marketdata, dataset_id: fugle_historical_candles, domain: prices_intraday, review_basis: source_domain_rule}
+  - {source_id: fugle_marketdata, dataset_id: fugle_intraday_candles, domain: prices_intraday, review_basis: source_domain_rule}
+  - {source_id: fugle_marketdata, dataset_id: fugle_intraday_quote, domain: prices_intraday, review_basis: source_domain_rule}
+  - {source_id: fugle_stream, dataset_id: fugle_stream, domain: prices_intraday, review_basis: source_domain_rule}
+  - {source_id: google_news, dataset_id: google_news_search, domain: news, review_basis: publisher_timestamp_rule}
+  - {source_id: mops_archive, dataset_id: mops_balance_sheet_archive, domain: fundamentals, review_basis: archive_publication_time_unavailable}
+  - {source_id: mops_archive, dataset_id: mops_cash_flow_statement_archive, domain: fundamentals, review_basis: archive_publication_time_unavailable}
+  - {source_id: mops, dataset_id: mops_company_events, domain: material_events, review_basis: publisher_timestamp_rule}
+  - {source_id: mops_archive, dataset_id: mops_income_statement_archive, domain: fundamentals, review_basis: archive_publication_time_unavailable}
+  - {source_id: mops_archive, dataset_id: mops_monthly_revenue_archive, domain: revenue, review_basis: archive_publication_time_unavailable}
+  - {source_id: taifex_openapi, dataset_id: taifex_futures_institutional, domain: institutional_derivatives, review_basis: acquisition_only_rule}
+  - {source_id: tdcc, dataset_id: tdcc_holding_distribution, domain: holding_distribution, review_basis: tdcc_public_history_retention_and_publication_attestation_review}
+  - {source_id: tdcc_openapi, dataset_id: tdcc_holding_distribution_openapi, domain: holding_distribution, review_basis: acquisition_only_rule}
+  - {source_id: tpex_official_web, dataset_id: tpex_borrowed_short, domain: borrowed_short, review_basis: market_schedule_rule}
+  - {source_id: tpex_openapi, dataset_id: tpex_companies, domain: security_master, review_basis: acquisition_only_rule}
+  - {source_id: tpex_openapi, dataset_id: tpex_daily_valuation, domain: fundamentals, review_basis: acquisition_only_rule}
+  - {source_id: tpex_official_web, dataset_id: tpex_daytrade, domain: daytrade, review_basis: acquisition_only_rule}
+  - {source_id: tpex_official_web, dataset_id: tpex_delisted, domain: security_master, review_basis: acquisition_only_rule}
+  - {source_id: tpex_openapi, dataset_id: tpex_emerging_companies, domain: security_master, review_basis: acquisition_only_rule}
+  - {source_id: tpex_openapi, dataset_id: tpex_emerging_quotes, domain: security_master, review_basis: acquisition_only_rule}
+  - {source_id: tpex_official_web, dataset_id: tpex_exright_results, domain: corporate_actions, review_basis: publisher_timestamp_rule}
+  - {source_id: tpex_openapi, dataset_id: tpex_index, domain: indices, review_basis: market_schedule_rule}
+  - {source_id: tpex_official_web, dataset_id: tpex_monthly_valuation_history, domain: fundamentals, review_basis: acquisition_only_rule}
+  - {source_id: tpex_openapi, dataset_id: tpex_quotes, domain: security_master, review_basis: acquisition_only_rule}
+  - {source_id: tpex_official_web, dataset_id: tpex_trading_stock, domain: prices_daily, review_basis: market_schedule_rule}
+  - {source_id: tpex_openapi, dataset_id: tpex_warrants, domain: security_master, review_basis: acquisition_only_rule}
+  - {source_id: twse_official_web, dataset_id: twse_borrowed_short, domain: borrowed_short, review_basis: market_schedule_rule}
+  - {source_id: twse_openapi, dataset_id: twse_companies, domain: security_master, review_basis: acquisition_only_rule}
+  - {source_id: twse_openapi, dataset_id: twse_daily_valuation, domain: fundamentals, review_basis: acquisition_only_rule}
+  - {source_id: twse_official_web, dataset_id: twse_daily_volume, domain: prices_daily, review_basis: market_schedule_rule}
+  - {source_id: twse_official_web, dataset_id: twse_daytrade, domain: daytrade, review_basis: acquisition_only_rule}
+  - {source_id: twse_openapi, dataset_id: twse_delisted, domain: security_master, review_basis: acquisition_only_rule}
+  - {source_id: twse_openapi, dataset_id: twse_dynamic_openapi, domain: security_master, review_basis: acquisition_only_rule}
+  - {source_id: twse_openapi, dataset_id: twse_etfs, domain: security_master, review_basis: acquisition_only_rule}
+  - {source_id: twse_official_web, dataset_id: twse_exright_results, domain: corporate_actions, review_basis: publisher_timestamp_rule}
+  - {source_id: twse_openapi, dataset_id: twse_indices, domain: indices, review_basis: market_schedule_rule}
+  - {source_id: twse_official_web, dataset_id: twse_institutional_flow, domain: institutional_flow, review_basis: market_schedule_rule}
+  - {source_id: twse_openapi, dataset_id: twse_margin, domain: margin, review_basis: market_schedule_rule}
+  - {source_id: twse_mis, dataset_id: twse_mis_quote, domain: prices_intraday, review_basis: acquisition_only_rule}
+  - {source_id: twse_mis, dataset_id: twse_mis_referer, domain: prices_intraday, review_basis: acquisition_only_rule}
+  - {source_id: twse_official_web, dataset_id: twse_monthly_valuation_history, domain: fundamentals, review_basis: acquisition_only_rule}
+  - {source_id: twse_openapi, dataset_id: twse_quotes, domain: security_master, review_basis: acquisition_only_rule}
+  - {source_id: twse_openapi, dataset_id: twse_revenue, domain: revenue, review_basis: acquisition_only_rule}
+  - {source_id: twse_official_web, dataset_id: twse_stock_day, domain: prices_daily, review_basis: market_schedule_rule}
+  - {source_id: twse_openapi, dataset_id: twse_swagger, domain: security_master, review_basis: acquisition_only_rule}
+  - {source_id: twse_openapi, dataset_id: twse_warrants, domain: security_master, review_basis: acquisition_only_rule}
+  - {source_id: yahoo_finance, dataset_id: yahoo_chart, domain: prices_daily, review_basis: acquisition_only_rule}
+  - {source_id: yahoo_finance, dataset_id: yahoo_intraday_chart, domain: prices_intraday, review_basis: acquisition_only_rule}
+
+contracts:
+  - source_id: twse_openapi
+    dataset: prices_daily
+    basis: market_schedule
+    historical_pit_eligible: true
+    timezone: Asia/Taipei
+    scheduled_time: "15:00"
+    reason: official_twse_daily_market_data_available_after_reviewed_close_window
+  - source_id: twse_official_web
+    dataset: prices_daily
+    basis: market_schedule
+    historical_pit_eligible: true
+    timezone: Asia/Taipei
+    scheduled_time: "15:00"
+    reason: official_twse_daily_market_data_available_after_reviewed_close_window
+  - source_id: tpex_openapi
+    dataset: prices_daily
+    basis: market_schedule
+    historical_pit_eligible: true
+    timezone: Asia/Taipei
+    scheduled_time: "15:00"
+    reason: official_tpex_daily_market_data_available_after_reviewed_close_window
+  - source_id: tpex_official_web
+    dataset: prices_daily
+    basis: market_schedule
+    historical_pit_eligible: true
+    timezone: Asia/Taipei
+    scheduled_time: "15:00"
+    reason: official_tpex_daily_market_data_available_after_reviewed_close_window
+  - source_id: mops_archive
+    dataset: revenues_monthly
+    basis: acquisition_only
+    historical_pit_eligible: false
+    reason: mops_archive_monthly_revenue_original_publication_time_unavailable
+  - source_id: mops_archive
+    dataset: fundamentals_quarterly
+    basis: acquisition_only
+    historical_pit_eligible: false
+    reason: mops_archive_financial_statement_original_publication_time_unavailable
+  - source_id: mops_archive
+    dataset: fundamentals
+    basis: acquisition_only
+    historical_pit_eligible: false
+    reason: mops_archive_financial_statement_original_publication_time_unavailable
+  - source_id: mops_archive
+    dataset: valuation_metrics
+    basis: acquisition_only
+    historical_pit_eligible: false
+    reason: derived_archive_valuation_has_no_historical_ingestion_attestation
+  - source_id: mops
+    dataset: revenues_monthly
+    basis: source_published
+    historical_pit_eligible: true
+    requires_published_at: true
+    reason: original_disclosure_publication_timestamp_required
+  - source_id: mops
+    dataset: fundamentals
+    basis: source_published
+    historical_pit_eligible: true
+    requires_published_at: true
+    reason: original_disclosure_publication_timestamp_required
+  - source_id: mops
+    dataset: fundamentals_quarterly
+    basis: source_published
+    historical_pit_eligible: true
+    requires_published_at: true
+    reason: original_disclosure_publication_timestamp_required
+  - source_id: mops
+    dataset: valuation_metrics
+    basis: source_published
+    historical_pit_eligible: true
+    requires_published_at: true
+    reason: valuation_input_publication_timestamp_required
+  - source_id: fugle_marketdata
+    dataset: prices_intraday
+    basis: acquisition_only
+    historical_pit_eligible: false
+    reason: live_capture_is_known_only_from_local_ingestion_time
+  - source_id: twse_mis
+    dataset: prices_intraday
+    basis: acquisition_only
+    historical_pit_eligible: false
+    reason: live_capture_is_known_only_from_local_ingestion_time
+  - source_id: twse_official_web
+    dataset: prices_adjusted_daily
+    basis: unverified
+    historical_pit_eligible: false
+    reason: adjusted_price_requires_complete_pit_corporate_action_lineage
+  - source_id: tpex_official_web
+    dataset: prices_adjusted_daily
+    basis: unverified
+    historical_pit_eligible: false
+    reason: adjusted_price_requires_complete_pit_corporate_action_lineage
+  - source_id: twse_official_web
+    dataset: institutional_flows
+    basis: market_schedule
+    historical_pit_eligible: true
+    timezone: Asia/Taipei
+    scheduled_time: "15:00"
+    reason: official_daily_flow_available_after_reviewed_close_window
+  - source_id: twse_openapi
+    dataset: institutional_flows
+    basis: market_schedule
+    historical_pit_eligible: true
+    timezone: Asia/Taipei
+    scheduled_time: "15:00"
+    reason: official_daily_flow_available_after_reviewed_close_window
+  - source_id: tpex_official_web
+    dataset: institutional_flows
+    basis: market_schedule
+    historical_pit_eligible: true
+    timezone: Asia/Taipei
+    scheduled_time: "15:00"
+    reason: official_daily_flow_available_after_reviewed_close_window
+  - source_id: twse_openapi
+    dataset: margin_trading
+    basis: market_schedule
+    historical_pit_eligible: true
+    timezone: Asia/Taipei
+    scheduled_time: "15:00"
+    reason: official_daily_margin_data_available_after_reviewed_close_window
+  - source_id: tpex_openapi
+    dataset: margin_trading
+    basis: market_schedule
+    historical_pit_eligible: true
+    timezone: Asia/Taipei
+    scheduled_time: "15:00"
+    reason: official_daily_margin_data_available_after_reviewed_close_window
+  - source_id: twse_official_web
+    dataset: borrowed_short
+    basis: market_schedule
+    historical_pit_eligible: true
+    timezone: Asia/Taipei
+    scheduled_time: "15:00"
+    reason: official_daily_borrowed_short_data_available_after_reviewed_close_window
+  - source_id: tpex_official_web
+    dataset: borrowed_short
+    basis: market_schedule
+    historical_pit_eligible: true
+    timezone: Asia/Taipei
+    scheduled_time: "15:00"
+    reason: official_daily_borrowed_short_data_available_after_reviewed_close_window
+  - source_id: tdcc
+    dataset: ownership
+    basis: source_published
+    historical_pit_eligible: false
+    requires_published_at: true
+    source_retention_days: 365
+    reason: tdcc_public_history_is_limited_to_one_year_and_publication_time_is_not_independently_attested
+  - source_id: tdcc
+    dataset: tdcc_holding_distribution
+    basis: source_published
+    historical_pit_eligible: false
+    requires_published_at: true
+    source_retention_days: 365
+    reason: tdcc_public_history_is_limited_to_one_year_and_publication_time_is_not_independently_attested
+  - source_id: tdcc_openapi
+    dataset: tdcc_holding_distribution
+    basis: acquisition_only
+    historical_pit_eligible: false
+    reason: latest_snapshot_api_does_not_attest_historical_availability
+  - source_id: taifex_openapi
+    dataset: derivatives
+    basis: acquisition_only
+    historical_pit_eligible: false
+    reason: original_publication_time_not_attested_by_current_openapi
+  - source_id: taifex_openapi
+    dataset: taifex_derivatives
+    basis: acquisition_only
+    historical_pit_eligible: false
+    reason: original_publication_time_not_attested_by_current_openapi
+  - source_id: google_news
+    dataset: events
+    basis: source_published
+    historical_pit_eligible: true
+    requires_published_at: true
+    reason: publisher_timestamp_required_for_news_replay
+  - source_id: mops
+    dataset: events
+    basis: source_published
+    historical_pit_eligible: true
+    requires_published_at: true
+    reason: original_disclosure_publication_timestamp_required
+  - source_id: mops
+    dataset: company_events
+    basis: source_published
+    historical_pit_eligible: true
+    requires_published_at: true
+    reason: original_disclosure_publication_timestamp_required
+  - source_id: mops
+    dataset: documents
+    basis: source_published
+    historical_pit_eligible: true
+    requires_published_at: true
+    reason: original_document_publication_timestamp_required
+  - source_id: mops
+    dataset: event_impacts
+    basis: unverified
+    historical_pit_eligible: false
+    reason: derived_event_impact_requires_versioned_transformation_lineage
+  - source_id: twse_official_web
+    dataset: price_adjustment_events
+    basis: source_published
+    historical_pit_eligible: true
+    requires_published_at: true
+    reason: original_corporate_action_publication_timestamp_required
+  - source_id: tpex_official_web
+    dataset: price_adjustment_events
+    basis: source_published
+    historical_pit_eligible: true
+    requires_published_at: true
+    reason: original_corporate_action_publication_timestamp_required
+  - source_id: yahoo_finance
+    dataset: macro
+    basis: acquisition_only
+    historical_pit_eligible: false
+    reason: auxiliary_macro_history_is_retrieved_now_not_historically_attested
+  - source_id: yahoo_finance
+    dataset: macro_series
+    basis: acquisition_only
+    historical_pit_eligible: false
+    reason: auxiliary_macro_history_is_retrieved_now_not_historically_attested

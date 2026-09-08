@@ -1,0 +1,61 @@
+name: Hosted chaos recovery
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: chaos-recovery-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  staging-fault-injection:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install project
+        run: python -m pip install -e .
+
+      - name: Inject process, network, disk and timeout faults
+        env:
+          EVIDENCE_DIR: ${{ runner.temp }}/stock-ai-chaos/evidence
+        run: |
+          mkdir -p "$(dirname "${EVIDENCE_DIR}")"
+          python scripts/run_hosted_chaos_gate.py \
+            --output-dir "${EVIDENCE_DIR}" \
+            --commit-sha "${GITHUB_SHA}" \
+            --allow-privileged
+
+      - name: Verify campaign receipt independently
+        env:
+          EVIDENCE_DIR: ${{ runner.temp }}/stock-ai-chaos/evidence
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          from open_stock_ai.governance import verify_hosted_chaos_gate_receipt
+
+          receipt = json.loads((Path(os.environ["EVIDENCE_DIR"]) / "chaos-gate-receipt.json").read_text())
+          if not receipt["passed"] or not verify_hosted_chaos_gate_receipt(receipt):
+              raise SystemExit("hosted chaos campaign receipt failed verification")
+          PY
+
+      - name: Upload recovery evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: stock-ai-chaos-recovery-${{ github.sha }}
+          path: ${{ runner.temp }}/stock-ai-chaos/evidence
+          if-no-files-found: error
+          retention-days: 30

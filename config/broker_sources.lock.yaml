@@ -1,0 +1,58 @@
+schema_version: stock_ai.broker_sources_lock.v1
+verified_at: "2026-07-26T04:33:00+08:00"
+policy:
+  official_sources_only: true
+  sdk_binary_hash_required_before_install: true
+  credentials_must_not_be_stored_in_repository: true
+  live_trading_enabled: false
+brokers:
+  taishin:
+    display_name: 台新證券
+    product: 台新數位 API
+    official_documentation: https://mlapi.tssco.com.tw/web_api/service/home
+    documentation_sha256: 055de61f2a4b3121268bcd432b853c077ad92787a6511939a8eb6a58c8aeedb6
+    documentation_bytes: 28209
+    sdk_version: unverified
+    sdk_artifact_sha256: null
+    sdk_status: requires_user_authorization_and_download
+    onboarding_url: https://mlapi.tssco.com.tw/web_api/service/home
+  fubon:
+    display_name: 富邦證券
+    product: Fubon Neo API
+    official_documentation: https://www.fbs.com.tw/TradeAPI/docs/download/download-sdk/
+    documentation_sha256: bc2910a2e5f87fd3b9bc1efc630c042c07edf4915b19da1b4a9c801668fe16fb
+    documentation_bytes: 35534
+    sdk_version: "2.2.8"
+    sdk_artifact_sha256: null
+    sdk_status: requires_user_authorization_and_download
+    onboarding_url: https://www.fbs.com.tw/TradeAPI/docs/trading/prepare/
+  sinopac:
+    display_name: 永豐金證券
+    product: Shioaji
+    official_documentation: https://sinotrade.github.io/tutor/prepare/terms/
+    documentation_sha256: ef503a6cdb673db55bbcc2ba558df52e3bc3ab93ec29c048fd182f68c8088276
+    documentation_bytes: 240548
+    sdk_version: unverified
+    sdk_artifact_sha256: null
+    sdk_status: requires_user_api_permission
+    onboarding_url: https://sinotrade.github.io/tutor/token/
+  yuanta:
+    display_name: 元大證券
+    product: SPARK API
+    official_documentation: https://www.yuanta.com.tw/file-repository/content/API/page/index.html
+    documentation_sha256: bec77525eb50316bbfae50cae618f2a43b42a1a7d06f7cfd6d80f75e2461484c
+    documentation_bytes: 53654
+    sdk_version: unverified
+    sdk_artifact_sha256: null
+    sdk_status: requires_user_authorization_fixed_ip_and_download
+    onboarding_url: https://www.yuanta.com.tw/file-repository/content/API/page/index.html
+  masterlink:
+    display_name: 元富證券
+    product: 元富 Nova API
+    official_documentation: https://ml-fugle-api.masterlink.com.tw/FugleSDK/docs/download/download-sdk/
+    documentation_sha256: 09cf3e7452bf754924753e366df3c27149b61875f369f2b11dd8a6bf75f8f1c6
+    documentation_bytes: 11857
+    sdk_version: unverified
+    sdk_artifact_sha256: null
+    sdk_status: requires_user_authorization_and_download
+    onboarding_url: https://ml-fugle-api.masterlink.com.tw/FugleSDK/docs/trading/quickstart/

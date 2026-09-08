@@ -1,0 +1,54 @@
+name: Localization Regression
+
+on:
+  workflow_dispatch:
+
+jobs:
+  localization:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate JavaScript syntax
+        run: |
+          node --check src/stock_ai/ui/static/js/bootstrap.js
+          node --check src/stock_ai/ui/static/js/core/dom-state.js
+          node --check src/stock_ai/ui/static/js/features/explorer.js
+          node --check src/stock_ai/ui/static/js/features/quant-research.js
+          node --check src/stock_ai/ui/static/paper-training.js
+      - name: Validate localization catalogs
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          for path in Path('src/stock_ai/ui/static/i18n').glob('*.json'):
+              json.loads(path.read_text(encoding='utf-8'))
+          PY
+      - name: Validate native patch chain
+        run: |
+          python -m py_compile macos/StockAILiquidGlass/patch-localization.py
+          python macos/StockAILiquidGlass/patch-localization.py \
+            macos/StockAILiquidGlass/main.swift /tmp/main.localized.swift
+          grep -q 'func applyInterfaceStrings' /tmp/main.localized.swift
+          grep -q 'SidebarSelectionContentView' /tmp/main.localized.swift
+          grep -q 'private let glassView: NSGlassEffectView' /tmp/main.localized.swift
+          grep -q 'contentView: selectionContent' /tmp/main.localized.swift
+          grep -q 'glassView.animator().frame = snapshot.frame' /tmp/main.localized.swift
+          grep -q 'style: .clear' /tmp/main.localized.swift
+          grep -q 'tintAlpha: 0' /tmp/main.localized.swift
+          grep -q "attributeFilter:\['data-ui-theme','lang'\]" /tmp/main.localized.swift
+          ! grep -q 'patch-sidebar-selection' build-macos-liquid-glass.sh
+          ! grep -q 'sidebarSelectionTrailGlass' /tmp/main.localized.swift
+          ! grep -q 'launchFrame' /tmp/main.localized.swift
+      - name: Run localization tests
+        run: |
+          python -m pip install pytest
+          python -m pytest -q \
+            tests/test_i18n_dynamic.py \
+            tests/test_native_toolbar_i18n.py \
+            tests/test_structured_i18n_runtime.py

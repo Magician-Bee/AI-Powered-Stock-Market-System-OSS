@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  
+
+    <link rel="apple-touch-icon" type="image/png" href="https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png" />
+
+    <meta name="apple-mobile-web-app-title" content="CodePen">
+
+    <link rel="icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico" />
+
+    <link rel="mask-icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-b4b4269c16397ad2f0f7a01bcdf513a1994f4c94b8af2f191c09eb0d601762b1.svg" color="#111" />
+
+
+
+  <meta charset="utf-8">
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+  <title>cross-browser liquid toggle— drag/tap 🤙</title>
+
+  <link rel="stylesheet" href="https://cpwebassets.codepen.io/assets/fullpage/fullpage-defe0b00ddddc98ad4bc2c428e9d6182cd7742e2624f558656dbfb986d4ba13c.css" />
+  
+
+    <link rel="apple-touch-icon" type="image/png" href="https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png" />
+
+    <meta name="apple-mobile-web-app-title" content="CodePen">
+
+    <link rel="icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico" />
+
+    <link rel="mask-icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-b4b4269c16397ad2f0f7a01bcdf513a1994f4c94b8af2f191c09eb0d601762b1.svg" color="#111" />
+
+
+
+
+
+  <title>cross-browser liquid toggle— drag/tap 🤙</title>
+
+  <style>
+    html { font-size: 15px; }
+    html, body { margin: 0; padding: 0; min-height: 100%; }
+    body { height:100%; display: flex; flex-direction: column; }
+    .referer-warning {
+      background: black;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+      padding: 0.75em;
+      color: white;
+      text-align: center;
+      font-family: 'Lato', 'Lucida Grande', 'Lucida Sans Unicode', Tahoma, system-ui, Sans-Serif;
+      line-height: 1.2;
+      font-size: 1rem;
+      position: relative;
+      z-index: 2;
+    }
+    .referer-warning span { font-family: initial; }
+    .referer-warning h1 { font-size: 1.2rem; margin: 0; }
+    .referer-warning a { color: #56bcf9; }
+  </style>
+</head>
+
+<body class="">
+  <div class="referer-warning">
+    <h1><span>⚠️</span> Do not enter passwords or personal information on this page. <span>⚠️</span></h1>
+      This is a code demo posted by a web developer on <a href="https://codepen.io">CodePen</a>.
+    <br />
+    A referer from CodePen is required to render this page view, and your browser is not sending one (<a href="https://blog.codepen.io/2017/10/05/regarding-referer-headers/" target="_blank" rel="noreferrer noopener">more details</a>).</h1>
+  </div>
+
+  <div id="result-iframe-wrap" role="main">
+    <iframe
+      id="result"
+      srcdoc="<!DOCTYPE html>
+<html lang=&quot;en&quot; >
+
+<head>
+  <meta charset=&quot;UTF-8&quot;>
+  
+
+    <link rel=&quot;apple-touch-icon&quot; type=&quot;image/png&quot; href=&quot;https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png&quot; />
+
+    <meta name=&quot;apple-mobile-web-app-title&quot; content=&quot;CodePen&quot;>
+
+    <link rel=&quot;icon&quot; type=&quot;image/x-icon&quot; href=&quot;https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico&quot; />
+
+    <link rel=&quot;mask-icon&quot; type=&quot;image/x-icon&quot; href=&quot;https://cpwebassets.codepen.io/assets/favicon/logo-pin-b4b4269c16397ad2f0f7a01bcdf513a1994f4c94b8af2f191c09eb0d601762b1.svg&quot; color=&quot;#111&quot; />
+
+
+
+  
+    <script src=&quot;https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-f07739098a39bd4e74ddd974652dac904146f33fdc1ecab356e8c809a05faccb.js&quot;></script>
+
+
+  <title>cross-browser liquid toggle— drag/tap 🤙</title>
+
+    <link rel=&quot;canonical&quot; href=&quot;https://codepen.io/jh3y/pen/bNVWoBW&quot;>
+  <meta
+      name=&quot;viewport&quot;
+      content=&quot;width=device-width, initial-scale=1, user-scalable=0, maximum-scale=1.0&quot;
+    />
+    <title>liquid-toggle</title>
+    <link rel=&quot;preconnect&quot; href=&quot;https://fonts.googleapis.com&quot;>
+    <link rel=&quot;preconnect&quot; href=&quot;https://fonts.gstatic.com&quot; crossorigin>
+    <link href=&quot;https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&amp;family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&amp;display=swap&quot; rel=&quot;stylesheet&quot;>
+  <link rel=&quot;stylesheet&quot; href=&quot;https://public.codepenassets.com/css/normalize-5.0.0.min.css&quot;>
+
+  
+  
+<style>
+@import url('https://unpkg.com/normalize.css') layer(normalize);
+
+@layer normalize, base, demo, toggle, transitions, debug;
+
+@layer debug {
+  .arrow {
+    font-family: 'Gloria Hallelujah', cursive;
+    font-size: .875rem;
+    position: absolute;
+    opacity: .6;
+
+    span {
+      white-space: nowrap;
+      display: inline-block;
+    }
+
+    &amp;.arrow--main {
+      right: 120%;
+      rotate: -30deg;
+      transition: opacity .26s ease-out;
+      svg {
+        rotate: 10deg;
+        width: 24px;
+        top: 150%;
+        left: 50%;
+        position: absolute;
+        scale: -1 1;
+      }
+    }
+  }
+  [data-debug=true] {
+    main {
+      transform: rotateX(-24deg) rotateY(24deg);
+      transition: transform 0.32s ease-out;
+    }
+    :is(.debug, .knockout--debug) {
+      opacity: 1;
+      transition-property: transform, opacity;
+      transition-duration: 0.32s, 0.32s;
+      transition-delay: 0.4s, 0.4s;
+      transition-timing-function: ease-out, ease-in;
+    }
+    .debug--knockout {
+      transform: translate3d(0, 0, -200px);
+    }
+    .debug--indicator {
+      transform: translate3d(0, 0, 200px);
+    }
+    .debug .arrow {
+      opacity: .6;
+      transition: opacity 0.1s 0.8s ease-out;
+    }
+  }
+  .debug {
+    transform-style: preserve-3d;
+    outline: 4px var(--checked) dashed;
+    outline-offset: 4px;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    
+    .arrow {
+      transform-style: preserve-3d;
+      position: absolute;
+      left: calc(100% + 2rem);
+      top: 50%;
+      translate: 0 -50%;
+      transform: rotateY(-24deg) rotateX(24deg) translate3d(0, 0, 100px);
+      z-index: 20;
+      opacity: 0;
+      /* transition: opacity .1s 0s ease-out; */
+    }
+  }
+  .indicator__liquid--debug {
+    pointer-events: none;
+    
+    .wrapper {
+      -webkit-clip-path: unset;
+              clip-path: unset;
+    }
+    .liquids {
+      overflow: visible;
+    }
+  }
+
+  :is(.debug) {
+    transition-property: transform, opacity;
+    transition-duration: 0.32s, 0.32s;
+    transition-delay: 0.2s, 0.2s;
+    transition-timing-function: ease-in, ease-out;
+  }
+  
+  main {
+    position: relative;
+    transition: transform 0.32s 0.4s ease-out;
+  }
+
+  main,
+  .liquid-toggle {
+    transform-style: preserve-3d;
+  }
+}
+
+@layer transitions {
+  :root {
+    --transition: 0.2s;
+    --ease: ease-out;
+  }
+  [data-pressed=true] .liquid__track {
+    min-height: 30px;
+  }
+  [data-bounce='true']:has(:is(button:active, [data-pressed=&quot;true&quot;])) {
+    --transition: 0.6s;
+    --ease: linear(
+      0 0%,
+      0.6091 3.69%,
+      1.0259 7.24%,
+      1.1733 9.05%,
+      1.283 10.92%,
+      1.3562 12.87%,
+      1.3948 14.95%,
+      1.4014 16.03%,
+      1.3999 17.16%,
+      1.3731 19.64%,
+      1.3202 22.27%,
+      1.1394 29.39%,
+      1.0582 33.17%,
+      0.9943 37.45%,
+      0.9734 39.64%,
+      0.9593 41.92%,
+      0.9505 45.08%,
+      0.9517 48.7%,
+      0.9924 63.02%,
+      1.0046 71.2%,
+      1.0061 78.24%,
+      1 100%
+    );
+  }
+  .indicator--masked .mask {
+    translate: calc(
+        (var(--complete) / 100) * (100cqi - 60cqi - (0 * var(--border)))
+      ) -50%;
+    /* transition-property: scale; */
+    /* this would work with scale if not for Safari getting funny about the mask */
+    transition-property: height, width, margin, scale;
+    transition-duration: var(--transition);
+    transition-timing-function: var(--ease);
+    will-change: height, width, margin;
+  }
+  .wrapper {
+    -webkit-clip-path: inset(0 0 0 0 round 100px);
+            clip-path: inset(0 0 0 0 round 100px);
+    filter: blur(6px);
+    transition: filter var(--transition) var(--ease);
+  }
+  [aria-pressed='true']:not([data-active='true']) .liquid__track {
+    left: calc(var(--border) * 6);
+  }
+  .liquid__track {
+    left: 0;
+    transition-property: height, width, filter, left;
+    transition-duration: var(--transition);
+    transition-timing-function: var(--ease);
+    translate: calc(
+        (var(--complete) / 100) * (100cqi - 100% - (6 * var(--border)))
+      ) -50%;
+  }
+  [data-mapped=false] .liquid__track {
+    transition-property: height, width, filter, left, background;
+    transition-duration: var(--transition), var(--transition), var(--transition), var(--transition), calc(var(--transition) * 0.5);
+    transition-timing-function: var(--ease), var(--ease), var(--ease), var(--ease), ease-out;
+  }
+  .indicator__liquid {
+    translate: calc(
+        (var(--complete) / 100) * (100cqi - 100% - (2 * var(--border)))
+      ) -50%;
+    transition-property: scale;
+    transition-duration: var(--transition);
+    transition-timing-function: var(--ease);
+    /* transform: scale(var(--scale-x, 1), var(--scale-y, 1)); */
+  }
+  .indicator__liquid :is(.cover, .shadow) {
+    transition: opacity var(--transition) var(--ease);
+  }
+  /* these are the actual changes when we scale up */
+  /* these should also with a [data-active=true] when [data-debug=true] */
+  [data-active='true'] .indicator--masked .mask,
+  .liquid-toggle:active .indicator--masked .mask {
+    height: calc((100% - (2 * var(--border))) * (1.65 - (var(--delta, 0) * 0.025)));
+    width: calc((60% - (2 * var(--border))) * (1.65 + (var(--delta, 0) * 0.025)));
+    margin-left: calc((60% - (2 * var(--border))) * ((.65 + (var(--delta, 0) * 0.025)) * -0.5));
+    /* we can't use scale because of Safari flashing the mask color on change... */
+    /* scale: 1.65; */
+  }
+  [data-active='true'] .indicator__liquid,
+  .liquid-toggle:active .indicator__liquid {
+    scale: calc(1.65 + (var(--delta, 0) * 0.025)) calc(1.65 - (var(--delta, 0) * 0.025));
+  }
+
+  [data-active='true'] .wrapper,
+  .liquid-toggle:active .wrapper {
+    filter: blur(0px);
+  }
+
+  [data-active='true'] .indicator__liquid .shadow,
+  .liquid-toggle:active .indicator__liquid .shadow {
+    opacity: 1;
+  }
+
+  [data-active='true'] .indicator__liquid .cover,
+  .liquid-toggle:active .indicator__liquid .cover {
+    opacity: 0;
+  }
+
+  [data-active='true'] .indicator__liquid .liquid__track,
+  .liquid-toggle:active .indicator__liquid .liquid__track {
+    left: calc(var(--border) * 3);
+    height: calc((var(--height) * 1px) - (6 * var(--border)));
+  }
+}
+
+@layer toggle {
+  /* this is the button */
+  [data-mapped=false] .liquid-toggle {
+    --progress: round(down, var(--complete), 85);
+    --checked: hsl(
+      var(--hue, 144),
+      calc((8 + (var(--progress) / 85 * (92))) * 1%),
+      calc((81 - (var(--progress) / 85 * (81 - 43))) * 1%)
+    );
+    .indicator, .indicator--masked {
+      transition: background calc(var(--transition) * 0.5) ease-out;
+    }
+    .liquid__shadow {
+      transition: box-shadow calc(var(--transition) * 0.5) ease-out;
+    }
+  }
+
+  .liquid-toggle {
+    --unchecked: hsl(218, 8%, 81%);
+    /* --checked: hsl(144, 100%, 43%); */
+    --checked: hsl(
+      var(--hue, 144),
+      calc((8 + (var(--complete) / 100 * (92))) * 1%),
+      calc((81 - (var(--complete) / 100 * (81 - 43))) * 1%)
+    );
+    --control: hsl(300, 100%, 100%);
+    --border: 5px;
+    --width: 140;
+    --height: 60;
+    height: calc(var(--height) * 1px);
+    width: calc(var(--width) * 1px);
+    border-radius: 100px;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    position: relative;
+    overflow: visible;
+    container-type: inline-size;
+    background: #0000;
+    transition: outline var(--transition) var(--ease);
+    outline-offset: 2px;
+
+    * {
+      pointer-events: none;
+    }
+  }
+
+  .liquid-toggle:focus-visible {
+    outline: 4px solid color-mix(in oklch, var(--checked), #0000);
+  }
+
+  .liquid-toggle:active {
+    outline: none;
+  }
+  .liquid-toggle[data-active='true']:focus-visible {
+    outline: 4px solid #0000;
+  }
+
+  .indicator {
+    border-radius: 100px;
+    pointer-events: none;
+    height: 100%;
+    width: 100%;
+    background: var(--checked);
+    /* outline: 2px dashed canvasText; */
+    position: absolute;
+    top: 50%;
+    scale: 1;
+    left: 50%;
+    translate: -50% -50%;
+  }
+
+  .knockout {
+    height: calc(var(--height) * 1px);
+    width: calc(var(--width) * 1px);
+    border-radius: 100px;
+    filter: url(#remove-black);
+    position: absolute;
+    inset: 0;
+    will-change: filter, scale;
+    transform: translate3d(0, 0, 0);
+  }
+  .indicator--masked {
+    background: var(--checked);
+    z-index: 12;
+    height: 100%;
+    width: 100%;
+    translate: -50% -50%;
+    container-type: inline-size;
+
+    .mask {
+      position: absolute;
+      height: calc(100% - (2 * var(--border)));
+      width: calc(60% - (2 * var(--border)));
+      top: 50%;
+      background: #000;
+      left: var(--border);
+      border-radius: 100px;
+    }
+  }
+
+  .wrapper {
+    position: absolute;
+    inset: 0;
+    border-radius: 100px;
+  }
+
+  .liquids {
+    position: absolute;
+    inset: 0;
+    transform: translate3d(0, 0, 0);
+    border-radius: 100px;
+    overflow: hidden;
+    filter: url(#goo);
+
+    .liquid__shadow {
+      position: absolute;
+      inset: 0;
+      box-shadow: inset 0px 0px 3px 4px var(--checked),
+        inset calc(((var(--complete) / 100) * 8px) + -4px) 0px 3px 4px
+          var(--checked);
+      border-radius: 100px;
+    }
+
+    .liquid__track {
+      content: '';
+      height: calc((var(--height) * 1px) - (0 * var(--border)));
+      width: calc((var(--width) * 1px) - (0 * var(--border)));
+      background: var(--checked);
+      border-radius: 100px;
+      position: absolute;
+      top: 50%;
+    }
+  }
+
+  .indicator__liquid {
+    position: absolute;
+    height: calc(100% - (2 * var(--border)));
+    width: calc(60% - (2 * var(--border)));
+    container-type: inline-size;
+    top: 50%;
+    /* only apply a background if you don't want to see underneath */
+    background: #0000;
+    left: var(--border);
+    border-radius: 100px;
+
+    .shadow {
+      opacity: 0;
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 100px;
+      box-shadow: 1px -1px 2px hsl(0 0% 100% / 0.5) inset,
+        0px -1px 2px hsl(0 0% 100% / 0.5) inset,
+        -1px -1px 2px hsl(0 0% 100% / 0.5) inset,
+        1px 1px 2px hsl(0 0% 30% / 0.5) inset,
+        -8px 4px 10px -6px hsl(0 0% 30% / 0.25) inset,
+        -1px 1px 6px hsl(0 0% 30% / 0.25) inset,
+        -1px -1px 8px hsl(0 0% 60% / 0.15), 1px 1px 2px hsl(0 0% 30% / 0.15),
+        2px 2px 6px hsl(0 0% 30% / 0.15),
+        -2px -1px 2px hsl(0 0% 100% / 0.25) inset,
+        3px 6px 16px -6px hsl(0 0% 30% / 0.5);
+      z-index: 20;
+    }
+
+    .cover {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: white;
+      border-radius: 100px;
+    }
+  }
+}
+
+@layer base {
+  :root {
+    --font-size-min: 16;
+    --font-size-max: 20;
+    --font-ratio-min: 1.2;
+    --font-ratio-max: 1.33;
+    --font-width-min: 375;
+    --font-width-max: 1500;
+  }
+
+  html {
+    color-scheme: light dark;
+  }
+
+  [data-theme='light'] {
+    color-scheme: light only;
+  }
+
+  [data-theme='dark'] {
+    color-scheme: dark only;
+  }
+
+  :where(.fluid) {
+    --fluid-min: calc(
+      var(--font-size-min) * pow(var(--font-ratio-min), var(--font-level, 0))
+    );
+    --fluid-max: calc(
+      var(--font-size-max) * pow(var(--font-ratio-max), var(--font-level, 0))
+    );
+    --fluid-preferred: calc(
+      (var(--fluid-max) - var(--fluid-min)) /
+        (var(--font-width-max) - var(--font-width-min))
+    );
+    --fluid-type: clamp(
+      (var(--fluid-min) / 16) * 1rem,
+      ((var(--fluid-min) / 16) * 1rem) -
+        (((var(--fluid-preferred) * var(--font-width-min)) / 16) * 1rem) +
+        (var(--fluid-preferred) * var(--variable-unit, 100vi)),
+      (var(--fluid-max) / 16) * 1rem
+    );
+    font-size: var(--fluid-type);
+  }
+
+  *,
+  *:after,
+  *:before {
+    box-sizing: border-box;
+  }
+
+  body {
+    background: light-dark(#fff, #000);
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    font-family: 'SF Pro Text', 'SF Pro Icons', 'AOS Icons', 'Helvetica Neue',
+      Helvetica, Arial, sans-serif, system-ui;
+  }
+
+  body::before {
+    --size: 45px;
+    --line: color-mix(in hsl, canvasText, transparent 80%);
+    content: '';
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    background: linear-gradient(
+          90deg,
+          var(--line) 1px,
+          transparent 1px var(--size)
+        )
+        calc(var(--size) * 0.36) 50% / var(--size) var(--size),
+      linear-gradient(var(--line) 1px, transparent 1px var(--size)) 0%
+        calc(var(--size) * 0.32) / var(--size) var(--size);
+    -webkit-mask: linear-gradient(-20deg, transparent 60%, white);
+            mask: linear-gradient(-20deg, transparent 60%, white);
+    top: 0;
+    transform-style: flat;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .bear-link {
+    color: canvasText;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    width: 48px;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    opacity: 0.8;
+  }
+
+  :where(.x-link, .bear-link):is(:hover, :focus-visible) {
+    opacity: 1;
+  }
+
+  .bear-link svg {
+    width: 75%;
+  }
+
+  /* Utilities */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+}
+
+div.tp-dfwv {
+  width: 280px;
+}
+</style>
+
+  <script>
+  window.console = window.console || function(t) {};
+</script>
+
+  
+  
+</head>
+
+<body translate=&quot;no&quot;>
+  <main>
+      <div class=&quot;arrow arrow--main&quot;>
+        <span>tap and drag.</span>
+        <svg  viewBox=&quot;0 0 77 139&quot; fill=&quot;none&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;>
+          <path fill-rule=&quot;evenodd&quot; clip-rule=&quot;evenodd&quot; d=&quot;M63.9153 0.37541C62.6706 1.85361 63.1403 31.3942 64.7373 54.4353C65.5593 65.9325 67.0389 77.8285 68.8708 87.6362C71.0784 99.4618 71.3837 102.113 70.7496 103.99C70.1155 105.914 68.6594 106.384 61.9191 106.876C51.2566 107.674 49.3543 108.003 32.6561 112.038C25.9157 113.681 18.8936 115.112 18.7057 114.924C18.6352 114.877 19.1754 113.939 19.8799 112.859C21.3126 110.63 21.5944 109.692 21.1951 108.401C20.6784 106.642 18.5882 105.656 16.8973 106.36C16.451 106.548 14.807 107.604 13.257 108.683C10.5797 110.56 9.0531 111.405 4.54388 113.47C-0.435059 115.745 -1.37449 119.734 1.98395 124.404C3.48702 126.515 4.9901 127.829 8.65384 130.246C12.8578 132.991 16.2397 134.61 20.561 135.971C22.4868 136.581 24.9293 137.426 25.9627 137.872C27.137 138.364 27.9355 138.575 28.0764 138.435C28.9219 137.59 24.718 133.249 18.3534 128.51C15.8404 126.633 13.4684 124.826 13.0691 124.521L12.3646 123.934L13.304 123.77C19.8565 122.667 28.1468 120.861 35.8736 118.819C45.1269 116.379 51.2566 115.018 55.8128 114.385C64.2441 113.211 68.0018 112.578 69.4579 112.132C72.558 111.17 74.977 108.824 75.8929 105.867C76.8559 102.77 76.5505 99.1568 74.2959 87.2842C71.5951 73.0888 70.1155 61.1928 68.5185 41.1785C67.5086 28.5551 66.3813 11.6614 66.1465 5.04465C65.9821 0.750832 65.7707 0 64.7608 0C64.4555 0 64.0797 0.164239 63.9153 0.37541Z&quot; fill=&quot;currentColor&quot;/>
+        </svg>
+          
+      </div>
+      <button aria-label=&quot;toggle&quot; aria-pressed=&quot;false&quot; class=&quot;liquid-toggle&quot;>
+        <div class=&quot;debug debug--knockout&quot;>
+          <div class=&quot;arrow&quot;>
+            <span>knockout backdrop.</span>
+          </div>
+          <div class=&quot;knockout knockout--debug&quot;>
+            <div class=&quot;indicator indicator--masked&quot;>
+              <div class=&quot;mask&quot;></div>
+            </div>
+          </div>
+        </div>
+        <div class=&quot;knockout&quot;>
+          <div class=&quot;indicator indicator--masked&quot;>
+            <div class=&quot;mask&quot;></div>
+          </div>
+        </div>
+        <div class=&quot;debug debug--indicator&quot;>
+          <div class=&quot;arrow&quot;>
+            <span>goo window.</span>
+          </div>
+          <div class=&quot;indicator__liquid indicator__liquid--debug&quot;>
+            <div class=&quot;shadow&quot;></div>
+            <div class=&quot;wrapper&quot;>
+              <div class=&quot;liquids&quot;>
+                <div class=&quot;liquid__shadow&quot;></div>
+                <div class=&quot;liquid__track&quot;></div>
+              </div>
+            </div>
+            <div class=&quot;cover&quot;></div>
+          </div>
+        </div>
+        <div class=&quot;indicator__liquid&quot;>
+          <div class=&quot;shadow&quot;></div>
+          <div class=&quot;wrapper&quot;>
+            <div class=&quot;liquids&quot;>
+              <div class=&quot;liquid__shadow&quot;></div>
+              <div class=&quot;liquid__track&quot;></div>
+            </div>
+          </div>
+          <div class=&quot;cover&quot;></div>
+        </div>
+      </button>
+    </main>
+    <svg class=&quot;sr-only&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;>
+      <defs>
+        <filter id=&quot;goo&quot;>
+          <feGaussianBlur
+            id=&quot;SvgjsFeGaussianBlur1000&quot;
+            result=&quot;SvgjsFeGaussianBlur1000&quot;
+            in=&quot;SourceGraphic&quot;
+            stdDeviation=&quot;13&quot;
+          ></feGaussianBlur>
+          <feColorMatrix
+            id=&quot;SvgjsFeColorMatrix1001&quot;
+            result=&quot;SvgjsFeColorMatrix1001&quot;
+            in=&quot;SvgjsFeGaussianBlur1000&quot;
+            values=&quot;
+                1 0 0 0 0
+                0 1 0 0 0
+                0 0 1 0 0
+                0 0 0 13 -10
+            &quot;
+            type=&quot;matrix&quot;
+          ></feColorMatrix>
+          <feComposite
+            id=&quot;SvgjsFeComposite1002&quot;
+            result=&quot;SvgjsFeComposite1002&quot;
+            in=&quot;SvgjsFeColorMatrix1001&quot;
+            operator=&quot;atop&quot;
+          ></feComposite>
+        </filter>
+        <filter id=&quot;knockout&quot; colorInterpolationFilters=&quot;sRGB&quot;>
+          <feColorMatrix
+            result=&quot;knocked&quot;
+            type=&quot;matrix&quot;
+            values=&quot;1 0 0 0 0
+                    0 1 0 0 0
+                    0 0 1 0 0
+                    -1 -1 -1 1 0&quot;
+          />
+          <feComponentTransfer>
+            <feFuncR type=&quot;linear&quot; slope=&quot;3&quot; intercept=&quot;-1&quot; />
+            <feFuncG type=&quot;linear&quot; slope=&quot;3&quot; intercept=&quot;-1&quot; />
+            <feFuncB type=&quot;linear&quot; slope=&quot;3&quot; intercept=&quot;-1&quot; />
+          </feComponentTransfer>
+          <feComponentTransfer>
+            <feFuncR type=&quot;table&quot; tableValues=&quot;0 0 0 0 0 1 1 1 1 1&quot; />
+            <feFuncG type=&quot;table&quot; tableValues=&quot;0 0 0 0 0 1 1 1 1 1&quot; />
+            <feFuncB type=&quot;table&quot; tableValues=&quot;0 0 0 0 0 1 1 1 1 1&quot; />
+          </feComponentTransfer>
+        </filter>
+        <filter id=&quot;remove-black&quot; color-interpolation-filters=&quot;sRGB&quot;>
+          <feColorMatrix
+            type=&quot;matrix&quot;
+            values=&quot;1 0 0 0 0
+                      0 1 0 0 0
+                      0 0 1 0 0
+                      -255 -255 -255 0 1&quot;
+            result=&quot;black-pixels&quot;
+          />
+          <feMorphology
+            in=&quot;black-pixels&quot;
+            operator=&quot;dilate&quot;
+            radius=&quot;0.5&quot;
+            result=&quot;smoothed&quot;
+          />
+          <feComposite in=&quot;SourceGraphic&quot; in2=&quot;smoothed&quot; operator=&quot;out&quot; />
+        </filter>
+      </defs>
+    </svg>
+    <a
+      aria-label=&quot;Follow Jhey&quot;
+      class=&quot;bear-link&quot;
+      href=&quot;https://twitter.com/intent/follow?screen_name=jh3yy&quot;
+      target=&quot;_blank&quot;
+      rel=&quot;noreferrer noopener&quot;
+    >
+      <svg
+        class=&quot;w-9&quot;
+        viewBox=&quot;0 0 969 955&quot;
+        fill=&quot;none&quot;
+        xmlns=&quot;http://www.w3.org/2000/svg&quot;
+      >
+        <circle
+          cx=&quot;161.191&quot;
+          cy=&quot;320.191&quot;
+          r=&quot;133.191&quot;
+          stroke=&quot;currentColor&quot;
+          stroke-width=&quot;20&quot;
+        ></circle>
+        <circle
+          cx=&quot;806.809&quot;
+          cy=&quot;320.191&quot;
+          r=&quot;133.191&quot;
+          stroke=&quot;currentColor&quot;
+          stroke-width=&quot;20&quot;
+        ></circle>
+        <circle
+          cx=&quot;695.019&quot;
+          cy=&quot;587.733&quot;
+          r=&quot;31.4016&quot;
+          fill=&quot;currentColor&quot;
+        ></circle>
+        <circle
+          cx=&quot;272.981&quot;
+          cy=&quot;587.733&quot;
+          r=&quot;31.4016&quot;
+          fill=&quot;currentColor&quot;
+        ></circle>
+        <path
+          d=&quot;M564.388 712.083C564.388 743.994 526.035 779.911 483.372 779.911C440.709 779.911 402.356 743.994 402.356 712.083C402.356 680.173 440.709 664.353 483.372 664.353C526.035 664.353 564.388 680.173 564.388 712.083Z&quot;
+          fill=&quot;currentColor&quot;
+        ></path>
+        <rect
+          x=&quot;310.42&quot;
+          y=&quot;448.31&quot;
+          width=&quot;343.468&quot;
+          height=&quot;51.4986&quot;
+          fill=&quot;#FF1E1E&quot;
+        ></rect>
+        <path
+          fill-rule=&quot;evenodd&quot;
+          clip-rule=&quot;evenodd&quot;
+          d=&quot;M745.643 288.24C815.368 344.185 854.539 432.623 854.539 511.741H614.938V454.652C614.938 433.113 597.477 415.652 575.938 415.652H388.37C366.831 415.652 349.37 433.113 349.37 454.652V511.741L110.949 511.741C110.949 432.623 150.12 344.185 219.845 288.24C289.57 232.295 384.138 200.865 482.744 200.865C581.35 200.865 675.918 232.295 745.643 288.24Z&quot;
+          fill=&quot;currentColor&quot;
+        ></path>
+      </svg>
+    </a>
+  
+    <script id=&quot;rendered-js&quot; type=&quot;module&quot;>
+import gsap from 'https://esm.sh/gsap@3.13.0';
+import Draggable from 'https://esm.sh/gsap@3.13.0/Draggable';
+import { Pane } from 'https://esm.sh/tweakpane@4.0.4';
+
+gsap.registerPlugin(Draggable);
+
+const toggle = document.querySelector('.liquid-toggle');
+const config = {
+  theme: 'light',
+  complete: 0,
+  active: false,
+  deviation: 2,
+  alpha: 16,
+  bounce: true,
+  hue: 144,
+  delta: true,
+  bubble: true,
+  mapped: false,
+  debug: false };
+
+
+const ctrl = new Pane({
+  title: 'config' });
+
+
+const update = () => {
+  gsap.set('#goo feGaussianBlur', {
+    attr: {
+      stdDeviation: config.deviation } });
+
+
+  gsap.set('#goo feColorMatrix', {
+    attr: {
+      values: `
+        1 0 0 0 0
+        0 1 0 0 0
+        0 0 1 0 0
+        0 0 0 ${config.alpha} -10
+      ` } });
+
+
+  document.documentElement.dataset.theme = config.theme;
+  document.documentElement.dataset.mapped = config.mapped;
+  document.documentElement.dataset.delta = config.delta;
+  document.documentElement.dataset.debug = config.debug;
+  document.documentElement.dataset.active = config.active;
+  document.documentElement.dataset.bounce = config.bounce;
+  toggle.style.setProperty('--complete', config.complete);
+  toggle.style.setProperty('--hue', config.hue);
+};
+
+const sync = event => {
+  if (
+  !document.startViewTransition ||
+  event.target.controller.view.labelElement.innerText !== 'theme')
+
+  return update();
+  document.startViewTransition(() => update());
+};
+
+const debugSettings = ctrl.addFolder({ title: 'debug', expanded: false });
+
+debugSettings.addBinding(config, 'debug');
+debugSettings.addBinding(config, 'active');
+debugSettings.addBinding(config, 'complete', {
+  min: 0,
+  max: 100,
+  label: 'complete (%)',
+  step: 1 });
+
+
+const behaviorSettings = ctrl.addFolder({ title: 'behavior', expanded: false });
+behaviorSettings.addBinding(config, 'bounce');
+behaviorSettings.addBinding(config, 'mapped');
+behaviorSettings.addBinding(config, 'bubble');
+behaviorSettings.addBinding(config, 'delta');
+behaviorSettings.addBinding(config, 'hue', {
+  min: 0,
+  max: 359,
+  step: 1 });
+
+const settings = ctrl.addFolder({
+  title: 'filter',
+  disabled: false,
+  expanded: false });
+
+settings.addBinding(config, 'deviation', {
+  min: 0,
+  max: 50,
+  step: 1,
+  label: 'stdDeviation' });
+
+settings.addBinding(config, 'alpha', {
+  min: 0,
+  max: 50,
+  step: 1,
+  label: 'alpha' });
+
+ctrl.addBinding(config, 'theme', {
+  label: 'theme',
+  options: {
+    system: 'system',
+    light: 'light',
+    dark: 'dark' } });
+
+
+
+ctrl.on('change', sync);
+update();
+// this is the CSS from going :active
+// .liquid-toggle:active .indicator--masked .mask {
+//   height: calc((100% - (2 * var(--border))) * 1.65);
+//   width: calc((60% - (2 * var(--border))) * 1.65);
+//   margin-left: calc((60% - (2 * var(--border))) * -0.325);
+//   /* we can't use scale because of Safari flashing the mask color on change... */
+//   /* scale: 1.65; */
+// }
+// .liquid-toggle:active .indicator__liquid {
+//   scale: 1.65;
+// }
+
+// .liquid-toggle:active .wrapper {
+//   filter: blur(0px);
+// }
+
+// .liquid-toggle:active .indicator__liquid .shadow {
+//   opacity: 1;
+// }
+
+// .liquid-toggle:active .indicator__liquid .cover {
+//   opacity: 0;
+// }
+
+// .liquid-toggle:active .indicator__liquid .liquid__track {
+//   left: calc(var(--border) * 3);
+//   height: calc((var(--height) * 1px) - (6 * var(--border)));
+// }
+// the actual interaction we're going to do with GSAP here because I can't be bothered
+// to manage a CSS timeline for this with the bounce lol
+const toggleState = async () => {
+  toggle.dataset.pressed = true;
+  if (config.bubble) toggle.dataset.active = true;
+  // if we use wiggle, don't await, instead jus' set a delay
+  await Promise.allSettled(
+  !config.bounce ?
+  toggle.getAnimations({ subtree: true }).map(a => a.finished) :
+  []);
+
+  // if it was a click, do a toggle timeline
+  // else run a timeline and swap out the aria-pressed attribute
+  // 1. scale up
+  // 2. slide across
+  // 3. bounce the scale depending on direction
+  // 4. scale back down
+  const pressed = toggle.matches('[aria-pressed=true]');
+  gsap.
+  timeline({
+    onComplete: () => {
+      gsap.delayedCall(0.05, () => {
+        toggle.dataset.active = false;
+        toggle.dataset.pressed = false;
+        toggle.setAttribute(
+        'aria-pressed',
+        !toggle.matches('[aria-pressed=true]'));
+
+      });
+    } }).
+
+  to(toggle, {
+    '--complete': pressed ? 0 : 100,
+    duration: 0.12,
+    delay: config.bounce &amp;&amp; config.bubble ? 0.18 : 0 });
+
+  // .fromTo(
+  //   '.indicator__liquid',
+  //   {
+  //     '--scale-x': 1,
+  //     '--scale-y': 1,
+  //   },
+  //   {
+  //     '--scale-x': 1.1,
+  //     '--scale-y': 1.1,
+  //     duration: 0.05,
+  //     repeat: 1,
+  //     repeatDelay: 0.15,
+  //     yoyo: true,
+  //   },
+  //   0
+  // )
+};
+// toggle.addEventListener('click', toggleState)
+const proxy = document.createElement('div');
+Draggable.create(proxy, {
+  allowContextMenu: true,
+  handle: '.liquid-toggle',
+  onDragStart: function () {
+    // if you want a more true drag distance, use pointer down + remaining width
+    const toggleBounds = toggle.getBoundingClientRect();
+    const pressed = toggle.matches('[aria-pressed=true]');
+    const bounds = pressed ?
+    toggleBounds.left - this.pointerX :
+    toggleBounds.left + toggleBounds.width - this.pointerX;
+    this.dragBounds = bounds;
+    toggle.dataset.active = true;
+  },
+  onDrag: function () {
+    const pressed = toggle.matches('[aria-pressed=true]');
+    // on drag needs to make sure it's also inverted for when already pressed
+    const dragged = this.x - this.startX;
+    const complete = gsap.utils.clamp(
+    0,
+    100,
+    pressed ?
+    gsap.utils.mapRange(this.dragBounds, 0, 0, 100, dragged) :
+    gsap.utils.mapRange(0, this.dragBounds, 0, 100, dragged));
+
+    this.complete = complete;
+    gsap.set(toggle, { '--complete': complete, '--delta': Math.min(Math.abs(this.deltaX), 12) });
+  },
+  onDragEnd: function () {
+    gsap.fromTo(
+    toggle,
+    {
+      '--complete': this.complete },
+
+    {
+      '--complete': this.complete >= 50 ? 100 : 0,
+      duration: 0.15,
+      onComplete: () => {
+        gsap.delayedCall(0.05, () => {
+          toggle.dataset.active = false;
+          toggle.setAttribute('aria-pressed', this.complete >= 50);
+        });
+      } });
+
+
+  },
+  onPress: function () {
+    this.__pressTime = Date.now();
+    document.querySelector('.arrow--main').style.setProperty('opacity', 0);
+    toggle.dataset.active = 'true';
+    toggle.dataset.pressed = 'true';
+  },
+  onRelease: function () {
+    this.__releaseTime = Date.now();
+    gsap.set(toggle, { '--delta': 0 });
+
+    if (this.__releaseTime - this.__pressTime <= 150) {
+      toggleState();
+      return;
+    }
+
+    if (!this.isDragging) {
+      toggle.dataset.active = 'false';
+      toggle.dataset.pressed = 'false';
+    }
+  } });
+
+
+toggle.addEventListener('keydown', e => {
+  document.querySelector('.arrow--main').style.setProperty('opacity', 0);
+  if (e.key === 'Enter') {
+    toggleState();
+  }
+
+  if (e.key === ' ') {
+    // Prevent scroll
+    e.preventDefault();
+  }
+});
+
+toggle.addEventListener('keyup', e => {
+  if (e.key === ' ') {
+    toggleState();
+  }
+});
+
+// make tweakpane panel draggable
+const tweakClass = 'div.tp-dfwv';
+const d = Draggable.create(tweakClass, {
+  type: 'x,y',
+  allowEventDefault: true,
+  trigger: tweakClass + ' button.tp-rotv_b' });
+
+document.querySelector(tweakClass).addEventListener('dblclick', () => {
+  gsap.to(tweakClass, {
+    x: `+=${d[0].x * -1}`,
+    y: `+=${d[0].y * -1}`,
+    onComplete: () => {
+      gsap.set(tweakClass, { clearProps: 'all' });
+    } });
+
+});
+//# sourceURL=pen.js
+  </script>
+
+  
+</body>
+
+</html>
+"
+      sandbox="allow-downloads allow-forms allow-modals allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-same-origin allow-scripts allow-top-navigation-by-user-activation" allow="accelerometer *; ambient-light-sensor *; camera *; display-capture *; encrypted-media *; geolocation *; gyroscope *; microphone *; midi *; payment *; serial *; vr *; web-share *; xr-spatial-tracking *" allowTransparency="true"
+      allowpaymentrequest="true" allowfullscreen="true" class="result-iframe">
+      </iframe>
+  </div>
+
+</body>
+
+</html>

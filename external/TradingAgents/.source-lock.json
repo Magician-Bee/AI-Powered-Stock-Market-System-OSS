@@ -1,0 +1,8 @@
+{
+  "schema_version": "open_stock_ai.external_snapshot_lock.v1",
+  "source_key": "tradingagents",
+  "origin": "https://github.com/TauricResearch/TradingAgents.git",
+  "branch": "main",
+  "head": "85946c2f60768ab2dae23a5a36cd927662feef94",
+  "snapshot_mode": "vendored_source_snapshot"
+}

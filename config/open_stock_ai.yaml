@@ -1,0 +1,55 @@
+system:
+  name: "Open Stock AI System"
+  mode: "paper"
+  live_trading_enabled: false
+  require_human_confirm: true
+  external_runtime_connectors_enabled: false
+  broker_account_imports_enabled: false
+  external_credentials_enabled: false
+  # A human-approved immutable change set is required only when explicitly
+  # enabled.  Set OPEN_STOCK_AI_ACTIVE_CHANGE_ID to an already pinned receipt.
+  require_change_binding: false
+  active_change_id: ""
+  # The desktop runtime records a durable retention maintenance receipt at
+  # startup and then at this cadence. Critical execution evidence is excluded.
+  retention_maintenance_interval_seconds: 3600
+
+llm:
+  provider: "openai-compatible"
+  local_enabled: false
+
+risk:
+  min_rule_score_threshold: 0.70
+  max_position_size_pct: 10
+  max_intraday_loss_pct: 1.5
+  max_daily_loss_pct: 3
+  max_weekly_loss_pct: 6
+  max_monthly_loss_pct: 10
+  max_consecutive_losses: 3
+  max_total_drawdown_pct: 15
+  max_symbol_exposure_pct: 20
+  max_total_paper_exposure_pct: 100
+  max_industry_exposure_pct: 45
+  require_backtest_passed: true
+
+storage:
+  sqlite_path: "output/open_stock_ai.sqlite"
+
+universe:
+  default_source: none
+  allow_user_watchlist: true
+  allow_portfolio_positions: true
+  allow_market_scan: true
+
+# A migrated user watchlist may be stored here, but new installations are empty.
+watchlist: []
+legacy_watchlist_migrated: true
+
+external_projects:
+  tradingagents: "external/TradingAgents"
+  fingpt: "external/FinGPT"
+  finrobot: "external/FinRobot"
+  finrl_trading: "external/FinRL-Trading"
+  finrl: "external/FinRL"
+  qlib: "external/qlib"
+  ai_trader: "external/AI-Trader"

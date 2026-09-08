@@ -1,0 +1,8 @@
+{
+  "schema_version": "open_stock_ai.external_snapshot_lock.v1",
+  "source_key": "fingpt",
+  "origin": "https://github.com/AI4Finance-Foundation/FinGPT.git",
+  "branch": "master",
+  "head": "608a496781faf2705b9a59c89f80e6c04b15d76e",
+  "snapshot_mode": "vendored_source_snapshot"
+}

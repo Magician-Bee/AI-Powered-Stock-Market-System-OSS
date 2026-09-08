@@ -1,0 +1,22 @@
+node_modules
+.pnpm-store
+.next
+dist
+out
+coverage
+.turbo
+.DS_Store
+*.tsbuildinfo
+.env*
+!.env.example
+
+# Local planning/research workspace (never commit)
+docs-local/
+
+# Generated registry endpoints (rebuilt on each build)
+apps/docs/public/r/
+
+# Agent/tool configs (local only)
+.codex/
+.agents/
+CLAUDE.md

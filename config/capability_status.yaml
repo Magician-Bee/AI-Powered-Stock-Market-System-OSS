@@ -1,0 +1,47 @@
+schema_version: stock_ai.capability_status.v1
+source_of_truth: config/capability_status.yaml
+master_requirement_ledger: config/production_requirement_status.yaml
+current_level: PAPER
+promotion_policy:
+  ordered_levels: [RESEARCH, PAPER, SHADOW, BROKER_SANDBOX, RESTRICTED_LIVE, PRODUCTION_LIVE]
+  skip_levels_allowed: false
+  live_order_submission_enabled: false
+  model_direct_broker_submission_enabled: false
+  promotion_requires_signed_approval: true
+levels:
+  RESEARCH:
+    ordinal: 0
+    execution_mode: research
+    allows_simulated_fills: false
+    allows_broker_submission: false
+    requires: []
+  PAPER:
+    ordinal: 1
+    execution_mode: paper
+    allows_simulated_fills: true
+    allows_broker_submission: false
+    requires: [event_driven_replay, durable_paper_oms, central_risk]
+  SHADOW:
+    ordinal: 2
+    execution_mode: shadow
+    allows_simulated_fills: false
+    allows_broker_submission: false
+    requires: [paper_acceptance, real_market_data_receipts, shadow_order_audit]
+  BROKER_SANDBOX:
+    ordinal: 3
+    execution_mode: broker_sandbox
+    allows_simulated_fills: false
+    allows_broker_submission: official_sandbox_only
+    requires: [shadow_acceptance, official_broker_sandbox, broker_reconciliation]
+  RESTRICTED_LIVE:
+    ordinal: 4
+    execution_mode: restricted_live
+    allows_simulated_fills: false
+    allows_broker_submission: restricted_policy_only
+    requires: [sandbox_acceptance, single_broker, single_account, human_approval, durable_live_oms]
+  PRODUCTION_LIVE:
+    ordinal: 5
+    execution_mode: production_live
+    allows_simulated_fills: false
+    allows_broker_submission: deterministic_policy_only
+    requires: [restricted_live_acceptance, all_broker_reconciliation, immutable_audit, slo_alerting]

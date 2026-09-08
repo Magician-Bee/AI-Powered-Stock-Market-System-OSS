@@ -1,0 +1,1445 @@
+{
+  "source": "https://openapi.twse.com.tw/v1/swagger.json",
+  "count": 143,
+  "by_tag": {
+    "證券交易": 36,
+    "券商資料": 9,
+    "公司治理": 56,
+    "其他": 4,
+    "指數": 5,
+    "財務報表": 30,
+    "權證": 3
+  },
+  "endpoints": [
+    {
+      "method": "GET",
+      "path": "/Announcement/BFZFZU_T",
+      "url": "https://openapi.twse.com.tw/v1/Announcement/BFZFZU_T",
+      "tags": [
+        "證券交易"
+      ],
+      "summary": "投資理財節目異常推介個股",
+      "description": "投資理財節目異常推介個股"
+    },
+    {
+      "method": "GET",
+      "path": "/ETFReport/ETFRank",
+      "url": "https://openapi.twse.com.tw/v1/ETFReport/ETFRank",
+      "tags": [
+        "券商資料"
+      ],
+      "summary": "定期定額交易戶數統計排行月報表",
+      "description": "定期定額交易戶數統計排行月報表"
+    },
+    {
+      "method": "GET",
+      "path": "/SBL/TWT96U",
+      "url": "https://openapi.twse.com.tw/v1/SBL/TWT96U",
+      "tags": [
+        "證券交易"
+      ],
+      "summary": "上市上櫃股票當日可借券賣出股數",
+      "description": "上市上櫃股票當日可借券賣出股數"
+    },
+    {
+      "method": "GET",
+      "path": "/announcement/notetrans",
+      "url": "https://openapi.twse.com.tw/v1/announcement/notetrans",
+      "tags": [
+        "證券交易"
+      ],
+      "summary": "集中市場公布注意累計次數異常資訊",
+      "description": "集中市場公布注意累計次數異常資訊"
+    },
+    {
+      "method": "GET",
+      "path": "/announcement/notice",
+      "url": "https://openapi.twse.com.tw/v1/announcement/notice",
+      "tags": [
+        "證券交易"
+      ],
+      "summary": "集中市場當日公布注意股票",
+      "description": "集中市場當日公布注意股票"
+    },
+    {
+      "method": "GET",
+      "path": "/announcement/punish",
+      "url": "https://openapi.twse.com.tw/v1/announcement/punish",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "集中市場公布處置股票",
+      "description": "集中市場公布處置股票"
+    },
+    {
+      "method": "GET",
+      "path": "/block/BFIAUU_d",
+      "url": "https://openapi.twse.com.tw/v1/block/BFIAUU_d",
+      "tags": [
+        "證券交易"
+      ],
+      "summary": "集中市場鉅額交易日成交量值統計",
+      "description": "集中市場鉅額交易日成交量值統計"
+    },
+    {
+      "method": "GET",
+      "path": "/block/BFIAUU_m",
+      "url": "https://openapi.twse.com.tw/v1/block/BFIAUU_m",
+      "tags": [
+        "證券交易"
+      ],
+      "summary": "集中市場鉅額交易月成交量值統計",
+      "description": "集中市場鉅額交易月成交量值統計"
+    },
+    {
+      "method": "GET",
+      "path": "/block/BFIAUU_y",
+      "url": "https://openapi.twse.com.tw/v1/block/BFIAUU_y",
+      "tags": [
+        "證券交易"
+      ],
+      "summary": "集中市場鉅額交易年成交量值統計",
+      "description": "集中市場鉅額交易年成交量值統計"
+    },
+    {
+      "method": "GET",
+      "path": "/brokerService/brokerList",
+      "url": "https://openapi.twse.com.tw/v1/brokerService/brokerList",
+      "tags": [
+        "券商資料"
+      ],
+      "summary": "證券商總公司基本資料",
+      "description": "證券商總公司基本資料"
+    },
+    {
+      "method": "GET",
+      "path": "/brokerService/secRegData",
+      "url": "https://openapi.twse.com.tw/v1/brokerService/secRegData",
+      "tags": [
+        "券商資料"
+      ],
+      "summary": "開辦定期定額業務證券商名單",
+      "description": "開辦定期定額業務證券商名單"
+    },
+    {
+      "method": "GET",
+      "path": "/company/applylistingForeign",
+      "url": "https://openapi.twse.com.tw/v1/company/applylistingForeign",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "外國公司向證交所申請第一上市之公司",
+      "description": "外國公司向證交所申請第一上市之公司"
+    },
+    {
+      "method": "GET",
+      "path": "/company/applylistingLocal",
+      "url": "https://openapi.twse.com.tw/v1/company/applylistingLocal",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "申請上市之本國公司",
+      "description": "申請上市之本國公司"
+    },
+    {
+      "method": "GET",
+      "path": "/company/newlisting",
+      "url": "https://openapi.twse.com.tw/v1/company/newlisting",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "最近上市公司",
+      "description": "最近上市公司"
+    },
+    {
+      "method": "GET",
+      "path": "/company/suspendListingCsvAndHtml",
+      "url": "https://openapi.twse.com.tw/v1/company/suspendListingCsvAndHtml",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "終止上市公司",
+      "description": "終止上市公司"
+    },
+    {
+      "method": "GET",
+      "path": "/exchangeReport/BFI61U",
+      "url": "https://openapi.twse.com.tw/v1/exchangeReport/BFI61U",
+      "tags": [
+        "其他"
+      ],
+      "summary": "中央登錄公債補息資料表",
+      "description": "中央登錄公債補息資料表"
+    },
+    {
+      "method": "GET",
+      "path": "/exchangeReport/BFI84U",
+      "url": "https://openapi.twse.com.tw/v1/exchangeReport/BFI84U",
+      "tags": [
+        "證券交易"
+      ],
+      "summary": "集中市場停資停券預告表",
+      "description": "集中市場停資停券預告表"
+    },
+    {
+      "method": "GET",
+      "path": "/exchangeReport/BFT41U",
+      "url": "https://openapi.twse.com.tw/v1/exchangeReport/BFT41U",
+      "tags": [
+        "證券交易"
+      ],
+      "summary": "集中市場盤後定價交易",
+      "description": "集中市場盤後定價交易"
+    },
+    {
+      "method": "GET",
+      "path": "/exchangeReport/BWIBBU_ALL",
+      "url": "https://openapi.twse.com.tw/v1/exchangeReport/BWIBBU_ALL",
+      "tags": [
+        "證券交易"
+      ],
+      "summary": "上市個股日本益比、殖利率及股價淨值比（依代碼查詢）",
+      "description": "上市個股日本益比、殖利率及股價淨值比（依代碼查詢）"
+    },
+    {
+      "method": "GET",
+      "path": "/exchangeReport/BWIBBU_d",
+      "url": "https://openapi.twse.com.tw/v1/exchangeReport/BWIBBU_d",
+      "tags": [
+        "證券交易"
+      ],
+      "summary": "上市個股日本益比、殖利率及股價淨值比（依日期查詢）",
+      "description": "上市個股日本益比、殖利率及股價淨值比（依日期查詢）"
+    },
+    {
+      "method": "GET",
+      "path": "/exchangeReport/FMNPTK_ALL",
+      "url": "https://openapi.twse.com.tw/v1/exchangeReport/FMNPTK_ALL",
+      "tags": [
+        "證券交易"
+      ],
+      "summary": "上市個股年成交資訊",
+      "description": "上市個股年成交資訊"
+    },
+    {
+      "method": "GET",
+      "path": "/exchangeReport/FMSRFK_ALL",
+      "url": "https://openapi.twse.com.tw/v1/exchangeReport/FMSRFK_ALL",
+      "tags": [
+        "證券交易"
+      ],
+      "summary": "上市個股月成交資訊",
+      "description": "上市個股月成交資訊"
+    },
+    {
+      "method": "GET",
+      "path": "/exchangeReport/FMTQIK",
+      "url": "https://openapi.twse.com.tw/v1/exchangeReport/FMTQIK",
+      "tags": [
+        "證券交易"
+      ],
+      "summary": "集中市場每日市場成交資訊",
+      "description": "集中市場每日市場成交資訊"
+    },
+    {
+      "method": "GET",
+      "path": "/exchangeReport/MI_5MINS",
+      "url": "https://openapi.twse.com.tw/v1/exchangeReport/MI_5MINS",
+      "tags": [
+        "證券交易"
+      ],
+      "summary": "每 5 秒委託成交統計",
+      "description": "每 5 秒委託成交統計"
+    },
+    {
+      "method": "GET",
+      "path": "/exchangeReport/MI_INDEX",
+      "url": "https://openapi.twse.com.tw/v1/exchangeReport/MI_INDEX",
+      "tags": [
+        "證券交易"
+      ],
+      "summary": "每日收盤行情-大盤統計資訊",
+      "description": "每日收盤行情-大盤統計資訊"
+    },
+    {
+      "method": "GET",
+      "path": "/exchangeReport/MI_INDEX20",
+      "url": "https://openapi.twse.com.tw/v1/exchangeReport/MI_INDEX20",
+      "tags": [
+        "證券交易"
+      ],
+      "summary": "集中市場每日成交量前二十名證券",
+      "description": "集中市場每日成交量前二十名證券"
+    },
+    {
+      "method": "GET",
+      "path": "/exchangeReport/MI_INDEX4",
+      "url": "https://openapi.twse.com.tw/v1/exchangeReport/MI_INDEX4",
+      "tags": [
+        "指數"
+      ],
+      "summary": "每日上市上櫃跨市場成交資訊",
+      "description": "每日上市上櫃跨市場成交資訊"
+    },
+    {
+      "method": "GET",
+      "path": "/exchangeReport/MI_MARGN",
+      "url": "https://openapi.twse.com.tw/v1/exchangeReport/MI_MARGN",
+      "tags": [
+        "證券交易"
+      ],
+      "summary": "集中市場融資融券餘額",
+      "description": "集中市場融資融券餘額"
+    },
+    {
+      "method": "GET",
+      "path": "/exchangeReport/STOCK_DAY_ALL",
+      "url": "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL",
+      "tags": [
+        "證券交易"
+      ],
+      "summary": "上市個股日成交資訊",
+      "description": "上市個股日成交資訊"
+    },
+    {
+      "method": "GET",
+      "path": "/exchangeReport/STOCK_DAY_AVG_ALL",
+      "url": "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_AVG_ALL",
+      "tags": [
+        "證券交易"
+      ],
+      "summary": "上市個股日收盤價及月平均價",
+      "description": "上市個股日收盤價及月平均價"
+    },
+    {
+      "method": "GET",
+      "path": "/exchangeReport/STOCK_FIRST",
+      "url": "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_FIRST",
+      "tags": [
+        "證券交易"
+      ],
+      "summary": "每日第一上市外國股票成交量值",
+      "description": "每日第一上市外國股票成交量值"
+    },
+    {
+      "method": "GET",
+      "path": "/exchangeReport/TWT48U_ALL",
+      "url": "https://openapi.twse.com.tw/v1/exchangeReport/TWT48U_ALL",
+      "tags": [
+        "證券交易"
+      ],
+      "summary": "上市股票除權除息預告表",
+      "description": "上市股票除權除息預告表"
+    },
+    {
+      "method": "GET",
+      "path": "/exchangeReport/TWT53U",
+      "url": "https://openapi.twse.com.tw/v1/exchangeReport/TWT53U",
+      "tags": [
+        "證券交易"
+      ],
+      "summary": "集中市場零股交易行情單",
+      "description": "集中市場零股交易行情單"
+    },
+    {
+      "method": "GET",
+      "path": "/exchangeReport/TWT84U",
+      "url": "https://openapi.twse.com.tw/v1/exchangeReport/TWT84U",
+      "tags": [
+        "證券交易"
+      ],
+      "summary": "上市個股股價升降幅度",
+      "description": "上市個股股價升降幅度"
+    },
+    {
+      "method": "GET",
+      "path": "/exchangeReport/TWT85U",
+      "url": "https://openapi.twse.com.tw/v1/exchangeReport/TWT85U",
+      "tags": [
+        "證券交易"
+      ],
+      "summary": "集中市場證券變更交易",
+      "description": "集中市場證券變更交易"
+    },
+    {
+      "method": "GET",
+      "path": "/exchangeReport/TWT88U",
+      "url": "https://openapi.twse.com.tw/v1/exchangeReport/TWT88U",
+      "tags": [
+        "證券交易"
+      ],
+      "summary": "上市個股首五日無漲跌幅",
+      "description": "上市個股首五日無漲跌幅"
+    },
+    {
+      "method": "GET",
+      "path": "/exchangeReport/TWTAWU",
+      "url": "https://openapi.twse.com.tw/v1/exchangeReport/TWTAWU",
+      "tags": [
+        "證券交易"
+      ],
+      "summary": "集中市場暫停交易證券",
+      "description": "集中市場暫停交易證券"
+    },
+    {
+      "method": "GET",
+      "path": "/exchangeReport/TWTB4U",
+      "url": "https://openapi.twse.com.tw/v1/exchangeReport/TWTB4U",
+      "tags": [
+        "證券交易"
+      ],
+      "summary": "上市股票每日當日沖銷交易標的及統計",
+      "description": "上市股票每日當日沖銷交易標的及統計"
+    },
+    {
+      "method": "GET",
+      "path": "/exchangeReport/TWTBAU1",
+      "url": "https://openapi.twse.com.tw/v1/exchangeReport/TWTBAU1",
+      "tags": [
+        "證券交易"
+      ],
+      "summary": "集中市場暫停先賣後買當日沖銷交易標的預告表",
+      "description": "集中市場暫停先賣後買當日沖銷交易標的預告表"
+    },
+    {
+      "method": "GET",
+      "path": "/exchangeReport/TWTBAU2",
+      "url": "https://openapi.twse.com.tw/v1/exchangeReport/TWTBAU2",
+      "tags": [
+        "證券交易"
+      ],
+      "summary": "集中市場暫停先賣後買當日沖銷交易歷史查詢",
+      "description": "集中市場暫停先賣後買當日沖銷交易歷史查詢"
+    },
+    {
+      "method": "GET",
+      "path": "/fund/MI_QFIIS_cat",
+      "url": "https://openapi.twse.com.tw/v1/fund/MI_QFIIS_cat",
+      "tags": [
+        "證券交易"
+      ],
+      "summary": "集中市場外資及陸資投資類股持股比率表",
+      "description": "集中市場外資及陸資投資類股持股比率表"
+    },
+    {
+      "method": "GET",
+      "path": "/fund/MI_QFIIS_sort_20",
+      "url": "https://openapi.twse.com.tw/v1/fund/MI_QFIIS_sort_20",
+      "tags": [
+        "證券交易"
+      ],
+      "summary": "集中市場外資及陸資持股前 20 名彙總表",
+      "description": "集中市場外資及陸資持股前 20 名彙總表"
+    },
+    {
+      "method": "GET",
+      "path": "/holidaySchedule/holidaySchedule",
+      "url": "https://openapi.twse.com.tw/v1/holidaySchedule/holidaySchedule",
+      "tags": [
+        "證券交易"
+      ],
+      "summary": "有價證券集中交易市場開（休）市日期",
+      "description": "有價證券集中交易市場開（休）市日期"
+    },
+    {
+      "method": "GET",
+      "path": "/indicesReport/FRMSA",
+      "url": "https://openapi.twse.com.tw/v1/indicesReport/FRMSA",
+      "tags": [
+        "指數"
+      ],
+      "summary": "寶島股價指數歷史資料",
+      "description": "寶島股價指數歷史資料"
+    },
+    {
+      "method": "GET",
+      "path": "/indicesReport/MFI94U",
+      "url": "https://openapi.twse.com.tw/v1/indicesReport/MFI94U",
+      "tags": [
+        "指數"
+      ],
+      "summary": "發行量加權股價報酬指數",
+      "description": "發行量加權股價報酬指數"
+    },
+    {
+      "method": "GET",
+      "path": "/indicesReport/MI_5MINS_HIST",
+      "url": "https://openapi.twse.com.tw/v1/indicesReport/MI_5MINS_HIST",
+      "tags": [
+        "指數"
+      ],
+      "summary": "發行量加權股價指數歷史資料",
+      "description": "發行量加權股價指數歷史資料"
+    },
+    {
+      "method": "GET",
+      "path": "/indicesReport/TAI50I",
+      "url": "https://openapi.twse.com.tw/v1/indicesReport/TAI50I",
+      "tags": [
+        "指數"
+      ],
+      "summary": "臺灣 50 指數歷史資料",
+      "description": "臺灣 50 指數歷史資料"
+    },
+    {
+      "method": "GET",
+      "path": "/news/eventList",
+      "url": "https://openapi.twse.com.tw/v1/news/eventList",
+      "tags": [
+        "其他"
+      ],
+      "summary": "證交所活動訊息",
+      "description": "證交所活動訊息"
+    },
+    {
+      "method": "GET",
+      "path": "/news/newsList",
+      "url": "https://openapi.twse.com.tw/v1/news/newsList",
+      "tags": [
+        "其他"
+      ],
+      "summary": "證交所新聞",
+      "description": "證交所新聞"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/OpenData_BRK01",
+      "url": "https://openapi.twse.com.tw/v1/opendata/OpenData_BRK01",
+      "tags": [
+        "券商資料"
+      ],
+      "summary": "證券商營業員男女人數統計資料",
+      "description": "證券商營業員男女人數統計資料"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/OpenData_BRK02",
+      "url": "https://openapi.twse.com.tw/v1/opendata/OpenData_BRK02",
+      "tags": [
+        "券商資料"
+      ],
+      "summary": "證券商分公司基本資料",
+      "description": "證券商分公司基本資料"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap01",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap01",
+      "tags": [
+        "券商資料"
+      ],
+      "summary": "券商業務別人員數",
+      "description": "券商業務別人員數"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap02_L",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap02_L",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司持股逾 10% 大股東名單",
+      "description": "上市公司持股逾 10% 大股東名單"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap03_L",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap03_L",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司基本資料",
+      "description": "上市公司基本資料"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap03_P",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap03_P",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "公開發行公司基本資料",
+      "description": "公開發行公司基本資料"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap04_L",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap04_L",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司每日重大訊息",
+      "description": "上市公司每日重大訊息"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap05_L",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap05_L",
+      "tags": [
+        "財務報表"
+      ],
+      "summary": "上市公司每月營業收入彙總表",
+      "description": "上市公司每月營業收入彙總表"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap05_P",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap05_P",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "公開發行公司每月營業收入彙總表",
+      "description": "公開發行公司每月營業收入彙總表"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap06_L_basi",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap06_L_basi",
+      "tags": [
+        "財務報表"
+      ],
+      "summary": "上市公司綜合損益表(金融業)",
+      "description": "上市公司綜合損益表(金融業)"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap06_L_bd",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap06_L_bd",
+      "tags": [
+        "財務報表"
+      ],
+      "summary": "上市公司綜合損益表(證券期貨業)",
+      "description": "上市公司綜合損益表(證券期貨業)"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap06_L_ci",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap06_L_ci",
+      "tags": [
+        "財務報表"
+      ],
+      "summary": "上市公司綜合損益表(一般業)",
+      "description": "上市公司綜合損益表(一般業)"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap06_L_fh",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap06_L_fh",
+      "tags": [
+        "財務報表"
+      ],
+      "summary": "上市公司綜合損益表(金控業)",
+      "description": "上市公司綜合損益表(金控業)"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap06_L_ins",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap06_L_ins",
+      "tags": [
+        "財務報表"
+      ],
+      "summary": "上市公司綜合損益表(保險業)",
+      "description": "上市公司綜合損益表(保險業)"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap06_L_mim",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap06_L_mim",
+      "tags": [
+        "財務報表"
+      ],
+      "summary": "上市公司綜合損益表(異業)",
+      "description": "上市公司綜合損益表(異業)"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap06_X_basi",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap06_X_basi",
+      "tags": [
+        "財務報表"
+      ],
+      "summary": "公發公司綜合損益表-金融業",
+      "description": "公發公司綜合損益表-金融業"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap06_X_bd",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap06_X_bd",
+      "tags": [
+        "財務報表"
+      ],
+      "summary": "公發公司綜合損益表-證券期貨業",
+      "description": "公發公司綜合損益表-證券期貨業"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap06_X_ci",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap06_X_ci",
+      "tags": [
+        "財務報表"
+      ],
+      "summary": "公發公司綜合損益表-一般業",
+      "description": "公發公司綜合損益表-一般業"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap06_X_fh",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap06_X_fh",
+      "tags": [
+        "財務報表"
+      ],
+      "summary": "公發公司綜合損益表-金控業",
+      "description": "公發公司綜合損益表-金控業"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap06_X_ins",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap06_X_ins",
+      "tags": [
+        "財務報表"
+      ],
+      "summary": "公發公司綜合損益表-保險業",
+      "description": "公發公司綜合損益表-保險業"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap06_X_mim",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap06_X_mim",
+      "tags": [
+        "財務報表"
+      ],
+      "summary": "公發公司綜合損益表-異業",
+      "description": "公發公司綜合損益表-異業"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap07_L_basi",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap07_L_basi",
+      "tags": [
+        "財務報表"
+      ],
+      "summary": "上市公司資產負債表(金融業)",
+      "description": "上市公司資產負債表(金融業)"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap07_L_bd",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap07_L_bd",
+      "tags": [
+        "財務報表"
+      ],
+      "summary": "上市公司資產負債表(證券期貨業)",
+      "description": "上市公司資產負債表(證券期貨業)"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap07_L_ci",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap07_L_ci",
+      "tags": [
+        "財務報表"
+      ],
+      "summary": "上市公司資產負債表(一般業)",
+      "description": "上市公司資產負債表(一般業)"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap07_L_fh",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap07_L_fh",
+      "tags": [
+        "財務報表"
+      ],
+      "summary": "上市公司資產負債表(金控業)",
+      "description": "上市公司資產負債表(金控業)"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap07_L_ins",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap07_L_ins",
+      "tags": [
+        "財務報表"
+      ],
+      "summary": "上市公司資產負債表(保險業)",
+      "description": "上市公司資產負債表(保險業)"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap07_L_mim",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap07_L_mim",
+      "tags": [
+        "財務報表"
+      ],
+      "summary": "上市公司資產負債表(異業)",
+      "description": "上市公司資產負債表(異業)"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap07_X_basi",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap07_X_basi",
+      "tags": [
+        "財務報表"
+      ],
+      "summary": "公發公司資產負債表-金融業",
+      "description": "公發公司資產負債表-金融業"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap07_X_bd",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap07_X_bd",
+      "tags": [
+        "財務報表"
+      ],
+      "summary": "公發公司資產負債表-證券期貨業",
+      "description": "公發公司資產負債表-證券期貨業"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap07_X_ci",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap07_X_ci",
+      "tags": [
+        "財務報表"
+      ],
+      "summary": "公發公司資產負債表-一般業",
+      "description": "公發公司資產負債表-一般業"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap07_X_fh",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap07_X_fh",
+      "tags": [
+        "財務報表"
+      ],
+      "summary": "公發公司資產負債表-金控業",
+      "description": "公發公司資產負債表-金控業"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap07_X_ins",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap07_X_ins",
+      "tags": [
+        "財務報表"
+      ],
+      "summary": "公發公司資產負債表-保險業",
+      "description": "公發公司資產負債表-保險業"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap07_X_mim",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap07_X_mim",
+      "tags": [
+        "財務報表"
+      ],
+      "summary": "公發公司資產負債表-異業",
+      "description": "公發公司資產負債表-異業"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap08_L",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap08_L",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司董事、監察人持股不足法定成數彙總表",
+      "description": "上市公司董事、監察人持股不足法定成數彙總表"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap09_L",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap09_L",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司董事、監察人質權設定占董事及監察人實際持有股數彙總表",
+      "description": "上市公司董事、監察人質權設定占董事及監察人實際持有股數彙總表"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap10_L",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap10_L",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司董事、監察人持股不足法定成數連續達3個月以上彙總表",
+      "description": "上市公司董事、監察人持股不足法定成數連續達3個月以上彙總表"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap11_L",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap11_L",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司董監事持股餘額明細資料",
+      "description": "上市公司董監事持股餘額明細資料"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap11_P",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap11_P",
+      "tags": [
+        "財務報表"
+      ],
+      "summary": "公發公司董監事持股餘額明細",
+      "description": "公發公司董監事持股餘額明細"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap12_L",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap12_L",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司每日內部人持股轉讓事前申報表-持股轉讓日報表",
+      "description": "上市公司每日內部人持股轉讓事前申報表-持股轉讓日報表"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap13_L",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap13_L",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司每日內部人持股轉讓事前申報表-持股未轉讓日報表",
+      "description": "上市公司每日內部人持股轉讓事前申報表-持股未轉讓日報表"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap14_L",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap14_L",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司各產業EPS統計資訊",
+      "description": "上市公司各產業EPS統計資訊"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap15_L",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap15_L",
+      "tags": [
+        "財務報表"
+      ],
+      "summary": "上市公司截至各季綜合損益財測達成情形(簡式)",
+      "description": "上市公司截至各季綜合損益財測達成情形(簡式)"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap16_L",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap16_L",
+      "tags": [
+        "財務報表"
+      ],
+      "summary": "上市公司當季綜合損益經會計師查核(核閱)數與當季預測數差異達百分之十以上者，或截至當季累計差異達百分之二十以上者(簡式)",
+      "description": "上市公司當季綜合損益經會計師查核(核閱)數與當季預測數差異達百分之十以上者，或截至當季累計差異達百分之二十以上者(簡式)"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap17_L",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap17_L",
+      "tags": [
+        "財務報表"
+      ],
+      "summary": "上市公司營益分析查詢彙總表(全體公司彙總報表)",
+      "description": "上市公司營益分析查詢彙總表(全體公司彙總報表)"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap18",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap18",
+      "tags": [
+        "券商資料"
+      ],
+      "summary": "證券商基本資料",
+      "description": "證券商基本資料"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap19",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap19",
+      "tags": [
+        "證券交易"
+      ],
+      "summary": "電子式交易統計資訊",
+      "description": "電子式交易統計資訊"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap20",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap20",
+      "tags": [
+        "券商資料"
+      ],
+      "summary": "各券商每月月計表",
+      "description": "各券商每月月計表"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap21",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap21",
+      "tags": [
+        "券商資料"
+      ],
+      "summary": "各券商收支概況表資料",
+      "description": "各券商收支概況表資料"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap22_L",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap22_L",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司金管會證券期貨局裁罰案件專區",
+      "description": "上市公司金管會證券期貨局裁罰案件專區"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap23_L",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap23_L",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司違反資訊申報、重大訊息及說明記者會規定專區",
+      "description": "上市公司違反資訊申報、重大訊息及說明記者會規定專區"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap24_L",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap24_L",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司經營權及營業範圍異(變)動專區-經營權異動公司",
+      "description": "上市公司經營權及營業範圍異(變)動專區-經營權異動公司"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap25_L",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap25_L",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司經營權及營業範圍異(變)動專區-營業範圍重大變更公司",
+      "description": "上市公司經營權及營業範圍異(變)動專區-營業範圍重大變更公司"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap26_L",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap26_L",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司經營權及營業範圍異(變)動專區-經營權異動且營業範圍重大變更停止買賣公司",
+      "description": "上市公司經營權及營業範圍異(變)動專區-經營權異動且營業範圍重大變更停止買賣公司"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap27_L",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap27_L",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司經營權及營業範圍異(變)動專區-經營權異動且營業範圍重大變更列為變更交易公司",
+      "description": "上市公司經營權及營業範圍異(變)動專區-經營權異動且營業範圍重大變更列為變更交易公司"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap29_A_L",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap29_A_L",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司董事酬金相關資訊 ",
+      "description": "上市公司董事酬金相關資訊 "
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap29_B_L",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap29_B_L",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司監察人酬金相關資訊 ",
+      "description": "上市公司監察人酬金相關資訊 "
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap29_C_L",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap29_C_L",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司合併報表董事酬金相關資訊 ",
+      "description": "上市公司合併報表董事酬金相關資訊 "
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap29_D_L",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap29_D_L",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司合併報表監察人酬金相關資訊 ",
+      "description": "上市公司合併報表監察人酬金相關資訊 "
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap30_L",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap30_L",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司獨立董監事兼任情形彙總表",
+      "description": "上市公司獨立董監事兼任情形彙總表"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap31_L",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap31_L",
+      "tags": [
+        "財務報表"
+      ],
+      "summary": "上市公司財務報告經監察人承認情形",
+      "description": "上市公司財務報告經監察人承認情形"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap32_L",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap32_L",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司公司治理之相關規程規則",
+      "description": "上市公司公司治理之相關規程規則"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap33_L",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap33_L",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司董事長是否兼任總經理",
+      "description": "上市公司董事長是否兼任總經理"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap34_L",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap34_L",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司採累積投票制、全額連記法、候選人提名制選任董監事及當選資料彙總表",
+      "description": "上市公司採累積投票制、全額連記法、候選人提名制選任董監事及當選資料彙總表"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap35_L",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap35_L",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司股東行使提案權情形彙總表",
+      "description": "上市公司股東行使提案權情形彙總表"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap36_L",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap36_L",
+      "tags": [
+        "權證"
+      ],
+      "summary": "上市認購(售)權證年度發行量概況統計表",
+      "description": "上市認購(售)權證年度發行量概況統計表"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap37_L",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap37_L",
+      "tags": [
+        "證券交易"
+      ],
+      "summary": "上市權證基本資料彙總表",
+      "description": "上市權證基本資料彙總表"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap38_L",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap38_L",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司股東會公告-召集股東常(臨時)會公告資料彙總表(95年度起適用)",
+      "description": "上市公司股東會公告-召集股東常(臨時)會公告資料彙總表(95年度起適用)"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap41_L",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap41_L",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司召開股東常 (臨時) 會日期、地點及採用電子投票情形等資料彙總表",
+      "description": "上市公司召開股東常 (臨時) 會日期、地點及採用電子投票情形等資料彙總表"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap42_L",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap42_L",
+      "tags": [
+        "權證"
+      ],
+      "summary": "上市認購(售)權證每日成交資料檔",
+      "description": "上市認購(售)權證每日成交資料檔"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap43_L",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap43_L",
+      "tags": [
+        "權證"
+      ],
+      "summary": "上市認購(售)權證交易人數檔",
+      "description": "上市認購(售)權證交易人數檔"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap45_L",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap45_L",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司股利分派情形",
+      "description": "上市公司股利分派情形"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap46_L_1",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap46_L_1",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司企業ESG資訊揭露彙總資料-溫室氣體排放",
+      "description": "上市公司企業ESG資訊揭露彙總資料-溫室氣體排放"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap46_L_10",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap46_L_10",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司企業ESG資訊揭露彙總資料-燃料管理",
+      "description": "上市公司企業ESG資訊揭露彙總資料-燃料管理，本項目為產業永續指標，公司依產業別加強揭露，故非所有公司揭露相關資訊"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap46_L_11",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap46_L_11",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司企業ESG資訊揭露彙總資料-產品生命週期",
+      "description": "上市公司企業ESG資訊揭露彙總資料-產品生命週期，本項目為產業永續指標，公司依產業別加強揭露，故非所有公司揭露相關資訊"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap46_L_12",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap46_L_12",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司企業ESG資訊揭露彙總資料-食品安全",
+      "description": "上市公司企業ESG資訊揭露彙總資料-食品安全，本項目為產業永續指標，公司依產業別加強揭露，故非所有公司揭露相關資訊"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap46_L_13",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap46_L_13",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司企業ESG資訊揭露彙總資料-供應鏈管理",
+      "description": "上市公司企業ESG資訊揭露彙總資料-供應鏈管理，本項目為產業永續指標，公司依產業別加強揭露，故非所有公司揭露相關資訊"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap46_L_14",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap46_L_14",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司企業ESG資訊揭露彙總資料-產品品質與安全",
+      "description": "上市公司企業ESG資訊揭露彙總資料-產品品質與安全，本項目為產業永續指標，公司依產業別加強揭露，故非所有公司揭露相關資訊"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap46_L_15",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap46_L_15",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司企業ESG資訊揭露彙總資料-社區關係",
+      "description": "上市公司企業ESG資訊揭露彙總資料-社區關係，本項目為產業永續指標，公司依產業別加強揭露，故非所有公司揭露相關資訊"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap46_L_16",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap46_L_16",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司企業ESG資訊揭露彙總資料-資訊安全",
+      "description": "上市公司企業ESG資訊揭露彙總資料-資訊安全，本項目為產業永續指標，公司依產業別加強揭露，故非所有公司揭露相關資訊"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap46_L_17",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap46_L_17",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司企業ESG資訊揭露彙總資料-普惠金融",
+      "description": "上市公司企業ESG資訊揭露彙總資料-普惠金融，本項目為產業永續指標，公司依產業別加強揭露，故非所有公司揭露相關資訊"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap46_L_18",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap46_L_18",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司企業ESG資訊揭露彙總資料-持股及控制力",
+      "description": "上市公司企業ESG資訊揭露彙總資料-持股及控制力，本項目為產業永續指標，公司依產業別加強揭露，故非所有公司揭露相關資訊"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap46_L_19",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap46_L_19",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司企業ESG資訊揭露彙總資料-風險管理政策",
+      "description": "上市公司企業ESG資訊揭露彙總資料-風險管理政策，本項目為產業永續指標，公司依產業別加強揭露，故非所有公司揭露相關資訊"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap46_L_2",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap46_L_2",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司企業ESG資訊揭露彙總資料-能源管理",
+      "description": "上市公司企業ESG資訊揭露彙總資料-能源管理"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap46_L_20",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap46_L_20",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司企業ESG資訊揭露彙總資料-反競爭行為法律訴訟",
+      "description": "上市公司企業ESG資訊揭露彙總資料-反競爭行為法律訴訟，本項目為產業永續指標，公司依產業別加強揭露，故非所有公司揭露相關資訊"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap46_L_21",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap46_L_21",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司企業ESG資訊揭露彙總資料-職業安全衛生",
+      "description": "上市公司企業ESG資訊揭露彙總資料-職業安全衛生(臺灣證券交易所)"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap46_L_3",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap46_L_3",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司企業ESG資訊揭露彙總資料-水資源管理",
+      "description": "上市公司企業ESG資訊揭露彙總資料-水資源管理"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap46_L_4",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap46_L_4",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司企業ESG資訊揭露彙總資料-廢棄物管理",
+      "description": "上市公司企業ESG資訊揭露彙總資料-廢棄物管理"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap46_L_5",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap46_L_5",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司企業ESG資訊揭露彙總資料-人力發展",
+      "description": "上市公司企業ESG資訊揭露彙總資料-人力發展"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap46_L_6",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap46_L_6",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司企業ESG資訊揭露彙總資料-董事會",
+      "description": "上市公司企業ESG資訊揭露彙總資料-董事會"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap46_L_7",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap46_L_7",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司企業ESG資訊揭露彙總資料-投資人溝通",
+      "description": "上市公司企業ESG資訊揭露彙總資料-投資人溝通"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap46_L_8",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap46_L_8",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司企業ESG資訊揭露彙總資料-氣候相關議題管理",
+      "description": "上市公司企業ESG資訊揭露彙總資料-氣候相關議題管理"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap46_L_9",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap46_L_9",
+      "tags": [
+        "公司治理"
+      ],
+      "summary": "上市公司企業ESG資訊揭露彙總資料-功能性委員會",
+      "description": "上市公司企業ESG資訊揭露彙總資料-功能性委員會"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/t187ap47_L",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap47_L",
+      "tags": [
+        "其他"
+      ],
+      "summary": "基金基本資料彙總表",
+      "description": "基金基本資料彙總表"
+    },
+    {
+      "method": "GET",
+      "path": "/opendata/twtazu_od",
+      "url": "https://openapi.twse.com.tw/v1/opendata/twtazu_od",
+      "tags": [
+        "證券交易"
+      ],
+      "summary": "集中市場漲跌證券數統計表",
+      "description": "集中市場漲跌證券數統計表"
+    }
+  ]
+}
