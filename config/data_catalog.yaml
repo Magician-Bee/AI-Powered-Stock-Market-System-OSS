@@ -1,0 +1,367 @@
+version: 1.0
+project: stock_ai_ecosystem
+language: zh-TW
+
+runtime_contract:
+  read_path: stock_ai.data_platform.MarketDataPlatform
+  source_registry: config/market_data_sources.yaml
+  data_quality_rules: config/data_quality_rules.yaml
+  warehouse_tables:
+    - data_sources
+    - market_entities
+    - entity_identifiers
+    - raw_data_payloads
+    - raw_data_objects
+    - raw_payload_objects
+    - raw_reprocessing_runs
+    - market_prices
+    - financial_facts
+    - ownership_flows
+    - market_events
+    - macro_observations
+    - data_revisions
+    - data_lineage_edges
+    - data_ingestion_checkpoints
+    - data_ingestion_runs
+    - data_ingestion_batches
+    - data_revision_snapshots
+    - data_revision_snapshot_items
+    - data_quality_reports
+    - data_quality_issues
+    - data_cache_entries
+    - data_cache_invalidations
+    - data_cache_refresh_leases
+    - data_source_failover_runs
+    - data_source_failover_attempts
+    - data_reconciliation_conflicts
+    - entity_lifecycle_events
+    - entity_identity_merges
+  entity_registry:
+    internal_id_format: "ENT-<uuid5-hex>"
+    identifier_fields:
+      - source_id
+      - identifier_type
+      - identifier_value
+      - normalized_value
+      - entity_id
+      - valid_from
+      - valid_to
+      - confidence
+      - is_primary
+      - superseded_by_entity_id
+      - superseded_at
+    ambiguity_policy: return_all_candidates
+  point_in_time_fields:
+    - observed_at
+    - published_at
+    - available_at
+    - acquired_at
+    - effective_at
+    - expires_at
+  invariants:
+    - raw_payloads_are_immutable_and_hash_addressed
+    - exact_source_bytes_have_wire_sha256_and_byte_length
+    - cleaning_replays_must_reproduce_the_parsed_payload_hash
+    - every_supported_research_revision_is_projected_to_one_standard_domain_table
+    - generic_and_domain_queries_return_the_same_revision_and_payload
+    - incremental_cursors_advance_only_after_successful_batch_persistence
+    - paused_and_failed_partitions_resume_from_the_last_committed_cursor
+    - normalized_revisions_and_historical_manifests_are_immutable
+    - historical_snapshots_reconstruct_the_complete_point_in_time_revision_set
+    - daily_quality_reports_cover_missing_anomaly_time_duplicate_and_source_conflict
+    - unchanged_daily_quality_state_reuses_the_same_report_identity
+    - cache_freshness_and_stale_windows_are_enforced_per_dataset
+    - reviewed_invalidation_reasons_bypass_ttl_and_are_audited
+    - concurrent_partition_refreshes_make_one_upstream_request
+    - normalized_revisions_never_overwrite_history
+    - queries_require_as_of_and_filter_by_available_and_acquired_time
+    - failover_source_identity_is_preserved
+    - failover_only_uses_reviewed_registry_paths
+    - primary_and_failover_revisions_remain_separate
+    - every_normalized_revision_has_lineage
+
+markets:
+  taiwan:
+    exchanges: [TWSE, TPEx]
+    priority: 1
+  united_states:
+    exchanges: [NYSE, NASDAQ, AMEX]
+    priority: 2
+
+entity_types:
+  - stock
+  - etf
+  - index
+  - sector
+  - industry
+  - concept
+  - currency_pair
+  - interest_rate
+  - commodity
+  - macro_indicator
+  - event
+
+data_domains:
+  market_price:
+    description: 股票、ETF、指數、商品、匯率、利率的行情資料
+    tables:
+      - prices_daily
+      - prices_intraday
+    update_frequency: daily_or_intraday
+    mvp: true
+  fundamentals:
+    description: 財報、營收、估值與財務指標
+    tables:
+      - fundamentals_quarterly
+      - revenues_monthly
+      - valuation_metrics
+    update_frequency: monthly_or_quarterly
+    mvp: true
+  flow:
+    description: 法人、融資融券、持股與資金流
+    tables:
+      - institutional_flows
+      - margin_trading
+      - ownership
+    update_frequency: daily
+    mvp: true
+  events:
+    description: 新聞、公告、財報、法說、政策事件
+    tables:
+      - events
+      - documents
+      - event_impacts
+    update_frequency: realtime_or_daily
+    mvp: true
+  macro:
+    description: 利率、通膨、GDP、PMI、就業、央行資料
+    tables:
+      - macro_series
+    update_frequency: daily_monthly_quarterly
+    mvp: true
+  relationships:
+    description: 產業鏈、同業、概念股、供應鏈、跨市場連動
+    tables:
+      - entities
+      - entity_relationships
+      - linkage_rules
+    update_frequency: event_based
+    mvp: true
+
+candidate_sources:
+  taiwan:
+    - name: TWSE
+      type: official
+      use_for: [listed_prices, market_statistics]
+      license_check_required: true
+    - name: TPEx
+      type: official
+      use_for: [otc_prices, market_statistics]
+      license_check_required: true
+    - name: MOPS
+      type: official
+      use_for: [financial_reports, material_events, investor_conference]
+      license_check_required: true
+      local_contract_endpoint: /api/official/mops/company-events
+      local_import_endpoint: /api/official/mops/company-events/import
+      local_csv_import_endpoint: /api/official/mops/company-events/import-csv
+    - name: TDCC
+      type: official
+      use_for: [holding_distribution, major_holder_ratio, shareholder_concentration]
+      license_check_required: true
+      local_contract_endpoint: /api/official/tdcc/holding-distribution
+      local_import_endpoint: /api/official/tdcc/holding-distribution/import
+      local_csv_import_endpoint: /api/official/tdcc/holding-distribution/import-csv
+    - name: TAIFEX
+      type: official
+      use_for: [futures_institutional, open_interest, put_call_ratio, futures_indices]
+      license_check_required: true
+      local_contract_endpoint: /api/official/taifex/derivatives-summary
+      local_import_endpoint: /api/official/taifex/derivatives-summary/import
+      local_csv_import_endpoint: /api/official/taifex/derivatives-summary/import-csv
+    - name: FinMind
+      type: api
+      use_for: [taiwan_prices, fundamentals, institutional_flows]
+      license_check_required: true
+    - name: Yahoo Finance
+      type: api_or_web
+      use_for: [backup_daily_prices]
+      license_check_required: true
+  global:
+    - name: Yahoo Finance
+      type: api_or_web
+      use_for: [global_prices, indices, fx, commodities]
+      license_check_required: true
+    - name: FRED
+      type: official_api
+      use_for: [us_macro, interest_rates, inflation]
+      license_check_required: true
+    - name: Alpha Vantage
+      type: api
+      use_for: [us_stocks, fx, technical_indicators]
+      license_check_required: true
+    - name: Finnhub
+      type: api
+      use_for: [us_stocks, news, fundamentals]
+      license_check_required: true
+
+mvp_tables:
+  entities:
+    primary_key: entity_id
+    fields:
+      - entity_id
+      - symbol
+      - name
+      - entity_type
+      - market
+      - exchange
+      - currency
+      - sector
+      - industry
+      - is_active
+      - lifecycle_status
+      - listed_at
+      - delisted_at
+      - identifiers
+  prices_daily:
+    primary_key: [entity_id, trade_date]
+    fields:
+      - entity_id
+      - trade_date
+      - open
+      - high
+      - low
+      - close
+      - volume
+      - adjusted_close
+      - source_id
+      - observed_at
+      - published_at
+      - available_at
+      - acquired_at
+      - effective_at
+      - revision
+      - raw_payload_id
+  prices_adjusted_daily:
+    primary_key: [entity_id, trade_date, factor_set_id]
+    fields:
+      - entity_id
+      - trade_date
+      - unadjusted_open
+      - unadjusted_high
+      - unadjusted_low
+      - unadjusted_close
+      - forward_adjusted_open
+      - forward_adjusted_high
+      - forward_adjusted_low
+      - forward_adjusted_close
+      - backward_adjusted_open
+      - backward_adjusted_high
+      - backward_adjusted_low
+      - backward_adjusted_close
+      - forward_factor
+      - backward_factor
+      - factor_set_id
+      - factor_source_id
+      - raw_price_revision_id
+      - volume
+      - turnover
+  fundamentals_quarterly:
+    primary_key: [entity_id, fiscal_year, fiscal_quarter]
+    fields:
+      - entity_id
+      - fiscal_year
+      - fiscal_quarter
+      - revenue
+      - gross_margin
+      - operating_margin
+      - eps
+      - roe
+      - debt_ratio
+      - operating_cash_flow
+      - source
+  institutional_flows:
+    primary_key: [entity_id, trade_date]
+    fields:
+      - entity_id
+      - trade_date
+      - foreign_net_buy
+      - investment_trust_net_buy
+      - dealer_net_buy
+      - margin_balance
+      - short_balance
+      - source
+  tdcc_holding_distribution:
+    primary_key: [entity_id, report_date]
+    fields:
+      - entity_id
+      - report_date
+      - total_holders
+      - total_shares
+      - major_holder_1000_lot_ratio
+      - holder_400_lot_ratio
+      - small_shareholder_count
+      - concentration_score
+      - source
+  taifex_derivatives:
+    primary_key: [contract, trade_date]
+    fields:
+      - trade_date
+      - contract
+      - product_name
+      - foreign_long
+      - foreign_short
+      - investment_trust_long
+      - investment_trust_short
+      - dealer_long
+      - dealer_short
+      - open_interest
+      - put_call_ratio
+      - source
+  events:
+    primary_key: event_id
+    fields:
+      - event_id
+      - event_time
+      - related_entities
+      - event_type
+      - title
+      - summary
+      - source_url
+      - sentiment
+      - estimated_impact_direction
+      - confidence
+      - confidence_type
+      - confidence_calibrated
+  entity_relationships:
+    primary_key: relationship_id
+    fields:
+      - relationship_id
+      - source_entity_id
+      - target_entity_id
+      - relationship_type
+      - direction
+      - weight
+      - explanation
+      - source
+  linkage_rules:
+    primary_key: rule_id
+    fields:
+      - rule_id
+      - source_variable
+      - target_group
+      - relation_type
+      - impact_direction
+      - mechanism
+      - confidence
+      - confidence_type
+      - confidence_calibrated
+      - evidence_required
+
+query_routes:
+  market_price: [price, chart, return, volume]
+  fundamentals: [revenue, eps, margin, roe, valuation]
+  flow: [foreign_investor, investment_trust, dealer, margin, short]
+  event: [news, announcement, earnings_call, policy]
+  linkage: [macro, fx, rate, commodity, index, sector_relation]
+  screener: [condition_filter, ranking, anomaly]

@@ -1,0 +1,504 @@
+/* Broker-style paper trading workspace and account layout.
+   Navigation glass is owned by the shared KwpRaGr switcher. */
+
+/* --------------------------------------------------------------------------
+   Paper trading workspace
+   -------------------------------------------------------------------------- */
+.paper-trading-view{
+  padding:0 0 72px!important;
+}
+.paper-trading-view .paper-training-panel{
+  display:block!important;
+  box-sizing:border-box!important;
+  width:100%!important;
+  min-width:0!important;
+  padding:26px 28px 34px!important;
+  border-radius:28px!important;
+  overflow:visible!important;
+}
+.paper-trading-view .paper-training-panel > .panel-head{
+  display:flex!important;
+  align-items:flex-start!important;
+  justify-content:space-between!important;
+  gap:20px!important;
+  margin-bottom:20px!important;
+}
+.paper-trading-view .paper-training-panel > .panel-head h3{
+  margin:0 0 6px!important;
+}
+.paper-trading-view .paper-training-panel > .panel-head .panel-copy{
+  margin:0!important;
+}
+
+.paper-training-grid{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:14px!important;
+  min-width:0!important;
+  margin:0 0 18px!important;
+}
+.paper-training-grid .mini-card{
+  min-width:0!important;
+  min-height:108px!important;
+  padding:16px 17px!important;
+  border-radius:19px!important;
+}
+.paper-training-grid .mini-card strong{
+  display:block!important;
+  margin:7px 0 4px!important;
+  line-height:1.15!important;
+  overflow-wrap:anywhere!important;
+}
+
+.paper-broker-layout{
+  display:grid!important;
+  grid-template-columns:minmax(0,1.18fr) minmax(420px,.82fr)!important;
+  gap:18px!important;
+  align-items:start!important;
+  min-width:0!important;
+}
+.paper-broker-layout > div{
+  min-width:0!important;
+}
+.paper-broker-card{
+  box-sizing:border-box!important;
+  min-width:0!important;
+  padding:20px!important;
+  border:1px solid rgba(255,255,255,.17)!important;
+  border-radius:23px!important;
+  background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.018))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.24),0 14px 34px rgba(0,0,0,.09)!important;
+  overflow:hidden!important;
+}
+.paper-broker-card + .paper-broker-card{
+  margin-top:18px!important;
+}
+.paper-broker-head{
+  display:flex!important;
+  align-items:flex-start!important;
+  justify-content:space-between!important;
+  gap:18px!important;
+  margin:0 0 17px!important;
+  padding:0 1px 14px!important;
+  border-bottom:1px solid rgba(255,255,255,.14)!important;
+}
+.paper-broker-head h4{
+  flex:0 0 auto!important;
+  margin:0!important;
+  font-size:20px!important;
+  line-height:1.25!important;
+  white-space:nowrap!important;
+}
+.paper-broker-head small{
+  max-width:430px!important;
+  color:var(--muted)!important;
+  line-height:1.45!important;
+  text-align:right!important;
+}
+
+.paper-side-switch{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:8px!important;
+  margin-bottom:16px!important;
+  padding:6px!important;
+  border:1px solid rgba(255,255,255,.17)!important;
+  border-radius:18px!important;
+  background:rgba(255,255,255,.035)!important;
+}
+.paper-side-switch button{
+  min-height:48px!important;
+  border-radius:14px!important;
+  font:800 16px/1 inherit!important;
+  writing-mode:horizontal-tb!important;
+  white-space:nowrap!important;
+}
+.paper-side-switch button[data-side="buy"].active{
+  color:#fff!important;
+  background:linear-gradient(145deg,rgba(206,65,84,.86),rgba(154,42,59,.74))!important;
+  border-color:rgba(226,91,108,.62)!important;
+}
+.paper-side-switch button[data-side="sell"].active{
+  color:#fff!important;
+  background:linear-gradient(145deg,rgba(45,154,112,.86),rgba(26,112,80,.74))!important;
+  border-color:rgba(69,187,140,.60)!important;
+}
+.paper-side-switch button[data-side="short_sell"].active{
+  color:#fff!important;
+  background:linear-gradient(145deg,rgba(126,77,182,.88),rgba(79,47,132,.76))!important;
+  border-color:rgba(166,119,220,.64)!important;
+}
+.paper-side-switch button[data-side="buy_to_cover"].active{
+  color:#fff!important;
+  background:linear-gradient(145deg,rgba(35,133,168,.88),rgba(20,86,122,.76))!important;
+  border-color:rgba(78,167,201,.62)!important;
+}
+
+.paper-ticket-grid{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:14px!important;
+  align-items:end!important;
+  min-width:0!important;
+}
+.paper-ticket-grid label,
+.paper-account-grid label{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:8px!important;
+  min-width:0!important;
+  margin:0!important;
+  color:var(--muted)!important;
+  font:760 13px/1.25 inherit!important;
+  writing-mode:horizontal-tb!important;
+  white-space:normal!important;
+  word-break:keep-all!important;
+}
+.paper-ticket-grid input,
+.paper-ticket-grid select,
+.paper-account-grid input{
+  box-sizing:border-box!important;
+  width:100%!important;
+  min-width:0!important;
+  min-height:52px!important;
+  margin:0!important;
+  padding:0 15px!important;
+  border-radius:16px!important;
+  font:650 16px/1 inherit!important;
+  writing-mode:horizontal-tb!important;
+}
+.paper-ticket-grid .paper-price-field[hidden]{
+  display:none!important;
+}
+.paper-ticket-grid .paper-ticket-wide{
+  grid-column:span 2!important;
+}
+.paper-preview-command{
+  display:flex!important;
+  justify-content:flex-end!important;
+  margin-top:14px!important;
+}
+.paper-preview-command button{
+  min-height:50px!important;
+  padding:0 20px!important;
+  border-radius:16px!important;
+  font-weight:780!important;
+  white-space:nowrap!important;
+}
+
+.paper-ticket-preview,
+.paper-risk-summary{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:12px!important;
+  min-width:0!important;
+  margin:16px 0 0!important;
+}
+.paper-ticket-preview .mini-card,
+.paper-risk-summary .mini-card{
+  min-width:0!important;
+  min-height:100px!important;
+  padding:14px 15px!important;
+  border-radius:18px!important;
+}
+.paper-ticket-preview .mini-card strong,
+.paper-risk-summary .mini-card strong{
+  display:block!important;
+  margin:6px 0 4px!important;
+  line-height:1.28!important;
+  overflow-wrap:anywhere!important;
+}
+
+.paper-order-actions{
+  display:flex!important;
+  gap:12px!important;
+  flex-wrap:wrap!important;
+  margin:17px 0 0!important;
+  padding-top:17px!important;
+  border-top:1px solid rgba(255,255,255,.13)!important;
+}
+.paper-order-actions button{
+  min-height:50px!important;
+  padding:0 21px!important;
+  border-radius:17px!important;
+  font-weight:780!important;
+  writing-mode:horizontal-tb!important;
+  white-space:nowrap!important;
+}
+.paper-order-actions .primary{
+  min-width:170px!important;
+}
+.paper-order-actions .sell-order{
+  background:linear-gradient(145deg,rgba(44,151,109,.30),rgba(38,122,91,.14))!important;
+}
+
+.paper-training-policy{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:9px!important;
+  margin:16px 0 0!important;
+  padding:15px 17px!important;
+  border:1px solid var(--line)!important;
+  border-radius:18px!important;
+  background:rgba(255,255,255,.035)!important;
+  color:var(--muted)!important;
+  font:760 13px/1.3 inherit!important;
+  writing-mode:horizontal-tb!important;
+}
+.paper-training-policy input,
+.paper-training-policy textarea{
+  box-sizing:border-box!important;
+  width:100%!important;
+  min-width:0!important;
+  margin:0!important;
+  padding:13px 15px!important;
+  border-radius:16px!important;
+  font:500 15px/1.55 inherit!important;
+  writing-mode:horizontal-tb!important;
+}
+.paper-training-policy textarea{
+  min-height:116px!important;
+  resize:vertical!important;
+}
+
+.paper-position-table .row,
+.paper-order-table .row,
+.paper-fill-table .row{
+  align-items:center!important;
+  min-width:0!important;
+}
+.paper-position-table .row{
+  grid-template-columns:1.2fr .8fr .9fr .9fr!important;
+}
+.paper-order-table .row{
+  grid-template-columns:1.25fr .85fr .9fr 1fr .75fr!important;
+}
+.paper-fill-table .row{
+  grid-template-columns:1.1fr .8fr .8fr .8fr 1fr!important;
+}
+.paper-order-table button{
+  min-height:34px!important;
+  padding:0 12px!important;
+  border-radius:11px!important;
+  font-size:12px!important;
+  writing-mode:horizontal-tb!important;
+  white-space:nowrap!important;
+}
+.paper-order-status{
+  display:inline-flex!important;
+  align-items:center!important;
+  min-height:26px!important;
+  padding:0 9px!important;
+  border:1px solid rgba(255,255,255,.16)!important;
+  border-radius:999px!important;
+  font-size:12px!important;
+  font-weight:780!important;
+  white-space:nowrap!important;
+}
+.paper-order-status.open,
+.paper-order-status.triggered{
+  color:#d89b39!important;
+  background:rgba(216,155,57,.09)!important;
+}
+.paper-order-status.filled{
+  color:#3bb985!important;
+  background:rgba(59,185,133,.09)!important;
+}
+.paper-order-status.canceled,
+.paper-order-status.rejected{
+  color:#d46070!important;
+  background:rgba(212,96,112,.09)!important;
+}
+
+/* The account controls are two full rows, never four squeezed columns. */
+.paper-account-grid{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) minmax(156px,186px)!important;
+  gap:16px 14px!important;
+  align-items:end!important;
+  min-width:0!important;
+}
+.paper-account-grid > label{
+  grid-column:1!important;
+}
+.paper-account-grid > button{
+  grid-column:2!important;
+  box-sizing:border-box!important;
+  width:100%!important;
+  min-width:156px!important;
+  min-height:52px!important;
+  margin:0!important;
+  padding:0 18px!important;
+  border-radius:16px!important;
+  font-weight:760!important;
+  writing-mode:horizontal-tb!important;
+  text-orientation:mixed!important;
+  white-space:nowrap!important;
+  word-break:keep-all!important;
+  overflow-wrap:normal!important;
+  line-height:1.2!important;
+}
+#paperTrainingReset{
+  grid-row:1!important;
+}
+#paperTrainingStartEpisode{
+  grid-row:2!important;
+}
+#paperTrainingInitialCash,
+#paperTrainingEpisodeId{
+  width:100%!important;
+  min-width:0!important;
+}
+
+.paper-learning-layout{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) minmax(300px,.78fr)!important;
+  gap:16px!important;
+  align-items:start!important;
+  min-width:0!important;
+}
+.paper-learning-actions{
+  display:flex!important;
+  gap:10px!important;
+  flex-wrap:wrap!important;
+  margin-top:14px!important;
+}
+.paper-learning-actions button{
+  min-height:46px!important;
+  padding:0 17px!important;
+  border-radius:15px!important;
+  font-weight:750!important;
+  writing-mode:horizontal-tb!important;
+  white-space:nowrap!important;
+}
+.paper-training-status{
+  margin-top:15px!important;
+  padding:15px 17px!important;
+  border-radius:17px!important;
+  writing-mode:horizontal-tb!important;
+  white-space:normal!important;
+}
+.paper-governance-card .event-list{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:10px!important;
+  margin:0 0 14px!important;
+}
+.paper-governance-card .event{
+  min-width:0!important;
+  margin:0!important;
+}
+.paper-governance-card .event p{
+  overflow-wrap:anywhere!important;
+}
+.paper-governance-grid{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:12px!important;
+  align-items:end!important;
+}
+.paper-governance-grid label{
+  display:grid!important;
+  gap:7px!important;
+  min-width:0!important;
+  color:var(--muted)!important;
+  font-size:13px!important;
+  font-weight:750!important;
+}
+.paper-governance-grid input,.paper-governance-grid select{
+  width:100%!important;
+  min-width:0!important;
+}
+.paper-governance-wide{
+  grid-column:1/-1!important;
+}
+.paper-governance-grid button{
+  width:max-content!important;
+  min-height:46px!important;
+  padding:0 17px!important;
+  white-space:nowrap!important;
+}
+
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .paper-broker-card{
+  border-color:rgba(47,78,101,.17)!important;
+  background:linear-gradient(145deg,rgba(255,255,255,.39),rgba(211,232,245,.14))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.86),0 14px 34px rgba(63,96,117,.08)!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .paper-broker-head{
+  border-bottom-color:rgba(47,78,101,.13)!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .paper-side-switch{
+  border-color:rgba(47,78,101,.17)!important;
+  background:rgba(255,255,255,.22)!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .paper-training-policy{
+  color:#536b7b!important;
+  border-color:rgba(47,78,101,.17)!important;
+  background:rgba(255,255,255,.24)!important;
+}
+
+@media(max-width:1420px){
+  .paper-broker-layout{
+    grid-template-columns:1fr!important;
+  }
+  .paper-training-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+}
+
+@media(max-width:920px){
+  .paper-ticket-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  .paper-learning-layout{
+    grid-template-columns:1fr!important;
+  }
+  .paper-governance-card .event-list,
+  .paper-governance-grid{
+    grid-template-columns:1fr!important;
+  }
+  .paper-order-table .row,
+  .paper-fill-table .row{
+    grid-template-columns:1fr 1fr!important;
+  }
+}
+
+@media(max-width:680px){
+  .paper-trading-view .paper-training-panel{
+    padding:20px!important;
+  }
+  .paper-training-grid,
+  .paper-ticket-preview,
+  .paper-risk-summary{
+    grid-template-columns:1fr!important;
+  }
+  .paper-ticket-grid,
+  .paper-account-grid,
+  .paper-governance-grid{
+    grid-template-columns:1fr!important;
+  }
+  .paper-ticket-grid .paper-ticket-wide{
+    grid-column:auto!important;
+  }
+  .paper-account-grid > label,
+  .paper-account-grid > button,
+  .paper-governance-grid > button,
+  #paperTrainingReset,
+  #paperTrainingStartEpisode{
+    grid-column:1!important;
+    grid-row:auto!important;
+    width:100%!important;
+    min-width:0!important;
+  }
+  .paper-order-actions button,
+  .paper-learning-actions button,
+  .paper-governance-grid button{
+    width:100%!important;
+  }
+  .paper-broker-head{
+    display:grid!important;
+  }
+  .paper-broker-head small{
+    text-align:left!important;
+  }
+}

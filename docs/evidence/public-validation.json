@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "release": "v0.1.0-public.20260916",
+  "checked_at_utc": "2026-09-16T13:56:23.577177+00:00",
+  "environment": {
+    "os": "Linux",
+    "architecture": "x86_64",
+    "python": "3.12.3"
+  },
+  "dependency_versions": {
+    "pytest": "9.1.1",
+    "pydantic": "2.13.4",
+    "pydantic-settings": "2.14.2",
+    "httpx": "0.28.1",
+    "PyYAML": "6.0.3",
+    "pandas": "3.0.3"
+  },
+  "checks": [
+    {
+      "name": "tracked_source_hygiene",
+      "files_checked": 3133,
+      "python_files_compiled": 1801,
+      "notebooks_checked": 54,
+      "review_items": [],
+      "passed": true
+    },
+    {
+      "name": "gitleaks",
+      "version": "8.30.1",
+      "exit_code": 0,
+      "findings": 0,
+      "passed": true
+    },
+    {
+      "name": "offline_regression_subset",
+      "test_files": [
+        "tests/test_risk_control.py",
+        "tests/test_portfolio_risk_constraints.py",
+        "tests/test_paper_account_safety.py",
+        "tests/test_broker_framework.py",
+        "tests/test_broker_transport_guard.py"
+      ],
+      "exit_code": 0,
+      "seconds": 6.562,
+      "tests": 119,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed_count": 119,
+      "network_connections_blocked": true,
+      "passed": true
+    }
+  ],
+  "passed": true,
+  "application_started": false,
+  "real_model_calls": 0,
+  "real_broker_calls": 0,
+  "scope": "tracked source checks and selected offline regression; not full product acceptance or trading performance",
+  "source_files_sha256": "6a95ab983a248d72a7c5aa8d4d48019a749f05e5078da6f4dbc8f3f269b07db1",
+  "limitations": [
+    "Pattern scanning does not prove absence of all identifiers or secrets.",
+    "Historical model results are not rerun.",
+    "Cross-platform installation and live broker execution are not certified."
+  ]
+}

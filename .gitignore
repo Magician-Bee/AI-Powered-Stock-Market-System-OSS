@@ -1,0 +1,118 @@
+# === Stock AI local-only files ===
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+env/
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+credentials.json
+credentials.local.json
+
+# Logs and runtime data
+/logs/*
+!/logs/agent/
+/logs/agent/*
+!/logs/agent/.gitkeep
+*.log
+*.pid
+*.tmp
+tmp/
+temp/
+/.runtime
+/.runtime/
+
+# Generated research and paper-ledger artifacts
+/output/*
+!/output/backtests/
+/output/backtests/*
+!/output/backtests/.gitkeep
+!/output/reports/
+/output/reports/*
+!/output/reports/.gitkeep
+
+# One-off browser captures and copied debug assets do not belong in source control.
+/artifacts/
+/.playwright-cli/
+
+# Heavy demonstration and training payloads from pinned external research sources.
+# Source contracts, schemas and lock markers remain tracked; these assets can be
+# restored from their pinned upstream commit when they are actually needed.
+/external/**/*.7z
+/external/**/*.pkl
+/external/**/*.mp4
+/external/**/get_gpt_sentiment_results/*.csv
+
+# Python packaging
+build/
+dist/
+*.egg-info/
+
+# .NET / WPF / Windows Glass generated files
+.dotnet/
+**/bin/
+**/obj/
+.vs/
+
+# AI models and training checkpoints
+*.gguf
+*.safetensors
+*.ckpt
+*.pth
+*.pt
+*.onnx
+
+# Archives and installers
+*.dmg
+*.iso
+*.zip
+
+# Keep source-lock markers even when external snapshots are managed separately.
+!external/**/.source-lock.json
+
+# Private runtime and operating-system metadata
+._*
+__MACOSX/
+*.lnk
+*.pem
+*.key
+*.p12
+*.pfx
+*.sqlite*
+*.db*
+logs/
+output/
+artifacts/
+.runtime/
+.release-artifacts/

@@ -1,0 +1,1206 @@
+schema_version: stock_ai.source_registry.v2
+cache_policies:
+  - dataset: prices_intraday
+    ttl_seconds: 5
+    stale_while_revalidate_seconds: 10
+    invalidate_on: [market_session_change, authorization_change]
+  - dataset: security_master
+    ttl_seconds: 21600
+    stale_while_revalidate_seconds: 86400
+    invalidate_on: [listing_event, delisting_event, symbol_change, identity_resolution_partial, catalogue_refresh_failed]
+  - dataset: prices_daily
+    ttl_seconds: 900
+    stale_while_revalidate_seconds: 3600
+    invalidate_on: [official_revision, corporate_action]
+  - dataset: prices_adjusted_daily
+    ttl_seconds: 900
+    stale_while_revalidate_seconds: 3600
+    invalidate_on: [official_revision, corporate_action, adjustment_factor_revision]
+  - dataset: institutional_flows
+    ttl_seconds: 900
+    stale_while_revalidate_seconds: 3600
+    invalidate_on: [official_revision]
+  - dataset: margin_trading
+    ttl_seconds: 900
+    stale_while_revalidate_seconds: 3600
+    invalidate_on: [official_revision]
+  - dataset: revenues_monthly
+    ttl_seconds: 21600
+    stale_while_revalidate_seconds: 86400
+    invalidate_on: [mops_revision]
+  - dataset: fundamentals
+    ttl_seconds: 21600
+    stale_while_revalidate_seconds: 86400
+    invalidate_on: [mops_revision, restatement]
+  - dataset: fundamentals_quarterly
+    ttl_seconds: 21600
+    stale_while_revalidate_seconds: 86400
+    invalidate_on: [mops_revision, restatement]
+  - dataset: events
+    ttl_seconds: 900
+    stale_while_revalidate_seconds: 3600
+    invalidate_on: [source_revision, duplicate_resolution]
+  - dataset: macro
+    ttl_seconds: 21600
+    stale_while_revalidate_seconds: 86400
+    invalidate_on: [official_revision]
+  - dataset: derivatives
+    ttl_seconds: 300
+    stale_while_revalidate_seconds: 900
+    invalidate_on: [session_change, contract_expiry]
+sources:
+  - source_id: twse_isin
+    display_name: TWSE official ISIN security classification catalogue
+    authority: official_exchange_web
+    base_url: https://isin.twse.com.tw
+    license_status: official_website_terms_review_required
+    update_frequency_seconds: 21600
+    reliability_tier: 1
+    priority: 10
+    domains: [security_master]
+    failover_source_ids: []
+    host_aliases: []
+    field_contract:
+      immutable_raw_payload: true
+      historical_pit_eligible: false
+      usage_boundary: public_website_research_and_internal_analysis
+      terms_url: https://www.twse.com.tw/zh/products/information/use.html
+      catalogue_index_url: https://www.twse.com.tw/zh/products/code/announcement.html
+  - source_id: twse_openapi
+    display_name: Taiwan Stock Exchange OpenAPI
+    authority: official_exchange
+    base_url: https://openapi.twse.com.tw/v1
+    license_status: official_api_terms_review_required
+    update_frequency_seconds: 300
+    reliability_tier: 1
+    priority: 10
+    domains: [security_master, prices_daily, institutional_flow, margin, revenue, indices, warrants]
+    failover_source_ids: []
+    host_aliases: [www.twse.com.tw]
+    field_contract:
+      timezone: Asia/Taipei
+      currency: TWD
+      immutable_raw_payload: true
+      terms_url: https://www.twse.com.tw/zh/products/information/use.html
+      usage_boundary: public_api_research_and_internal_analysis
+  - source_id: tpex_openapi
+    display_name: Taipei Exchange OpenAPI
+    authority: official_exchange
+    base_url: https://www.tpex.org.tw/openapi/v1
+    license_status: official_api_terms_review_required
+    update_frequency_seconds: 300
+    reliability_tier: 1
+    priority: 10
+    domains: [security_master, prices_daily, margin, emerging, indices, warrants]
+    failover_source_ids: []
+    host_aliases: []
+    field_contract:
+      timezone: Asia/Taipei
+      currency: TWD
+      immutable_raw_payload: true
+      terms_url: https://www.tpex.org.tw/openapi/
+      usage_boundary: public_api_research_and_internal_analysis
+  - source_id: tpex_official_web
+    display_name: Taipei Exchange official website data API
+    authority: official_exchange_web
+    base_url: https://www.tpex.org.tw/www
+    license_status: official_website_terms_review_required
+    update_frequency_seconds: 21600
+    reliability_tier: 1
+    priority: 10
+    domains: [security_master, prices_daily, corporate_actions, delisted, borrowed_short, daytrade]
+    failover_source_ids: [tpex_openapi]
+    host_aliases: []
+    field_contract:
+      timezone: Asia/Taipei
+      currency: TWD
+      immutable_raw_payload: true
+      terms_url: https://www.tpex.org.tw/zh-tw/gtsm_disclaimer.html
+      usage_boundary: public_website_research_and_internal_analysis
+  - source_id: mops
+    display_name: Market Observation Post System
+    authority: official_disclosure
+    base_url: https://mops.twse.com.tw
+    license_status: official_disclosure_terms_review_required
+    update_frequency_seconds: 900
+    reliability_tier: 1
+    priority: 10
+    domains: [fundamentals, revenue, material_events, documents, corporate_actions]
+    failover_source_ids: []
+    host_aliases: []
+    field_contract:
+      point_in_time_required: true
+      revision_history_required: true
+      terms_url: https://mops.twse.com.tw
+      usage_boundary: public_disclosure_research
+  - source_id: mops_archive
+    display_name: Market Observation Post System Historical Archive
+    authority: official_disclosure_archive
+    base_url: https://mopsov.twse.com.tw
+    license_status: official_disclosure_terms_review_required
+    update_frequency_seconds: 21600
+    reliability_tier: 1
+    priority: 11
+    domains: [revenue, fundamentals]
+    failover_source_ids: []
+    host_aliases: []
+    field_contract:
+      point_in_time_required: true
+      revision_history_required: true
+      archive_start_period: 2010-01
+      ifrs_statement_archive_start_period: 2013-Q1
+      archive_publication_timestamp_available: false
+      terms_url: https://mops.twse.com.tw
+      usage_boundary: public_disclosure_research
+  - source_id: tdcc
+    display_name: Taiwan Depository and Clearing Corporation
+    authority: official_depository
+    base_url: https://www.tdcc.com.tw
+    license_status: official_publication_terms_review_required
+    update_frequency_seconds: 86400
+    reliability_tier: 1
+    priority: 10
+    domains: [ownership, holding_distribution]
+    failover_source_ids: []
+    host_aliases: []
+    field_contract:
+      point_in_time_required: true
+      terms_url: https://www.tdcc.com.tw
+      usage_boundary: published_statistics_research
+  - source_id: tdcc_openapi
+    display_name: Taiwan Depository and Clearing Corporation OpenAPI
+    authority: official_depository
+    base_url: https://openapi.tdcc.com.tw
+    license_status: official_publication_terms_review_required
+    update_frequency_seconds: 604800
+    reliability_tier: 1
+    priority: 10
+    domains: [ownership, holding_distribution]
+    failover_source_ids: []
+    host_aliases: []
+    field_contract:
+      point_in_time_required: true
+      latest_snapshot_only: true
+      terms_url: https://www.tdcc.com.tw
+      usage_boundary: published_statistics_research
+  - source_id: taifex_openapi
+    display_name: Taiwan Futures Exchange OpenAPI
+    authority: official_exchange
+    base_url: https://openapi.taifex.com.tw
+    license_status: official_api_terms_review_required
+    update_frequency_seconds: 300
+    reliability_tier: 1
+    priority: 10
+    domains: [futures, options, institutional_derivatives]
+    failover_source_ids: []
+    host_aliases: []
+    field_contract:
+      contract_multiplier_required: true
+      session_required: true
+      terms_url: https://openapi.taifex.com.tw
+      usage_boundary: public_api_research_and_internal_analysis
+  - source_id: twse_mis
+    display_name: TWSE MIS public intraday quote
+    authority: official_exchange_web
+    base_url: https://mis.twse.com.tw
+    license_status: trading_information_contract_required
+    update_frequency_seconds: 5
+    reliability_tier: 1
+    priority: 20
+    domains: [prices_intraday, order_book]
+    failover_source_ids: [twse_openapi]
+    host_aliases: []
+    field_contract:
+      quote_kind_required: true
+      authorization_required_for_execution: true
+      terms_url: https://www.twse.com.tw/zh/products/information/use.html
+      redistribution_allowed: false
+  - source_id: yahoo_finance
+    display_name: Yahoo Finance
+    authority: auxiliary
+    base_url: https://query1.finance.yahoo.com
+    license_status: research_only_terms_review_required
+    update_frequency_seconds: 900
+    reliability_tier: 3
+    priority: 90
+    domains: [prices_daily, prices_intraday, global_indices, fx, commodities, news]
+    failover_source_ids: []
+    host_aliases: [query2.finance.yahoo.com, finance.yahoo.com]
+    field_contract:
+      fallback_only: true
+      execution_eligible: false
+      terms_url: https://legal.yahoo.com/us/en/yahoo/terms/product-atos/apiforydn/index.html
+      redistribution_allowed: false
+  - source_id: twse_official_web
+    display_name: Taiwan Stock Exchange official website data API
+    authority: official_exchange_web
+    base_url: https://www.twse.com.tw
+    license_status: official_website_terms_review_required
+    update_frequency_seconds: 900
+    reliability_tier: 1
+    priority: 10
+    domains: [prices_daily, corporate_actions, institutional_flow, borrowed_short, daytrade]
+    failover_source_ids: [twse_openapi]
+    host_aliases: []
+    field_contract:
+      timezone: Asia/Taipei
+      currency: TWD
+      immutable_raw_payload: true
+      terms_url: https://www.twse.com.tw/zh/products/information/use.html
+      usage_boundary: public_website_research_and_internal_analysis
+  - source_id: fugle_marketdata
+    display_name: Fugle licensed market data
+    authority: licensed_vendor
+    base_url: https://api.fugle.tw/marketdata/v1.0/stock
+    license_status: api_key_and_market_data_license_required
+    update_frequency_seconds: 1
+    reliability_tier: 1
+    priority: 15
+    domains: [prices_intraday, order_book]
+    failover_source_ids: [twse_mis, yahoo_finance]
+    host_aliases: []
+    field_contract:
+      authorization_required: true
+      redistribution_allowed: false
+      execution_eligible: true
+      usage_boundary: licensed_account_only
+  - source_id: fugle_stream
+    display_name: Fugle licensed market data WebSocket
+    authority: licensed_vendor
+    base_url: wss://api.fugle.tw/marketdata/v1.0/stock
+    license_status: api_key_and_market_data_license_required
+    update_frequency_seconds: 1
+    reliability_tier: 1
+    priority: 15
+    domains: [prices_intraday, order_book]
+    failover_source_ids: [twse_mis]
+    host_aliases: []
+    field_contract:
+      authorization_required: true
+      redistribution_allowed: false
+      execution_eligible: true
+      usage_boundary: licensed_account_only
+  - source_id: google_news
+    display_name: Google News RSS
+    authority: auxiliary_aggregator
+    base_url: https://news.google.com
+    license_status: publisher_and_google_terms_review_required
+    update_frequency_seconds: 900
+    reliability_tier: 3
+    priority: 95
+    domains: [news, events]
+    failover_source_ids: []
+    host_aliases: []
+    field_contract:
+      fallback_only: true
+      execution_eligible: false
+      redistribution_allowed: false
+      usage_boundary: research_link_discovery
+
+datasets:
+  - dataset_id: twse_isin_listed
+    source_id: twse_isin
+    domain: security_master
+    transport: http_html
+    endpoint_path: isin/C_public.jsp?strMode=2
+    fields: [symbol, isin, section, cfi_code, venue, source_updated_on]
+    required_fields: [symbol, isin, section, cfi_code, venue, source_updated_on]
+    failure_strategy: {max_attempts: 1, timeout_seconds: 20, backoff_seconds: [], on_exhausted: fail_closed, checkpoint_required: true, preserve_error_payload: true}
+  - dataset_id: tpex_isin_otc
+    source_id: twse_isin
+    domain: security_master
+    transport: http_html
+    endpoint_path: isin/C_public.jsp?strMode=4
+    fields: [symbol, isin, section, cfi_code, venue, source_updated_on]
+    required_fields: [symbol, isin, section, cfi_code, venue, source_updated_on]
+    failure_strategy: {max_attempts: 1, timeout_seconds: 20, backoff_seconds: [], on_exhausted: fail_closed, checkpoint_required: true, preserve_error_payload: true}
+  - dataset_id: tpex_isin_emerging
+    source_id: twse_isin
+    domain: security_master
+    transport: http_html
+    endpoint_path: isin/C_public.jsp?strMode=5
+    fields: [symbol, isin, section, cfi_code, venue, source_updated_on]
+    required_fields: [symbol, isin, section, cfi_code, venue, source_updated_on]
+    failure_strategy: {max_attempts: 1, timeout_seconds: 20, backoff_seconds: [], on_exhausted: fail_closed, checkpoint_required: true, preserve_error_payload: true}
+  - dataset_id: twse_companies
+    source_id: twse_openapi
+    domain: security_master
+    transport: http_json
+    endpoint_path: opendata/t187ap03_L
+    update_frequency_seconds: 21600
+    fields: [code, short_name, legal_name, business_no, industry, listed_at, issued_common_shares]
+    required_fields: [code, legal_name]
+    optional_fields: [short_name, business_no, industry, listed_at, issued_common_shares]
+    failure_strategy:
+      max_attempts: 3
+      timeout_seconds: 20
+      backoff_seconds: [0.15, 0.3]
+      retry_http_statuses: [408, 429, 500, 502, 503, 504]
+      on_exhausted: fail_closed
+      checkpoint_required: true
+      preserve_error_payload: true
+  - dataset_id: twse_quotes
+    source_id: twse_openapi
+    domain: security_master
+    transport: http_json
+    endpoint_path: exchangeReport/STOCK_DAY_ALL
+    fields: [code, name, trade_date, open, high, low, close, volume]
+    required_fields: [code, name]
+    optional_fields: [trade_date, open, high, low, close, volume]
+    failure_strategy:
+      max_attempts: 3
+      timeout_seconds: 20
+      backoff_seconds: [0.15, 0.3]
+      retry_http_statuses: [408, 429, 500, 502, 503, 504]
+      on_exhausted: serve_stale
+      stale_if_error_seconds: 86400
+      checkpoint_required: true
+      preserve_error_payload: true
+  - dataset_id: twse_daily_valuation
+    source_id: twse_openapi
+    domain: fundamentals
+    transport: http_json
+    endpoint_path: exchangeReport/BWIBBU_ALL
+    update_frequency_seconds: 86400
+    fields: [date, code, pe, dividend_yield, pb]
+    required_fields: [date, code]
+    optional_fields: [pe, dividend_yield, pb]
+    failure_strategy:
+      max_attempts: 3
+      timeout_seconds: 20
+      checkpoint_required: false
+      preserve_error_payload: true
+  - dataset_id: twse_monthly_valuation_history
+    source_id: twse_official_web
+    domain: fundamentals
+    transport: http_json
+    endpoint_path: exchangeReport/BWIBBU
+    update_frequency_seconds: 86400
+    fields: [date, symbol, pe, dividend_yield, pb, fiscal_period]
+    required_fields: [date, symbol]
+    optional_fields: [pe, dividend_yield, pb, fiscal_period]
+    failure_strategy:
+      max_attempts: 2
+      timeout_seconds: 20
+      checkpoint_required: true
+      preserve_error_payload: true
+  - dataset_id: twse_stock_day
+    source_id: twse_official_web
+    domain: prices_daily
+    transport: http_json
+    endpoint_path: rwd/zh/afterTrading/STOCK_DAY
+    fields: [symbol, trade_date, open, high, low, close, volume, turnover]
+    required_fields: [symbol, trade_date, close]
+    optional_fields: [open, high, low, volume, turnover]
+    failure_strategy:
+      max_attempts: 3
+      timeout_seconds: 20
+      backoff_seconds: [0.15, 0.3]
+      retry_http_statuses: [408, 429, 500, 502, 503, 504]
+      on_exhausted: use_failover
+      failover_dataset_ids: [twse_quotes]
+      checkpoint_required: true
+      preserve_error_payload: true
+  - dataset_id: twse_exright_results
+    source_id: twse_official_web
+    domain: corporate_actions
+    transport: http_json
+    endpoint_path: rwd/zh/exRight/TWT49U
+    fields: [event_date, symbol, previous_close, reference_price, adjustment_value, event_type]
+    required_fields: [event_date, symbol, previous_close, reference_price]
+    optional_fields: [adjustment_value, event_type]
+    failure_strategy:
+      max_attempts: 3
+      timeout_seconds: 20
+      backoff_seconds: [0.15, 0.3]
+      retry_http_statuses: [408, 429, 500, 502, 503, 504]
+      on_exhausted: fail_closed
+      checkpoint_required: true
+      preserve_error_payload: true
+  - dataset_id: twse_etfs
+    source_id: twse_openapi
+    domain: security_master
+    transport: http_json
+    endpoint_path: opendata/t187ap47_L
+    update_frequency_seconds: 21600
+    fields: [code, short_name, legal_name, business_no, fund_type, listed_at]
+    required_fields: [code, legal_name]
+    optional_fields: [short_name, business_no, fund_type, listed_at]
+    failure_strategy:
+      max_attempts: 3
+      timeout_seconds: 20
+      backoff_seconds: [0.15, 0.3]
+      retry_http_statuses: [408, 429, 500, 502, 503, 504]
+      on_exhausted: fail_closed
+      checkpoint_required: true
+      preserve_error_payload: true
+  - dataset_id: twse_warrants
+    source_id: twse_openapi
+    domain: security_master
+    transport: http_json
+    endpoint_path: opendata/t187ap37_L
+    update_frequency_seconds: 21600
+    fields: [code, short_name, warrant_type, exercise_start, expires_at]
+    required_fields: [code, short_name]
+    optional_fields: [warrant_type, exercise_start, expires_at]
+    failure_strategy:
+      max_attempts: 3
+      timeout_seconds: 20
+      backoff_seconds: [0.15, 0.3]
+      retry_http_statuses: [408, 429, 500, 502, 503, 504]
+      on_exhausted: fail_closed
+      checkpoint_required: true
+      preserve_error_payload: true
+  - dataset_id: twse_indices
+    source_id: twse_openapi
+    domain: indices
+    transport: http_json
+    endpoint_path: exchangeReport/MI_INDEX
+    fields: [trade_date, index_name, close, change, change_percent]
+    required_fields: [trade_date, index_name]
+    optional_fields: [close, change, change_percent]
+    failure_strategy:
+      max_attempts: 3
+      timeout_seconds: 20
+      backoff_seconds: [0.15, 0.3]
+      retry_http_statuses: [408, 429, 500, 502, 503, 504]
+      on_exhausted: serve_stale
+      stale_if_error_seconds: 86400
+      checkpoint_required: true
+      preserve_error_payload: true
+  - dataset_id: twse_delisted
+    source_id: twse_openapi
+    domain: security_master
+    transport: http_json
+    endpoint_path: company/suspendListingCsvAndHtml
+    update_frequency_seconds: 21600
+    fields: [code, company, delisted_at, reason]
+    required_fields: [code, delisted_at]
+    optional_fields: [company, reason]
+    failure_strategy:
+      max_attempts: 3
+      timeout_seconds: 20
+      backoff_seconds: [0.15, 0.3]
+      retry_http_statuses: [408, 429, 500, 502, 503, 504]
+      on_exhausted: serve_stale
+      stale_if_error_seconds: 604800
+      checkpoint_required: true
+      preserve_error_payload: true
+  - dataset_id: twse_margin
+    source_id: twse_openapi
+    domain: margin
+    transport: http_json
+    endpoint_path: exchangeReport/MI_MARGN
+    fields: [symbol, trade_date, margin_balance, short_balance]
+    required_fields: [symbol, trade_date]
+    optional_fields: [margin_balance, short_balance]
+    failure_strategy:
+      max_attempts: 3
+      timeout_seconds: 20
+      backoff_seconds: [0.15, 0.3]
+      retry_http_statuses: [408, 429, 500, 502, 503, 504]
+      on_exhausted: serve_stale
+      stale_if_error_seconds: 86400
+      checkpoint_required: true
+      preserve_error_payload: true
+  - dataset_id: twse_borrowed_short
+    source_id: twse_official_web
+    domain: borrowed_short
+    transport: http_json
+    endpoint_path: exchangeReport/TWT93U
+    fields: [symbol, trade_date, borrowed_sell, borrowed_return, borrowed_sell_balance]
+    required_fields: [symbol, trade_date]
+    optional_fields: [borrowed_sell, borrowed_return, borrowed_sell_balance]
+    failure_strategy:
+      max_attempts: 3
+      timeout_seconds: 30
+      backoff_seconds: [0.15, 0.3]
+      retry_http_statuses: [408, 429, 500, 502, 503, 504]
+      on_exhausted: serve_stale
+      stale_if_error_seconds: 86400
+      checkpoint_required: true
+      preserve_error_payload: true
+  - dataset_id: twse_daytrade
+    source_id: twse_official_web
+    domain: daytrade
+    transport: http_json
+    endpoint_path: exchangeReport/TWTB4U
+    fields: [symbol, trade_date, daytrade_volume, daytrade_buy_value, daytrade_sell_value]
+    required_fields: [symbol, trade_date]
+    optional_fields: [daytrade_volume, daytrade_buy_value, daytrade_sell_value]
+    failure_strategy:
+      max_attempts: 3
+      timeout_seconds: 30
+      backoff_seconds: [0.15, 0.3]
+      retry_http_statuses: [408, 429, 500, 502, 503, 504]
+      on_exhausted: serve_stale
+      stale_if_error_seconds: 86400
+      checkpoint_required: true
+      preserve_error_payload: true
+  - dataset_id: twse_daily_volume
+    source_id: twse_official_web
+    domain: prices_daily
+    transport: http_json
+    endpoint_path: exchangeReport/MI_INDEX
+    fields: [symbol, trade_date, volume]
+    required_fields: [symbol, trade_date, volume]
+    optional_fields: []
+    failure_strategy:
+      max_attempts: 3
+      timeout_seconds: 30
+      backoff_seconds: [0.15, 0.3]
+      retry_http_statuses: [408, 429, 500, 502, 503, 504]
+      on_exhausted: serve_stale
+      stale_if_error_seconds: 86400
+      checkpoint_required: true
+      preserve_error_payload: true
+  - dataset_id: twse_revenue
+    source_id: twse_openapi
+    domain: revenue
+    transport: http_json
+    endpoint_path: opendata/t187ap05_L
+    update_frequency_seconds: 21600
+    fields: [symbol, year_month, revenue, prior_month_revenue, prior_year_revenue]
+    required_fields: [symbol, year_month, revenue]
+    optional_fields: [prior_month_revenue, prior_year_revenue]
+    failure_strategy:
+      max_attempts: 3
+      timeout_seconds: 20
+      backoff_seconds: [0.15, 0.3]
+      retry_http_statuses: [408, 429, 500, 502, 503, 504]
+      on_exhausted: serve_stale
+      stale_if_error_seconds: 259200
+      checkpoint_required: true
+      preserve_error_payload: true
+  - dataset_id: mops_monthly_revenue_archive
+    source_id: mops_archive
+    domain: revenue
+    transport: http_html
+    endpoint_path: nas/t21/{market}/t21sc03_{roc_year}_{month}_0.html
+    update_frequency_seconds: 21600
+    fields:
+      - period
+      - symbol
+      - current_revenue
+      - previous_revenue
+      - last_year_revenue
+      - mom_change_percent
+      - yoy_change_percent
+      - ytd_revenue
+      - last_ytd_revenue
+      - ytd_change_percent
+      - note
+    required_fields: [period, symbol, current_revenue]
+    optional_fields:
+      - previous_revenue
+      - last_year_revenue
+      - mom_change_percent
+      - yoy_change_percent
+      - ytd_revenue
+      - last_ytd_revenue
+      - ytd_change_percent
+      - note
+    query_defaults: {market: sii}
+    failure_strategy:
+      max_attempts: 3
+      timeout_seconds: 30
+      backoff_seconds: [0.3, 0.6]
+      retry_http_statuses: [408, 429, 500, 502, 503, 504]
+      on_exhausted: serve_stale
+      stale_if_error_seconds: 2592000
+      checkpoint_required: true
+      preserve_error_payload: true
+  - dataset_id: mops_income_statement_archive
+    source_id: mops_archive
+    domain: fundamentals
+    transport: http_html
+    endpoint_path: mops/web/ajax_t164sb04
+    update_frequency_seconds: 21600
+    fields:
+      - period
+      - symbol
+      - statement_scope
+      - statement_semantics
+      - revenue
+      - gross_profit
+      - operating_income
+      - net_income
+      - eps
+      - current_quarter_revenue
+      - current_quarter_gross_profit
+      - current_quarter_operating_income
+      - current_quarter_net_income
+      - current_quarter_eps
+    required_fields: [period, symbol, statement_scope, statement_semantics]
+    optional_fields:
+      - revenue
+      - gross_profit
+      - operating_income
+      - net_income
+      - eps
+      - current_quarter_revenue
+      - current_quarter_gross_profit
+      - current_quarter_operating_income
+      - current_quarter_net_income
+      - current_quarter_eps
+    failure_strategy:
+      max_attempts: 3
+      timeout_seconds: 30
+      backoff_seconds: [0.3, 0.6]
+      retry_http_statuses: [408, 429, 500, 502, 503, 504]
+      on_exhausted: serve_stale
+      stale_if_error_seconds: 2592000
+      checkpoint_required: true
+      preserve_error_payload: true
+  - dataset_id: mops_balance_sheet_archive
+    source_id: mops_archive
+    domain: fundamentals
+    transport: http_html
+    endpoint_path: mops/web/ajax_t164sb03
+    update_frequency_seconds: 21600
+    fields:
+      - period
+      - symbol
+      - statement_scope
+      - cash_and_cash_equivalents
+      - total_assets
+      - total_liabilities
+      - total_equity
+      - inventory
+      - accounts_receivable
+      - current_assets
+      - current_liabilities
+    required_fields: [period, symbol, statement_scope]
+    optional_fields:
+      - cash_and_cash_equivalents
+      - total_assets
+      - total_liabilities
+      - total_equity
+      - inventory
+      - accounts_receivable
+      - current_assets
+      - current_liabilities
+    failure_strategy:
+      max_attempts: 3
+      timeout_seconds: 30
+      backoff_seconds: [0.3, 0.6]
+      retry_http_statuses: [408, 429, 500, 502, 503, 504]
+      on_exhausted: serve_stale
+      stale_if_error_seconds: 2592000
+      checkpoint_required: true
+      preserve_error_payload: true
+  - dataset_id: mops_cash_flow_statement_archive
+    source_id: mops_archive
+    domain: fundamentals
+    transport: http_html
+    endpoint_path: mops/web/ajax_t164sb05
+    update_frequency_seconds: 21600
+    fields:
+      - period
+      - symbol
+      - statement_scope
+      - operating_cash_flow
+      - investing_cash_flow
+      - financing_cash_flow
+      - capital_expenditure
+      - free_cash_flow
+    required_fields: [period, symbol, statement_scope]
+    optional_fields:
+      - operating_cash_flow
+      - investing_cash_flow
+      - financing_cash_flow
+      - capital_expenditure
+      - free_cash_flow
+    failure_strategy:
+      max_attempts: 3
+      timeout_seconds: 30
+      backoff_seconds: [0.3, 0.6]
+      retry_http_statuses: [408, 429, 500, 502, 503, 504]
+      on_exhausted: serve_stale
+      stale_if_error_seconds: 2592000
+      checkpoint_required: true
+      preserve_error_payload: true
+  - dataset_id: twse_institutional_flow
+    source_id: twse_official_web
+    domain: institutional_flow
+    transport: http_json
+    endpoint_path: rwd/zh/fund/T86?date={date}&selectType=ALLBUT0999&response=json
+    fields: [symbol, trade_date, foreign_net_buy, investment_trust_net_buy, dealer_net_buy]
+    required_fields: [symbol, trade_date]
+    optional_fields: [foreign_net_buy, investment_trust_net_buy, dealer_net_buy]
+    failure_strategy:
+      max_attempts: 3
+      timeout_seconds: 20
+      backoff_seconds: [0.15, 0.3]
+      retry_http_statuses: [408, 429, 500, 502, 503, 504]
+      on_exhausted: serve_stale
+      stale_if_error_seconds: 86400
+      checkpoint_required: true
+      preserve_error_payload: true
+  - dataset_id: twse_swagger
+    source_id: twse_openapi
+    domain: security_master
+    transport: http_json
+    endpoint_path: swagger.json
+    update_frequency_seconds: 86400
+    fields: [paths, methods, tags, summary, description]
+    required_fields: [paths]
+    optional_fields: [methods, tags, summary, description]
+    failure_strategy:
+      max_attempts: 3
+      timeout_seconds: 30
+      backoff_seconds: [0.3, 0.6]
+      retry_http_statuses: [408, 429, 500, 502, 503, 504]
+      on_exhausted: serve_stale
+      stale_if_error_seconds: 604800
+      checkpoint_required: false
+      preserve_error_payload: true
+  - dataset_id: twse_dynamic_openapi
+    source_id: twse_openapi
+    domain: security_master
+    transport: http_json
+    endpoint_path: "{path}"
+    fields: [dynamic_openapi_payload]
+    required_fields: [dynamic_openapi_payload]
+    failure_strategy:
+      max_attempts: 3
+      timeout_seconds: 30
+      backoff_seconds: [0.3, 0.6]
+      retry_http_statuses: [408, 429, 500, 502, 503, 504]
+      on_exhausted: fail_closed
+      checkpoint_required: false
+      preserve_error_payload: true
+  - dataset_id: tpex_companies
+    source_id: tpex_openapi
+    domain: security_master
+    transport: http_json
+    endpoint_path: mopsfin_t187ap03_O
+    update_frequency_seconds: 21600
+    fields: [code, short_name, legal_name, business_no, industry, listed_at, issued_common_shares]
+    required_fields: [code, legal_name]
+    optional_fields: [short_name, business_no, industry, listed_at, issued_common_shares]
+    failure_strategy:
+      max_attempts: 3
+      timeout_seconds: 20
+      backoff_seconds: [0.15, 0.3]
+      retry_http_statuses: [408, 429, 500, 502, 503, 504]
+      on_exhausted: fail_closed
+      checkpoint_required: true
+      preserve_error_payload: true
+  - dataset_id: tpex_quotes
+    source_id: tpex_openapi
+    domain: security_master
+    transport: http_json
+    endpoint_path: tpex_mainboard_quotes
+    fields: [code, name, trade_date, open, high, low, close, volume]
+    required_fields: [code, name]
+    optional_fields: [trade_date, open, high, low, close, volume]
+    failure_strategy:
+      max_attempts: 3
+      timeout_seconds: 20
+      backoff_seconds: [0.15, 0.3]
+      retry_http_statuses: [408, 429, 500, 502, 503, 504]
+      on_exhausted: serve_stale
+      stale_if_error_seconds: 86400
+      checkpoint_required: true
+      preserve_error_payload: true
+  - dataset_id: tpex_daily_valuation
+    source_id: tpex_openapi
+    domain: fundamentals
+    transport: http_json
+    endpoint_path: tpex_mainboard_peratio_analysis
+    update_frequency_seconds: 86400
+    fields: [date, code, pe, dividend_per_share, dividend_yield, pb]
+    required_fields: [date, code]
+    optional_fields: [pe, dividend_per_share, dividend_yield, pb]
+    failure_strategy:
+      max_attempts: 3
+      timeout_seconds: 20
+      checkpoint_required: false
+      preserve_error_payload: true
+  - dataset_id: tpex_monthly_valuation_history
+    source_id: tpex_official_web
+    domain: fundamentals
+    transport: http_json
+    endpoint_path: ../web/stock/aftertrading/peratio_analysis/pera_result.php
+    update_frequency_seconds: 86400
+    fields: [date, symbol, pe, dividend_yield, pb, fiscal_period]
+    required_fields: [date, symbol]
+    optional_fields: [pe, dividend_yield, pb, fiscal_period]
+    failure_strategy:
+      max_attempts: 2
+      timeout_seconds: 20
+      checkpoint_required: true
+      preserve_error_payload: true
+  - dataset_id: tpex_trading_stock
+    source_id: tpex_official_web
+    domain: prices_daily
+    transport: http_json
+    endpoint_path: zh-tw/afterTrading/tradingStock
+    fields: [symbol, trade_date, open, high, low, close, volume, turnover]
+    required_fields: [symbol, trade_date, close]
+    optional_fields: [open, high, low, volume, turnover]
+    failure_strategy:
+      max_attempts: 3
+      timeout_seconds: 20
+      backoff_seconds: [0.15, 0.3]
+      retry_http_statuses: [408, 429, 500, 502, 503, 504]
+      on_exhausted: use_failover
+      failover_dataset_ids: [tpex_quotes]
+      checkpoint_required: true
+      preserve_error_payload: true
+  - dataset_id: tpex_borrowed_short
+    source_id: tpex_official_web
+    domain: borrowed_short
+    transport: http_json
+    endpoint_path: zh-tw/margin/sbl
+    fields: [symbol, trade_date, borrowed_sell, borrowed_return, borrowed_sell_balance]
+    required_fields: [symbol, trade_date]
+    optional_fields: [borrowed_sell, borrowed_return, borrowed_sell_balance]
+    failure_strategy:
+      max_attempts: 3
+      timeout_seconds: 30
+      backoff_seconds: [0.15, 0.3]
+      retry_http_statuses: [408, 429, 500, 502, 503, 504]
+      on_exhausted: serve_stale
+      stale_if_error_seconds: 86400
+      checkpoint_required: true
+      preserve_error_payload: true
+  - dataset_id: tpex_daytrade
+    source_id: tpex_official_web
+    domain: daytrade
+    transport: http_json
+    endpoint_path: zh-tw/intraday/stat
+    fields: [symbol, trade_date, daytrade_volume, daytrade_buy_value, daytrade_sell_value]
+    required_fields: [symbol, trade_date]
+    optional_fields: [daytrade_volume, daytrade_buy_value, daytrade_sell_value]
+    failure_strategy:
+      max_attempts: 3
+      timeout_seconds: 30
+      backoff_seconds: [0.15, 0.3]
+      retry_http_statuses: [408, 429, 500, 502, 503, 504]
+      on_exhausted: serve_stale
+      stale_if_error_seconds: 86400
+      checkpoint_required: true
+      preserve_error_payload: true
+  - dataset_id: tpex_exright_results
+    source_id: tpex_official_web
+    domain: corporate_actions
+    transport: http_json
+    endpoint_path: zh-tw/bulletin/exDailyQ
+    fields: [event_date, symbol, previous_close, reference_price, rights_value, dividend_value, event_type]
+    required_fields: [event_date, symbol, previous_close, reference_price]
+    optional_fields: [rights_value, dividend_value, event_type]
+    failure_strategy:
+      max_attempts: 3
+      timeout_seconds: 20
+      backoff_seconds: [0.15, 0.3]
+      retry_http_statuses: [408, 429, 500, 502, 503, 504]
+      on_exhausted: fail_closed
+      checkpoint_required: true
+      preserve_error_payload: true
+  - dataset_id: tpex_emerging_companies
+    source_id: tpex_openapi
+    domain: security_master
+    transport: http_json
+    endpoint_path: mopsfin_t187ap03_R
+    update_frequency_seconds: 21600
+    fields: [code, short_name, legal_name, business_no, industry, listed_at]
+    required_fields: [code, legal_name]
+    optional_fields: [short_name, business_no, industry, listed_at]
+    failure_strategy:
+      max_attempts: 3
+      timeout_seconds: 20
+      backoff_seconds: [0.15, 0.3]
+      retry_http_statuses: [408, 429, 500, 502, 503, 504]
+      on_exhausted: fail_closed
+      checkpoint_required: true
+      preserve_error_payload: true
+  - dataset_id: tpex_emerging_quotes
+    source_id: tpex_openapi
+    domain: security_master
+    transport: http_json
+    endpoint_path: tpex_esb_latest_statistics
+    fields: [code, name, trade_date, close, volume]
+    required_fields: [code, name]
+    optional_fields: [trade_date, close, volume]
+    failure_strategy:
+      max_attempts: 3
+      timeout_seconds: 20
+      backoff_seconds: [0.15, 0.3]
+      retry_http_statuses: [408, 429, 500, 502, 503, 504]
+      on_exhausted: serve_stale
+      stale_if_error_seconds: 86400
+      checkpoint_required: true
+      preserve_error_payload: true
+  - dataset_id: tpex_warrants
+    source_id: tpex_openapi
+    domain: security_master
+    transport: http_json
+    endpoint_path: tpex_warrant_issue
+    update_frequency_seconds: 21600
+    fields: [code, short_name, warrant_type, listed_at, expires_at]
+    required_fields: [code, short_name]
+    optional_fields: [warrant_type, listed_at, expires_at]
+    failure_strategy:
+      max_attempts: 3
+      timeout_seconds: 20
+      backoff_seconds: [0.15, 0.3]
+      retry_http_statuses: [408, 429, 500, 502, 503, 504]
+      on_exhausted: fail_closed
+      checkpoint_required: true
+      preserve_error_payload: true
+  - dataset_id: tpex_index
+    source_id: tpex_openapi
+    domain: indices
+    transport: http_json
+    endpoint_path: "{path}"
+    fields: [trade_date, index_code, index_name, close]
+    required_fields: [trade_date, index_name]
+    optional_fields: [index_code, close]
+    failure_strategy:
+      max_attempts: 3
+      timeout_seconds: 20
+      backoff_seconds: [0.15, 0.3]
+      retry_http_statuses: [408, 429, 500, 502, 503, 504]
+      on_exhausted: serve_stale
+      stale_if_error_seconds: 86400
+      checkpoint_required: true
+      preserve_error_payload: true
+  - dataset_id: tpex_delisted
+    source_id: tpex_official_web
+    domain: security_master
+    transport: http_json
+    endpoint_path: zh-tw/company/deListed
+    update_frequency_seconds: 21600
+    fields: [code, company, delisted_at, reason, source_year]
+    required_fields: [code, delisted_at]
+    optional_fields: [company, reason, source_year]
+    failure_strategy:
+      max_attempts: 3
+      timeout_seconds: 20
+      backoff_seconds: [0.15, 0.3]
+      retry_http_statuses: [408, 429, 500, 502, 503, 504]
+      on_exhausted: serve_stale
+      stale_if_error_seconds: 604800
+      checkpoint_required: true
+      preserve_error_payload: true
+  - dataset_id: mops_company_events
+    source_id: mops
+    domain: material_events
+    transport: http_html
+    endpoint_path: mops/web/index
+    fields: [event_id, symbol, event_time, event_type, title, summary, source_url]
+    required_fields: [event_id, symbol, event_time, title]
+    optional_fields: [event_type, summary, source_url]
+    failure_strategy:
+      max_attempts: 3
+      timeout_seconds: 20
+      backoff_seconds: [0.3, 0.6]
+      retry_http_statuses: [408, 429, 500, 502, 503, 504]
+      on_exhausted: serve_stale
+      stale_if_error_seconds: 604800
+      checkpoint_required: true
+      preserve_error_payload: true
+  - dataset_id: tdcc_holding_distribution
+    source_id: tdcc
+    domain: holding_distribution
+    transport: import_only
+    method: POST
+    endpoint_path: local-import:tdcc-holding-distribution
+    update_frequency_seconds: 86400
+    fields: [report_date, symbol, total_holders, total_shares, major_holder_ratio, small_shareholder_count, concentration_score]
+    required_fields: [report_date, symbol]
+    optional_fields: [total_holders, total_shares, major_holder_ratio, small_shareholder_count, concentration_score]
+    failure_strategy:
+      max_attempts: 1
+      timeout_seconds: 30
+      backoff_seconds: []
+      retry_http_statuses: [400, 408, 422, 500, 503]
+      on_exhausted: fail_closed
+      checkpoint_required: true
+      preserve_error_payload: true
+  - dataset_id: tdcc_holding_distribution_openapi
+    source_id: tdcc_openapi
+    domain: holding_distribution
+    transport: http_json
+    method: GET
+    endpoint_path: v1/opendata/1-5
+    update_frequency_seconds: 604800
+    fields: [report_date, symbol, holding_grade, holders, shares, holding_ratio]
+    required_fields: [report_date, symbol, holding_grade, holders, shares, holding_ratio]
+    optional_fields: []
+    failure_strategy:
+      max_attempts: 3
+      timeout_seconds: 60
+      backoff_seconds: [0.5, 1.0]
+      retry_http_statuses: [408, 429, 500, 502, 503, 504]
+      on_exhausted: serve_stale
+      stale_if_error_seconds: 1209600
+      checkpoint_required: true
+      preserve_error_payload: true
+  - dataset_id: taifex_futures_institutional
+    source_id: taifex_openapi
+    domain: institutional_derivatives
+    transport: http_json
+    endpoint_path: v1/MarketDataOfMajorInstitutionalTradersDetailsOfFuturesContractsBytheDate
+    fields: [trade_date, contract, investor, long_open_interest, short_open_interest, net_open_interest]
+    required_fields: [trade_date, contract, investor]
+    optional_fields: [long_open_interest, short_open_interest, net_open_interest]
+    failure_strategy:
+      max_attempts: 3
+      timeout_seconds: 15
+      backoff_seconds: [0.3, 0.6]
+      retry_http_statuses: [408, 429, 500, 502, 503, 504]
+      on_exhausted: serve_stale
+      stale_if_error_seconds: 86400
+      checkpoint_required: true
+      preserve_error_payload: true
+  - dataset_id: twse_mis_quote
+    source_id: twse_mis
+    domain: prices_intraday
+    transport: http_json
+    endpoint_path: stock/api/getStockInfo.jsp
+    fields: [symbol, exchange, trade_date, trade_time, last_price, volume, bids, asks]
+    required_fields: [symbol, exchange, trade_date, trade_time]
+    optional_fields: [last_price, volume, bids, asks]
+    failure_strategy:
+      max_attempts: 2
+      timeout_seconds: 10
+      backoff_seconds: [0.15]
+      retry_http_statuses: [408, 429, 500, 502, 503, 504]
+      on_exhausted: use_failover
+      failover_dataset_ids: [twse_quotes]
+      checkpoint_required: false
+      preserve_error_payload: true
+  - dataset_id: twse_mis_referer
+    source_id: twse_mis
+    domain: prices_intraday
+    transport: http_json
+    endpoint_path: stock/fibest.jsp?stock={symbol}
+    fields: [symbol]
+    required_fields: [symbol]
+    failure_strategy:
+      max_attempts: 1
+      timeout_seconds: 10
+      backoff_seconds: []
+      retry_http_statuses: [408, 429, 500, 502, 503, 504]
+      on_exhausted: degrade_optional
+      checkpoint_required: false
+      preserve_error_payload: false
+  - dataset_id: fugle_intraday_quote
+    source_id: fugle_marketdata
+    domain: prices_intraday
+    transport: http_json
+    endpoint_path: intraday/quote/{symbol}
+    fields: [symbol, trade_time, last_price, volume, bids, asks]
+    required_fields: [symbol, trade_time]
+    optional_fields: [last_price, volume, bids, asks]
+    failure_strategy:
+      max_attempts: 2
+      timeout_seconds: 10
+      backoff_seconds: [0.2]
+      retry_http_statuses: [408, 425, 429, 500, 502, 503, 504]
+      on_exhausted: use_failover
+      failover_dataset_ids: [twse_mis_quote]
+      checkpoint_required: false
+      preserve_error_payload: true
+  - dataset_id: fugle_intraday_candles
+    source_id: fugle_marketdata
+    domain: prices_intraday
+    transport: http_json
+    endpoint_path: intraday/candles/{symbol}
+    fields: [symbol, trade_date, timeframe, open, high, low, close, volume, average]
+    required_fields: [symbol, trade_date, timeframe, open, high, low, close, volume]
+    optional_fields: [average]
+    failure_strategy:
+      max_attempts: 2
+      timeout_seconds: 15
+      backoff_seconds: [0.2]
+      retry_http_statuses: [408, 425, 429, 500, 502, 503, 504]
+      on_exhausted: use_failover
+      failover_dataset_ids: [yahoo_intraday_chart]
+      checkpoint_required: true
+      preserve_error_payload: true
+  - dataset_id: fugle_historical_candles
+    source_id: fugle_marketdata
+    domain: prices_intraday
+    transport: http_json
+    endpoint_path: historical/candles/{symbol}
+    fields: [symbol, trade_date, timeframe, open, high, low, close, volume, average]
+    required_fields: [symbol, trade_date, timeframe, open, high, low, close, volume]
+    optional_fields: [average]
+    failure_strategy:
+      max_attempts: 2
+      timeout_seconds: 20
+      backoff_seconds: [0.2]
+      retry_http_statuses: [408, 425, 429, 500, 502, 503, 504]
+      on_exhausted: use_failover
+      failover_dataset_ids: [yahoo_intraday_chart]
+      checkpoint_required: true
+      preserve_error_payload: true
+  - dataset_id: fugle_stream
+    source_id: fugle_stream
+    domain: prices_intraday
+    transport: websocket
+    endpoint_path: streaming
+    fields: [event, channel, symbol, trade_time, price, size, bids, asks]
+    required_fields: [event]
+    optional_fields: [channel, symbol, trade_time, price, size, bids, asks]
+    failure_strategy:
+      max_attempts: 3
+      timeout_seconds: 20
+      backoff_seconds: [0.2, 0.5]
+      retry_http_statuses: [408, 425, 429, 500, 502, 503, 504]
+      on_exhausted: use_failover
+      failover_dataset_ids: [twse_mis_quote]
+      checkpoint_required: false
+      preserve_error_payload: true
+  - dataset_id: yahoo_intraday_chart
+    source_id: yahoo_finance
+    domain: prices_intraday
+    transport: http_json
+    endpoint_path: v8/finance/chart/{symbol}
+    fields: [symbol, trade_date, interval, open, high, low, close, volume, turnover]
+    required_fields: [symbol, trade_date, interval, open, high, low, close, volume]
+    optional_fields: [turnover]
+    failure_strategy:
+      max_attempts: 2
+      timeout_seconds: 20
+      backoff_seconds: [0.3]
+      retry_http_statuses: [408, 429, 500, 502, 503, 504]
+      on_exhausted: degrade_optional
+      checkpoint_required: true
+      preserve_error_payload: true
+  - dataset_id: google_news_search
+    source_id: google_news
+    domain: news
+    transport: http_xml
+    endpoint_path: rss/search?q={query}&hl=zh-TW&gl=TW&ceid=TW:zh-Hant
+    fields: [title, link, published_at, description]
+    required_fields: [title, link]
+    optional_fields: [published_at, description]
+    failure_strategy:
+      max_attempts: 2
+      timeout_seconds: 15
+      backoff_seconds: [0.3]
+      retry_http_statuses: [408, 429, 500, 502, 503, 504]
+      on_exhausted: degrade_optional
+      checkpoint_required: false
+      preserve_error_payload: true
+  - dataset_id: yahoo_chart
+    source_id: yahoo_finance
+    domain: prices_daily
+    transport: http_json
+    endpoint_path: v8/finance/chart/{symbol}
+    fields: [symbol, timestamps, open, high, low, close, volume, corporate_actions]
+    required_fields: [symbol, timestamps, close]
+    optional_fields: [open, high, low, volume, corporate_actions]
+    failure_strategy:
+      max_attempts: 2
+      timeout_seconds: 20
+      backoff_seconds: [0.3]
+      retry_http_statuses: [408, 429, 500, 502, 503, 504]
+      on_exhausted: degrade_optional
+      checkpoint_required: false
+      preserve_error_payload: true

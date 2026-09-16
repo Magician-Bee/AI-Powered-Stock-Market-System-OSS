@@ -1,0 +1,178 @@
+{
+  "access": {
+    "cross_database_atomic": false,
+    "immutable": false,
+    "query_only": true,
+    "sqlite_mode": "ro",
+    "transaction": "BEGIN per database"
+  },
+  "account_id": "autonomous-paper-v1",
+  "audited_at": "2026-09-14T02:42:30.559871+00:00",
+  "bulk_evidence_id": "AE-b343333b91b6f8932b6151fbc0f7a5938d715f915e0c809134fd0c4afa605232",
+  "cycle_created_at": "2026-09-14T02:39:35.487696+00:00",
+  "cycle_id": "AC-dacba3fa4d083c4e6dc7454256c8247d2f51e2112ad9a972b97d4252610d1d87",
+  "database_path_sha256": {
+    "market": "5ece07b8b754cf7ed7d2f7122ce546a646058641cbc2764ec159af1f173604a2",
+    "trade": "54393fa050541d0951e46c8bd727fc53120cb73f47351d5d504c334425c6cff7"
+  },
+  "deadline_assessment": {
+    "checks": {
+      "attempt_failure_rate_met": true,
+      "deadline_met": false,
+      "partition_scope_complete": true,
+      "refresh_complete": true,
+      "required_partition_statuses_accepted": true,
+      "skipped_fresh_checkpoints_valid": true
+    },
+    "completed_at": "2026-09-14T02:39:35.485053+00:00",
+    "deadline_at": "2026-09-14T02:33:55.611814+00:00",
+    "declared_at": "2026-09-14T02:28:55.611814+00:00",
+    "max_attempt_failure_rate": 0.0,
+    "max_completion_seconds": 300.0,
+    "met": false,
+    "observed_attempt_failure_rate": 0.0,
+    "observed_duration_seconds": 639.873239,
+    "policy_id": "AMUSLO-59753d3b5780439b4f75359fca540f49e7ce95b56e3b9778b5cbc7b050b80d2e",
+    "reasons": [
+      "deadline_met"
+    ],
+    "required_partition_keys": [
+      "twse_isin_listed",
+      "tpex_isin_otc",
+      "tpex_isin_emerging",
+      "twse_official_master",
+      "tpex_official_master",
+      "tpex_delisted_history"
+    ],
+    "skipped_fresh_checkpoints": [],
+    "status": "breach"
+  },
+  "limitations": [
+    "Source ingestion and trade ledgers are separate read transactions, not one atomic cross-database snapshot.",
+    "The research observation window ends at the cycle observation time and excludes the later coverage-ledger projection.",
+    "Integrity passing does not turn partial refresh, missing domains, or an undeclared deadline into task 08 acceptance."
+  ],
+  "metrics": {
+    "attempt_failure_rate": 0.0,
+    "attempted_partition_count": 6,
+    "deep_failure_rate": 0.0,
+    "deep_selected_count": 1,
+    "deep_success_count": 1,
+    "observed_source_row_count": 99915,
+    "ordinary_stock_count": 1936,
+    "ordinary_usable_bulk_count": 1910,
+    "partition_count": 6,
+    "partition_status_counts": {
+      "succeeded": 6
+    },
+    "research_observation_window_seconds": 639.593879,
+    "source_attempt_window_seconds": 594.69457,
+    "source_rows_per_attempt_window_second": 168.010614,
+    "summed_source_run_seconds": 584.640453,
+    "universe_count": 49262,
+    "universe_rows_per_research_observation_second": 77.02075,
+    "usable_bulk_count": 2350
+  },
+  "passed": true,
+  "problems": [],
+  "receipt_sha256": "f57cc7a2eb437f0f821330d846d6f8f2d88f8f4fcae7a7b62ed4df22fecaa53a",
+  "refresh_complete": true,
+  "schema_version": "open_stock_ai.autonomous_market_update_audit.v1",
+  "security_master_refresh_status": "succeeded",
+  "security_master_update_acceptance_passed": false,
+  "source_runs": [
+    {
+      "committed_record_count": 1,
+      "completed_at": "2026-09-14T02:37:21.234809+00:00",
+      "duration_seconds": 260.394492,
+      "error": null,
+      "identity_resolution": {
+        "current_baseline_complete": true,
+        "historical_unresolved_count": 4656,
+        "total_unresolved_count": 4656,
+        "unresolved_count": 0
+      },
+      "partition_key": "twse_official_master",
+      "run_id": "DIR-6b77aabf8db4425c95d1b0fec3fb324a",
+      "source_id": "twse_openapi",
+      "source_row_count": 40880,
+      "started_at": "2026-09-14T02:33:00.840317+00:00",
+      "status": "succeeded"
+    },
+    {
+      "committed_record_count": 1,
+      "completed_at": "2026-09-14T02:38:41.143768+00:00",
+      "duration_seconds": 79.892984,
+      "error": null,
+      "identity_resolution": {
+        "current_baseline_complete": true,
+        "historical_unresolved_count": 0,
+        "total_unresolved_count": 0,
+        "unresolved_count": 0
+      },
+      "partition_key": "tpex_official_master",
+      "run_id": "DIR-a9f3f4a3daea4689aa1c79908dc590d1",
+      "source_id": "tpex_openapi",
+      "source_row_count": 11569,
+      "started_at": "2026-09-14T02:37:21.250784+00:00",
+      "status": "succeeded"
+    },
+    {
+      "committed_record_count": 1,
+      "completed_at": "2026-09-14T02:38:50.588387+00:00",
+      "duration_seconds": 9.430733,
+      "error": null,
+      "identity_resolution": {
+        "current_baseline_complete": true,
+        "historical_unresolved_count": 0,
+        "total_unresolved_count": 0,
+        "unresolved_count": 0
+      },
+      "partition_key": "tpex_delisted_history",
+      "run_id": "DIR-6b4d2b7f434c4817a5e709cc51e9a3b8",
+      "source_id": "tpex_official_web",
+      "source_row_count": 132,
+      "started_at": "2026-09-14T02:38:41.157654+00:00",
+      "status": "succeeded"
+    },
+    {
+      "committed_record_count": 35425,
+      "completed_at": "2026-09-14T02:32:12.532565+00:00",
+      "duration_seconds": 196.638748,
+      "error": null,
+      "identity_resolution": null,
+      "partition_key": "twse_isin_listed",
+      "run_id": "DIR-8fe496e16b494d4e93c67eb0a138567e",
+      "source_id": "twse_isin",
+      "source_row_count": 35425,
+      "started_at": "2026-09-14T02:28:55.893817+00:00",
+      "status": "succeeded"
+    },
+    {
+      "committed_record_count": 11546,
+      "completed_at": "2026-09-14T02:32:46.370930+00:00",
+      "duration_seconds": 33.735982,
+      "error": null,
+      "identity_resolution": null,
+      "partition_key": "tpex_isin_otc",
+      "run_id": "DIR-5b8799df712d439da81721efa7715e61",
+      "source_id": "twse_isin",
+      "source_row_count": 11546,
+      "started_at": "2026-09-14T02:32:12.634948+00:00",
+      "status": "succeeded"
+    },
+    {
+      "committed_record_count": 363,
+      "completed_at": "2026-09-14T02:32:50.932284+00:00",
+      "duration_seconds": 4.547514,
+      "error": null,
+      "identity_resolution": null,
+      "partition_key": "tpex_isin_emerging",
+      "run_id": "DIR-015fe8abedd64e0085bf40f763baf66c",
+      "source_id": "twse_isin",
+      "source_row_count": 363,
+      "started_at": "2026-09-14T02:32:46.384770+00:00",
+      "status": "succeeded"
+    }
+  ]
+}

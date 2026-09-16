@@ -1,0 +1,205 @@
+/* Agent-first trading workspace shared by the home screen and paper broker. */
+
+.agent-trading-home-panel{
+  grid-column:1/-1;
+  display:grid!important;
+  gap:24px!important;
+}
+.agent-trading-home-metrics{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:16px!important;
+  margin:0 0 8px!important;
+}
+.agent-trading-home-command{
+  display:grid;
+  grid-template-columns:minmax(180px,.45fr) minmax(360px,1.55fr);
+  gap:16px;
+  align-items:end;
+  margin:4px 0 2px;
+}
+.agent-trading-home-command label,
+.agent-trading-paper-grid label{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  min-width:0;
+  color:var(--muted);
+  font-weight:700;
+  line-height:1.3;
+}
+.agent-trading-home-command input,
+.agent-trading-paper-grid input,
+.agent-trading-paper-grid textarea{
+  box-sizing:border-box;
+  width:100%;
+  min-width:0;
+  border-radius:16px!important;
+  font:inherit!important;
+}
+.agent-trading-home-command input,
+.agent-trading-paper-grid input{
+  min-height:50px;
+  padding:0 15px!important;
+}
+.agent-trading-paper-grid textarea{
+  min-height:90px;
+  padding:14px 16px!important;
+  resize:vertical;
+}
+.agent-trading-action-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  align-items:center;
+  margin:4px 0;
+}
+.agent-trading-action-row button{
+  box-sizing:border-box;
+  min-height:48px;
+  padding:0 18px!important;
+  border-radius:16px!important;
+  font:inherit!important;
+  font-weight:760!important;
+  white-space:nowrap;
+}
+.agent-trading-status-row{
+  display:flex;
+  justify-content:space-between;
+  gap:18px;
+  align-items:center;
+  min-height:50px;
+  padding:12px 15px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:rgba(255,255,255,.035);
+  margin-top:2px;
+}
+.agent-trading-status-row span[data-tone="ok"]{color:#2aa679}
+.agent-trading-status-row span[data-tone="error"]{color:#d64d61}
+.agent-trading-status-row small{color:var(--muted);text-align:right}
+.agent-trading-answer:empty{display:none}
+.agent-trading-answer{
+  display:grid;
+  gap:16px;
+  padding:18px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:rgba(255,255,255,.035);
+}
+.agent-trading-answer p{margin:0;line-height:1.65}
+.agent-decision-head{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+}
+.agent-decision-head>div,
+.agent-order-draft{
+  display:grid;
+  gap:5px;
+  padding:14px 15px;
+  border:1px solid var(--line);
+  border-radius:15px;
+  background:rgba(255,255,255,.04);
+}
+.agent-decision-head span,
+.agent-order-draft span,
+.agent-order-draft small{color:var(--muted)}
+.agent-decision-lists{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+}
+.agent-decision-lists>div{
+  padding:15px;
+  border:1px solid var(--line);
+  border-radius:15px;
+  background:rgba(255,255,255,.028);
+}
+.agent-decision-lists ul{margin:8px 0 0;padding-left:20px;line-height:1.6}
+.agent-control-response{display:grid;gap:8px}
+
+.agent-trading-paper-panel{
+  display:grid!important;
+  gap:18px!important;
+  margin:0 0 22px!important;
+}
+.agent-trading-paper-grid{
+  display:grid;
+  grid-template-columns:minmax(180px,.42fr) minmax(360px,1.58fr);
+  gap:16px;
+  align-items:start;
+}
+
+/* Restore a deliberate vertical rhythm between every paper-broker surface. */
+.paper-broker-layout{
+  gap:24px!important;
+  align-items:start!important;
+}
+.paper-broker-layout>div{
+  display:grid!important;
+  gap:22px!important;
+  align-content:start!important;
+  min-width:0;
+}
+.paper-broker-layout .paper-broker-card{
+  margin:0!important;
+  min-width:0;
+}
+.paper-broker-card>.summary-cards,
+.paper-broker-card>.table,
+.paper-broker-card>.event-list,
+.paper-broker-card>.paper-training-policy,
+.paper-broker-card>.paper-order-actions,
+.paper-broker-card>.paper-account-grid,
+.paper-broker-card>.paper-learning-layout,
+.paper-broker-card>.paper-learning-actions{
+  margin-top:16px!important;
+}
+.paper-broker-card .summary-cards{
+  gap:14px!important;
+}
+.paper-broker-card .table{
+  overflow:hidden;
+  border-radius:18px;
+}
+.paper-broker-card .table>.row{
+  margin:0!important;
+}
+.paper-broker-card .table>.row+.row{
+  border-top:1px solid var(--line);
+}
+.paper-risk-summary+.paper-position-table,
+.paper-position-table+.event-list{
+  margin-top:18px!important;
+}
+
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .agent-trading-status-row,
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .agent-trading-answer,
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .agent-decision-head>div,
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .agent-order-draft,
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .agent-decision-lists>div{
+  color:#314a5b;
+  border-color:rgba(47,78,101,.16);
+  background:rgba(255,255,255,.24);
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .agent-trading-status-row small,
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .agent-decision-head span,
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .agent-order-draft span,
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .agent-order-draft small{
+  color:#536b7b!important;
+}
+
+@media(max-width:1100px){
+  .agent-trading-home-command,
+  .agent-trading-paper-grid{grid-template-columns:1fr}
+  .agent-trading-home-metrics{grid-template-columns:1fr 1fr!important}
+}
+@media(max-width:720px){
+  .agent-trading-home-metrics,
+  .agent-decision-head,
+  .agent-decision-lists{grid-template-columns:1fr!important}
+  .agent-trading-action-row button{width:100%}
+  .agent-trading-status-row{align-items:flex-start;flex-direction:column}
+  .agent-trading-status-row small{text-align:left}
+}

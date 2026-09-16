@@ -1,0 +1,48 @@
+schema_version: open_stock_ai.agent_runtime_config.v1
+
+runtime:
+  default_driver: openai-compatible
+  max_steps: 6
+  default_autonomy: advisory
+
+models:
+  primary_driver: openai-compatible
+  fingpt_local_model_enabled: false
+
+providers:
+  codex:
+    enabled: true
+    primary: false
+    authentication: existing_codex_app_server_login
+  openai_compatible:
+    enabled: true
+    base_url: ""
+    model: ""
+    # The desktop launcher resolves LOCAL_LLM_BASE_URL and LOCAL_LLM_MODEL
+    # from the untracked local .env. Do not commit an operator endpoint or
+    # credential here.
+    no_key: true
+    timeout_seconds: 120
+  local:
+    enabled: true
+    via: openai_compatible
+  external_agent:
+    enabled: true
+    endpoint: ""
+    framework: custom
+    model: ""
+  anthropic:
+    enabled: true
+    via: openai_compatible_or_external_agent
+  gemini:
+    enabled: true
+    via: openai_compatible_or_external_agent
+
+policies:
+  live_trading_enabled: false
+  paper_execution_requires_explicit_mode: true
+  paper_order_requires_matching_preview: true
+  project_execution_requires_explicit_mode: true
+  codex_native_capabilities_preserved: true
+  native_codex_diagnostics_enabled: false
+  native_agent_tools_preserved: true

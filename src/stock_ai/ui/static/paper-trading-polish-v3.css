@@ -1,0 +1,223 @@
+/* Unified paper-trading workspace and stateful non-navigation controls. */
+
+/* --------------------------------------------------------------------------
+   Stateful glass controls
+   Navigation always keeps one glass material; filters and commands may still
+   show a selected state.
+   -------------------------------------------------------------------------- */
+.nav-btn,
+.filter-bar button,
+.settings-jumpbar button,
+.paper-trading-tabs button,
+.paper-training-actions button{
+  transition:background .2s ease,border-color .2s ease,color .2s ease,box-shadow .2s ease,transform .15s ease!important;
+}
+
+/* Dark/default resting state: grayscale glass. */
+.nav-btn,
+.filter-bar button,
+.settings-jumpbar button{
+  background:linear-gradient(145deg,rgba(108,116,126,.23),rgba(45,50,58,.16))!important;
+  border-color:rgba(214,222,232,.15)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.13),0 8px 20px rgba(0,0,0,.13)!important;
+  backdrop-filter:saturate(92%) blur(18px)!important;
+  -webkit-backdrop-filter:saturate(92%) blur(18px)!important;
+}
+
+/* Dark selected state for non-navigation controls. */
+.filter-bar button.active,
+.filter-bar button[aria-pressed="true"],
+.settings-jumpbar button.active,
+.paper-training-actions button[data-action-selected="true"]{
+  background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.018))!important;
+  border-color:rgba(255,255,255,.28)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.31),0 10px 26px rgba(0,0,0,.10)!important;
+  backdrop-filter:saturate(145%) blur(21px)!important;
+  -webkit-backdrop-filter:saturate(145%) blur(21px)!important;
+}
+
+/* Light resting state: transparent glass. */
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) :is(
+  .nav-btn,
+  .filter-bar button,
+  .settings-jumpbar button
+){
+  color:#314a5b!important;
+  background:linear-gradient(145deg,rgba(255,255,255,.30),rgba(218,237,249,.11))!important;
+  border-color:rgba(49,78,99,.17)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.82),0 8px 20px rgba(58,92,116,.07)!important;
+  backdrop-filter:saturate(138%) blur(19px)!important;
+  -webkit-backdrop-filter:saturate(138%) blur(19px)!important;
+}
+
+/* Light selected state for non-navigation controls. */
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) :is(
+  .filter-bar button.active,
+  .filter-bar button[aria-pressed="true"],
+  .settings-jumpbar button.active,
+  .paper-training-actions button[data-action-selected="true"]
+){
+  color:#f7fbff!important;
+  background:linear-gradient(145deg,rgba(72,82,92,.78),rgba(35,42,49,.68))!important;
+  border-color:rgba(38,50,60,.40)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.23),0 10px 27px rgba(52,69,82,.18)!important;
+  text-shadow:0 1px 1px rgba(0,0,0,.24)!important;
+  backdrop-filter:saturate(72%) blur(20px)!important;
+  -webkit-backdrop-filter:saturate(72%) blur(20px)!important;
+}
+/* Momentary command feedback follows the same material inversion. */
+.paper-training-actions button:active,
+.paper-trading-view button:active{
+  transform:translateY(1px)!important;
+  filter:saturate(.82) contrast(1.04);
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .paper-training-actions button:active{
+  color:#f7fbff!important;
+  background:linear-gradient(145deg,rgba(78,88,98,.78),rgba(35,42,49,.68))!important;
+}
+
+/* --------------------------------------------------------------------------
+   Unified order workspace. It mirrors the official trading preview structure.
+   -------------------------------------------------------------------------- */
+.paper-trading-view{padding-top:0!important}
+.paper-trading-hero{display:none!important}
+.paper-trading-view .paper-training-panel{
+  display:block!important;
+  padding:26px 28px 32px!important;
+}
+.paper-trading-workspace{
+  display:grid;
+  grid-template-columns:minmax(0,1.18fr) minmax(360px,.82fr);
+  gap:18px;
+  align-items:start;
+}
+.paper-order-section,
+.paper-linked-section,
+.paper-account-section,
+.paper-learning-section{
+  box-sizing:border-box;
+  min-width:0;
+  padding:20px;
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:22px;
+  background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.018));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 12px 30px rgba(0,0,0,.08);
+}
+.paper-section-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:18px;
+  margin:0 0 17px;
+  padding:0 1px 14px;
+  border-bottom:1px solid rgba(255,255,255,.13);
+}
+.paper-section-head h4{margin:0;font-size:19px;line-height:1.25}
+.paper-section-head small{max-width:420px;text-align:right;line-height:1.45;color:var(--muted)}
+.paper-order-controls{
+  display:grid;
+  grid-template-columns:minmax(220px,1.45fr) minmax(150px,.72fr) minmax(130px,.62fr) auto;
+  gap:14px;
+  align-items:end;
+}
+.paper-order-controls label,
+.paper-account-controls label{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  min-width:0;
+  margin:0;
+  font-family:inherit;
+  font-size:13px;
+  font-weight:760;
+  line-height:1.25;
+  color:var(--muted);
+}
+.paper-order-controls input,
+.paper-order-controls select,
+.paper-account-controls input{
+  box-sizing:border-box;
+  width:100%;
+  min-width:0;
+  min-height:52px;
+  margin:0;
+  padding:0 15px;
+  border-radius:16px;
+  font:650 16px/1 inherit;
+}
+.paper-order-controls button{
+  min-height:52px;
+  padding:0 19px;
+  border-radius:16px;
+  white-space:nowrap;
+  font:760 14px/1.1 inherit;
+}
+.paper-preview-cards{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:12px!important;
+  margin:16px 0 0!important;
+}
+.paper-preview-cards .mini-card{min-height:105px;padding:15px 16px!important;border-radius:18px!important}
+.paper-preview-cards .mini-card strong{display:block;margin:6px 0 4px;line-height:1.28}
+.paper-order-reason{margin-top:16px!important}
+.paper-linked-summary{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:12px!important;
+  margin:0 0 14px!important;
+}
+.paper-linked-summary .mini-card{min-height:96px;padding:14px 15px!important;border-radius:18px!important}
+.paper-position-table{margin-top:12px}
+.paper-position-table .row{grid-template-columns:1.25fr .8fr .9fr .9fr}
+.paper-account-section,
+.paper-learning-section{margin-top:18px}
+.paper-account-controls{
+  display:grid;
+  grid-template-columns:minmax(220px,1fr) auto minmax(260px,1.25fr) auto;
+  gap:14px;
+  align-items:end;
+}
+.paper-learning-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(320px,.75fr);
+  gap:16px;
+  align-items:start;
+}
+.paper-learning-grid .paper-training-policy{margin:0!important}
+.paper-training-ledger{margin-top:0!important}
+.paper-training-status{margin-top:16px!important}
+.paper-training-actions.compact{margin-top:14px!important;padding-top:14px!important}
+.paper-training-actions.compact button{min-height:46px!important}
+
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) :is(
+  .paper-order-section,
+  .paper-linked-section,
+  .paper-account-section,
+  .paper-learning-section
+){
+  border-color:rgba(47,78,101,.16);
+  background:linear-gradient(145deg,rgba(255,255,255,.36),rgba(211,232,245,.13));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.84),0 12px 30px rgba(65,96,116,.08);
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .paper-section-head{
+  border-bottom-color:rgba(47,78,101,.13);
+}
+
+@media(max-width:1280px){
+  .paper-trading-workspace{grid-template-columns:1fr}
+  .paper-order-controls{grid-template-columns:minmax(220px,1.3fr) minmax(150px,.7fr) minmax(130px,.6fr) auto}
+}
+@media(max-width:900px){
+  .paper-order-controls{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .paper-order-controls button{width:100%}
+  .paper-account-controls{grid-template-columns:1fr 1fr}
+  .paper-learning-grid{grid-template-columns:1fr}
+}
+@media(max-width:620px){
+  .paper-trading-view .paper-training-panel{padding:20px!important}
+  .paper-order-controls,.paper-account-controls{grid-template-columns:1fr}
+  .paper-preview-cards,.paper-linked-summary{grid-template-columns:1fr!important}
+  .paper-section-head{display:grid}
+  .paper-section-head small{text-align:left}
+}

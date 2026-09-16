@@ -1,0 +1,34 @@
+{
+  "release": "0.1.0-public.20260916",
+  "source_commit": "a0b76d5b258de1ae8313d07f1a5fa34f29eade06",
+  "checked_at_utc": "2026-09-16T13:35:07.602843+00:00",
+  "python_syntax_checked": 1799,
+  "python_syntax_errors": 0,
+  "gitleaks_version": "v8.30.1",
+  "gitleaks_findings": 0,
+  "changed_file_count": 96,
+  "excluded_file_count": 293,
+  "notebooks_outputs_cleared": 54,
+  "binary_assets_retained": [
+    "macos/StockAILiquidGlass/Resources/StockAIIcon.icns",
+    "macos/StockAILiquidGlass/Resources/StockAIIconDark.png",
+    "macos/StockAILiquidGlass/Resources/StockAIIconLight.png",
+    "src/stock_ai/ui/static/assets/liquid-glass-floral-background.png",
+    "src/stock_ai/ui/static/assets/market-intelligence-dark.jpg",
+    "src/stock_ai/ui/static/assets/market-intelligence-light.jpg",
+    "src/stock_ai/ui/static/assets/stock-ai-icon-dark.png",
+    "src/stock_ai/ui/static/assets/stock-ai-icon-light.png"
+  ],
+  "application_started": false,
+  "real_model_calls": 0,
+  "broker_calls": 0,
+  "scope": "tracked source snapshot only; runtime data and private Git history excluded",
+  "limitations": [
+    "Pattern scanning is not proof that every identifier has been removed.",
+    "Third-party notices retain their original scope.",
+    "No trading performance or real-broker readiness is certified."
+  ],
+  "image_metadata_cleaned": 8,
+  "public_namespace_files": 7,
+  "example_contact_files": 2
+}

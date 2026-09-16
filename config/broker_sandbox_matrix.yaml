@@ -1,0 +1,47 @@
+schema_version: stock_ai.broker_sandbox_matrix.v1
+updated_at: "2026-07-26T00:00:00+08:00"
+policy:
+  unverified_values_must_remain_null: true
+  mock_execution_is_not_broker_acceptance: true
+  account_owner_action_required: true
+brokers:
+  taishin:
+    sandbox_available: null
+    paper_environment_available: null
+    test_account_ready: null
+    supported_order_types: null
+    last_verified_at: null
+    evidence_receipt_ids: []
+    status: requires_account_owner_and_official_sdk_probe
+  fubon:
+    sandbox_available: null
+    paper_environment_available: null
+    test_account_ready: null
+    supported_order_types: null
+    last_verified_at: null
+    evidence_receipt_ids: []
+    status: requires_account_owner_and_official_sdk_probe
+  sinopac:
+    sandbox_available: null
+    paper_environment_available: null
+    test_account_ready: null
+    supported_order_types: null
+    last_verified_at: null
+    evidence_receipt_ids: []
+    status: requires_account_owner_and_official_sdk_probe
+  yuanta:
+    sandbox_available: null
+    paper_environment_available: null
+    test_account_ready: null
+    supported_order_types: null
+    last_verified_at: null
+    evidence_receipt_ids: []
+    status: requires_account_owner_and_official_sdk_probe
+  masterlink:
+    sandbox_available: null
+    paper_environment_available: null
+    test_account_ready: null
+    supported_order_types: null
+    last_verified_at: null
+    evidence_receipt_ids: []
+    status: requires_account_owner_and_official_sdk_probe

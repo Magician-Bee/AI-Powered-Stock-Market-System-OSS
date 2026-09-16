@@ -1,0 +1,149 @@
+{
+  "access": {
+    "cross_database_atomic": false,
+    "immutable": false,
+    "query_only": true,
+    "sqlite_mode": "ro",
+    "transaction": "BEGIN per database"
+  },
+  "account_id": "autonomous-paper-v1",
+  "audited_at": "2026-09-14T02:44:16.862976+00:00",
+  "bulk_evidence_id": "AE-fcb9940a36fa2d8d827872edb23ba8b7d95d51adf2dc79eaf79add96a3ecbcd7",
+  "cycle_created_at": "2026-09-14T02:43:38.002486+00:00",
+  "cycle_id": "AC-3273b5bc7a97f3ac85c0772cc4961722e9756541c2ea9c67fb9fe890ea7b0b03",
+  "database_path_sha256": {
+    "market": "5ece07b8b754cf7ed7d2f7122ce546a646058641cbc2764ec159af1f173604a2",
+    "trade": "54393fa050541d0951e46c8bd727fc53120cb73f47351d5d504c334425c6cff7"
+  },
+  "deadline_assessment": {
+    "checks": {
+      "attempt_failure_rate_met": true,
+      "deadline_met": true,
+      "partition_scope_complete": true,
+      "refresh_complete": true,
+      "required_partition_statuses_accepted": true,
+      "skipped_fresh_checkpoints_valid": true
+    },
+    "completed_at": "2026-09-14T02:43:38.002454+00:00",
+    "deadline_at": "2026-09-14T02:47:55.346728+00:00",
+    "declared_at": "2026-09-14T02:42:55.346728+00:00",
+    "max_attempt_failure_rate": 0.0,
+    "max_completion_seconds": 300.0,
+    "met": true,
+    "observed_attempt_failure_rate": 0.0,
+    "observed_duration_seconds": 42.655726,
+    "policy_id": "AMUSLO-59753d3b5780439b4f75359fca540f49e7ce95b56e3b9778b5cbc7b050b80d2e",
+    "reasons": [],
+    "required_partition_keys": [
+      "twse_isin_listed",
+      "tpex_isin_otc",
+      "tpex_isin_emerging",
+      "twse_official_master",
+      "tpex_official_master",
+      "tpex_delisted_history"
+    ],
+    "skipped_fresh_checkpoints": [
+      {
+        "checkpoint_status": "succeeded",
+        "cursor_matches": true,
+        "dataset": "security_master",
+        "fresh_at_declaration": true,
+        "fresh_until": "2026-09-14T08:37:21.230181+00:00",
+        "last_success_at": "2026-09-14T02:37:21.230181+00:00",
+        "partition_key": "twse_official_master",
+        "source_id": "twse_openapi",
+        "ttl_seconds": 21600
+      },
+      {
+        "checkpoint_status": "succeeded",
+        "cursor_matches": true,
+        "dataset": "security_master",
+        "fresh_at_declaration": true,
+        "fresh_until": "2026-09-14T08:38:41.140920+00:00",
+        "last_success_at": "2026-09-14T02:38:41.140920+00:00",
+        "partition_key": "tpex_official_master",
+        "source_id": "tpex_openapi",
+        "ttl_seconds": 21600
+      },
+      {
+        "checkpoint_status": "succeeded",
+        "cursor_matches": true,
+        "dataset": "security_master",
+        "fresh_at_declaration": true,
+        "fresh_until": "2026-09-14T08:38:50.586837+00:00",
+        "last_success_at": "2026-09-14T02:38:50.586837+00:00",
+        "partition_key": "tpex_delisted_history",
+        "source_id": "tpex_official_web",
+        "ttl_seconds": 21600
+      },
+      {
+        "checkpoint_status": "succeeded",
+        "cursor_matches": true,
+        "dataset": "security_master",
+        "fresh_at_declaration": true,
+        "fresh_until": "2026-09-14T08:32:12.499257+00:00",
+        "last_success_at": "2026-09-14T02:32:12.499257+00:00",
+        "partition_key": "twse_isin_listed",
+        "source_id": "twse_isin",
+        "ttl_seconds": 21600
+      },
+      {
+        "checkpoint_status": "succeeded",
+        "cursor_matches": true,
+        "dataset": "security_master",
+        "fresh_at_declaration": true,
+        "fresh_until": "2026-09-14T08:32:46.369240+00:00",
+        "last_success_at": "2026-09-14T02:32:46.369240+00:00",
+        "partition_key": "tpex_isin_otc",
+        "source_id": "twse_isin",
+        "ttl_seconds": 21600
+      },
+      {
+        "checkpoint_status": "succeeded",
+        "cursor_matches": true,
+        "dataset": "security_master",
+        "fresh_at_declaration": true,
+        "fresh_until": "2026-09-14T08:32:50.931035+00:00",
+        "last_success_at": "2026-09-14T02:32:50.931035+00:00",
+        "partition_key": "tpex_isin_emerging",
+        "source_id": "twse_isin",
+        "ttl_seconds": 21600
+      }
+    ],
+    "status": "met"
+  },
+  "limitations": [
+    "Source ingestion and trade ledgers are separate read transactions, not one atomic cross-database snapshot.",
+    "The research observation window ends at the cycle observation time and excludes the later coverage-ledger projection.",
+    "Integrity passing does not turn partial refresh, missing domains, or an undeclared deadline into task 08 acceptance."
+  ],
+  "metrics": {
+    "attempt_failure_rate": null,
+    "attempted_partition_count": 0,
+    "deep_failure_rate": 1.0,
+    "deep_selected_count": 1,
+    "deep_success_count": 0,
+    "observed_source_row_count": 0,
+    "ordinary_stock_count": 1936,
+    "ordinary_usable_bulk_count": 1910,
+    "partition_count": 6,
+    "partition_status_counts": {
+      "skipped_fresh": 6
+    },
+    "research_observation_window_seconds": null,
+    "source_attempt_window_seconds": null,
+    "source_rows_per_attempt_window_second": null,
+    "summed_source_run_seconds": 0.0,
+    "universe_count": 49262,
+    "universe_rows_per_research_observation_second": null,
+    "usable_bulk_count": 2350
+  },
+  "passed": true,
+  "problems": [],
+  "receipt_sha256": "a02d25059f037a8b1d9143686809283c52db3be0b4c8d7746ce1af91a442fa49",
+  "refresh_complete": true,
+  "schema_version": "open_stock_ai.autonomous_market_update_audit.v1",
+  "security_master_refresh_status": "skipped_fresh",
+  "security_master_update_acceptance_passed": true,
+  "source_runs": []
+}

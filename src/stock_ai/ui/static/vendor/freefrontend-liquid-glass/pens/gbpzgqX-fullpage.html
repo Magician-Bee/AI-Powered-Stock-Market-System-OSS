@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  
+
+    <link rel="apple-touch-icon" type="image/png" href="https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png" />
+
+    <meta name="apple-mobile-web-app-title" content="CodePen">
+
+    <link rel="icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico" />
+
+    <link rel="mask-icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-b4b4269c16397ad2f0f7a01bcdf513a1994f4c94b8af2f191c09eb0d601762b1.svg" color="#111" />
+
+
+
+  <meta charset="utf-8">
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+  <title>Liquid Glass Menu</title>
+
+  <link rel="stylesheet" href="https://cpwebassets.codepen.io/assets/fullpage/fullpage-defe0b00ddddc98ad4bc2c428e9d6182cd7742e2624f558656dbfb986d4ba13c.css" />
+  
+
+    <link rel="apple-touch-icon" type="image/png" href="https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png" />
+
+    <meta name="apple-mobile-web-app-title" content="CodePen">
+
+    <link rel="icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico" />
+
+    <link rel="mask-icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-b4b4269c16397ad2f0f7a01bcdf513a1994f4c94b8af2f191c09eb0d601762b1.svg" color="#111" />
+
+
+
+
+
+  <title>Liquid Glass Menu</title>
+
+  <style>
+    html { font-size: 15px; }
+    html, body { margin: 0; padding: 0; min-height: 100%; }
+    body { height:100%; display: flex; flex-direction: column; }
+    .referer-warning {
+      background: black;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+      padding: 0.75em;
+      color: white;
+      text-align: center;
+      font-family: 'Lato', 'Lucida Grande', 'Lucida Sans Unicode', Tahoma, system-ui, Sans-Serif;
+      line-height: 1.2;
+      font-size: 1rem;
+      position: relative;
+      z-index: 2;
+    }
+    .referer-warning span { font-family: initial; }
+    .referer-warning h1 { font-size: 1.2rem; margin: 0; }
+    .referer-warning a { color: #56bcf9; }
+  </style>
+</head>
+
+<body class="">
+  <div class="referer-warning">
+    <h1><span>⚠️</span> Do not enter passwords or personal information on this page. <span>⚠️</span></h1>
+      This is a code demo posted by a web developer on <a href="https://codepen.io">CodePen</a>.
+    <br />
+    A referer from CodePen is required to render this page view, and your browser is not sending one (<a href="https://blog.codepen.io/2017/10/05/regarding-referer-headers/" target="_blank" rel="noreferrer noopener">more details</a>).</h1>
+  </div>
+
+  <div id="result-iframe-wrap" role="main">
+    <iframe
+      id="result"
+      srcdoc="<!DOCTYPE html>
+<html lang=&quot;en&quot; >
+
+<head>
+  <meta charset=&quot;UTF-8&quot;>
+  
+
+    <link rel=&quot;apple-touch-icon&quot; type=&quot;image/png&quot; href=&quot;https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png&quot; />
+
+    <meta name=&quot;apple-mobile-web-app-title&quot; content=&quot;CodePen&quot;>
+
+    <link rel=&quot;icon&quot; type=&quot;image/x-icon&quot; href=&quot;https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico&quot; />
+
+    <link rel=&quot;mask-icon&quot; type=&quot;image/x-icon&quot; href=&quot;https://cpwebassets.codepen.io/assets/favicon/logo-pin-b4b4269c16397ad2f0f7a01bcdf513a1994f4c94b8af2f191c09eb0d601762b1.svg&quot; color=&quot;#111&quot; />
+
+
+
+  
+    <script src=&quot;https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-f07739098a39bd4e74ddd974652dac904146f33fdc1ecab356e8c809a05faccb.js&quot;></script>
+
+
+  <title>Liquid Glass Menu</title>
+
+    <link rel=&quot;canonical&quot; href=&quot;https://codepen.io/iamryanyu/pen/gbpzgqX&quot;>
+  <link rel=&quot;preconnect&quot; href=&quot;https://fonts.googleapis.com&quot;>
+<link rel=&quot;preconnect&quot; href=&quot;https://fonts.gstatic.com&quot; crossorigin>
+<link href=&quot;https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&amp;display=swap&quot; rel=&quot;stylesheet&quot;>
+  
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/modern-normalize/3.0.1/modern-normalize.min.css'>
+  
+<style>
+.main {
+  align-items: center;
+  background: url(&quot;https://assets.codepen.io/204808/berkay-gumustekin-ngqyo2AYYnE-unsplash%281%29.jpg&quot;) center/cover no-repeat;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  min-width: 100vw;
+}
+
+.heading {
+  color: #fff;
+  font-size: clamp(3.125rem, 8.083vw + 1.033rem, 7.5rem);
+  line-height: clamp(3.75rem, 6.928vw + 1.957rem, 7.5rem);
+  position: fixed;
+  top: 1.25rem;
+}
+
+.liquid-glass {
+  --glass-size-w: 16.875rem;
+  --glass-size-h: 16.875rem;
+  --glass-padding: 1.875rem;
+  --border-radius: 2rem;
+  --transition: 0.4s cubic-bezier(0.5, 1.5, 0.5, 1);
+  --menu-gap: 1rem;
+  --icon-size: 4rem;
+  --icon-border-radius: 1rem;
+  --icon-padding: 0.75rem;
+  border-radius: var(--border-radius);
+  cursor: -webkit-grab;
+  cursor: grab;
+  height: var(--glass-size-h);
+  padding: var(--glass-padding);
+  position: relative;
+  transition: width var(--transition), height var(--transition), padding var(--transition);
+  width: var(--glass-size-w);
+}
+.liquid-glass.is-expanded {
+  --glass-size-w: 34.375rem;
+  --glass-size-h: 43.75rem;
+  --glass-padding: 2.5rem;
+}
+
+.liquid-glass--bend {
+  -webkit-backdrop-filter: blur(3px);
+          backdrop-filter: blur(3px);
+  border-radius: var(--border-radius);
+  filter: url(#glass-blur);
+  inset: 0;
+  position: absolute;
+  z-index: 0;
+}
+
+.liquid-glass--face {
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.15), 0 0 12px rgba(0, 0, 0, 0.08);
+  inset: 0;
+  position: absolute;
+  z-index: 1;
+}
+
+.liquid-glass--edge {
+  border-radius: var(--border-radius);
+  box-shadow: inset 3px 3px 3px 0 rgba(255, 255, 255, 0.45), inset -3px -3px 3px 0 rgba(255, 255, 255, 0.45);
+  inset: 0;
+  position: absolute;
+  z-index: 2;
+}
+
+.liquid-glass__menus {
+  display: flex;
+  gap: var(--menu-gap);
+  transition: gap var(--transition);
+}
+.is-expanded .liquid-glass__menus {
+  --menu-gap: 2rem;
+}
+
+.liquid-glass__link {
+  border-radius: var(--icon-border-radius);
+  box-shadow: inset 1px 1px 1px 0 rgba(255, 255, 255, 0.45), inset -1px -1px 1px 0 rgba(255, 255, 255, 0.45);
+  display: flex;
+  height: var(--icon-size);
+  padding: var(--icon-padding);
+  pointer-events: none;
+  transition: width var(--transition), height var(--transition), border-radius var(--transition);
+  width: var(--icon-size);
+  z-index: 3;
+}
+.is-expanded .liquid-glass__link {
+  --icon-size: 8rem;
+  --icon-border-radius: 2rem;
+  --icon-padding: 1.5rem;
+  cursor: default;
+  pointer-events: auto;
+  box-shadow: inset 1px 2px 2px 0 rgba(255, 255, 255, 0.45), inset -1px -2px 2px 0 rgba(255, 255, 255, 0.45);
+}
+
+.link-linkedin {
+  background: #1a76ad;
+  background: linear-gradient(90deg, #1a76ad 0%, #288ec9 100%);
+}
+
+.link-frontendly {
+  background: #262626;
+  background: linear-gradient(90deg, #262626 0%, #303030 100%);
+}
+
+.description {
+  bottom: 3.125rem;
+  color: #fff;
+  font-family: &quot;Open Sans&quot;, sans-serif;
+  font-optical-sizing: auto;
+  font-size: 1.5rem;
+  left: 50%;
+  position: fixed;
+  text-align: center;
+  transform: translateX(-50%);
+}
+</style>
+
+  <script>
+  window.console = window.console || function(t) {};
+</script>
+
+  
+  
+</head>
+
+<body translate=&quot;no&quot;>
+  <main class=&quot;main&quot;>
+  <h1 class=&quot;heading&quot;>Liquid Glass Menu</h1>
+  <div class=&quot;liquid-glass&quot;>
+    <div class=&quot;liquid-glass--bend&quot;></div>
+    <div class=&quot;liquid-glass--face&quot;></div>
+    <div class=&quot;liquid-glass--edge&quot;></div>
+    <div class=&quot;liquid-glass__menus&quot;>
+      <a class=&quot;liquid-glass__link link-linkedin&quot; href=&quot;https://www.linkedin.com/in/iamryanyu/&quot; target=&quot;_blank&quot;>
+        <svg xmlns=&quot;http://www.w3.org/2000/svg&quot; xml:space=&quot;preserve&quot; viewBox=&quot;0 0 93.06 93.06&quot;>
+          <path class=&quot;liquid-glass__icon&quot; fill=&quot;#fff&quot; d=&quot;M11.185.08C5.004.08.001 5.092 0 11.259c0 6.173 5.003 11.184 11.186 11.184 6.166 0 11.176-5.011 11.176-11.184C22.362 5.091 17.351.08 11.185.08zM1.538 30.926h19.287V92.98H1.538zM69.925 29.383c-9.382 0-15.673 5.144-18.248 10.022h-.258v-8.479H32.92v62.053h19.27V62.281c0-8.093 1.541-15.932 11.575-15.932 9.89 0 10.022 9.256 10.022 16.451v30.178H93.06V58.942c0-16.707-3.605-29.559-23.135-29.559z&quot; />
+        </svg>
+      </a>
+      <a class=&quot;liquid-glass__link link-frontendly&quot; href=&quot;http://frontendly.io&quot; target=&quot;_blank&quot;>
+        <svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 384 212&quot; fill=&quot;none&quot;>
+          <path fill=&quot;#cf84fc&quot; d=&quot;M100.5 180.25.5 123V97l100-57.25 18.25 37.5L36 118.75v-17.5l82.75 41.5-18.25 37.5Zm14.106 31.25L219.106 0h46.5l-104 211.5h-47Zm168.84-31.25-18.25-37.5 82.75-41.5v17.5l-82.75-41.5 18.25-37.5 100 57.25v26l-100 57.25Z&quot; />
+        </svg>
+      </a>
+    </div>
+</main>
+
+<div class=&quot;description&quot;>Click to expand &amp; drag to move</div>
+
+<svg style=&quot;display: none&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;>
+  <filter id=&quot;glass-blur&quot; x=&quot;0&quot; y=&quot;0&quot; width=&quot;100%&quot; height=&quot;100%&quot; filterUnits=&quot;objectBoundingBox&quot;>
+    <feTurbulence type=&quot;fractalNoise&quot; baseFrequency=&quot;0.003 0.007&quot; numOctaves=&quot;1&quot; result=&quot;turbulence&quot; />
+    <feDisplacementMap in=&quot;SourceGraphic&quot; in2=&quot;turbulence&quot; scale=&quot;200&quot; xChannelSelector=&quot;R&quot; yChannelSelector=&quot;G&quot; />
+  </filter>
+</svg>
+  <script src='https://unpkg.com/gsap@3/dist/Draggable.min.js'></script>
+<script src='https://unpkg.com/gsap@3/dist/gsap.min.js'></script>
+    <script id=&quot;rendered-js&quot; >
+gsap.registerPlugin(Draggable);
+
+Draggable.create(&quot;.liquid-glass&quot;, {
+  type: &quot;x, y&quot;,
+  inertia: true,
+  onRelease: function () {
+    gsap.to(this.target, {
+      x: 0,
+      y: 0,
+      duration: 1.5,
+      ease: &quot;elastic.out(1,0.3)&quot; });
+
+  } });
+
+
+document.querySelector(&quot;.liquid-glass&quot;).addEventListener(&quot;click&quot;, e => {
+  if (e.target.closest(&quot;.liquid-glass__icon&quot;)) return;
+
+  e.currentTarget.classList.toggle(&quot;is-expanded&quot;);
+});
+//# sourceURL=pen.js
+  </script>
+
+  
+</body>
+
+</html>
+"
+      sandbox="allow-downloads allow-forms allow-modals allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-same-origin allow-scripts allow-top-navigation-by-user-activation" allow="accelerometer *; ambient-light-sensor *; camera *; display-capture *; encrypted-media *; geolocation *; gyroscope *; microphone *; midi *; payment *; serial *; vr *; web-share *; xr-spatial-tracking *" allowTransparency="true"
+      allowpaymentrequest="true" allowfullscreen="true" class="result-iframe">
+      </iframe>
+  </div>
+
+</body>
+
+</html>

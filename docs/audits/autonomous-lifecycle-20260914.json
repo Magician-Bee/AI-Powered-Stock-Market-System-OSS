@@ -1,0 +1,24 @@
+{
+  "schema_version": "open_stock_ai.autonomous_lifecycle_audit.v1",
+  "audited_at": "2026-09-14T02:42:31.201599+00:00",
+  "database": "/Users/your-user/Library/Application Support/StockAI-System/fae9545ae1cab455/runtime/service-source/output/open_stock_ai.sqlite",
+  "runtime_database": "/Users/your-user/Library/Application Support/StockAI-System/fae9545ae1cab455/runtime/agent-data/agent-runtime.db",
+  "account_filter": "autonomous-paper-v1",
+  "read_only": true,
+  "snapshot_scope": "one_read_transaction_per_database; separate_databases_not_atomic",
+  "plan_count": 0,
+  "plans": [],
+  "missing_tables_or_columns": [],
+  "runtime_missing_tables_or_columns": [],
+  "m1_verified": false,
+  "positive_ev_qualified": false,
+  "limitations": [
+    "No independent provider or execution quote attestation; runtime metadata alone is not a model invocation.",
+    "Closed paper cashflows do not establish live execution quality, profitability, or fault recovery.",
+    "Versions are reported per plan; older outcomes are not pooled as evidence for the current policy.",
+    "Account-wide cash, holdings, corporate actions and deployed service revision require separate reconciliation.",
+    "No-plan or no-fill observations cannot satisfy M1; waiting remains a valid trading decision."
+  ],
+  "audit_script_sha256": "595506e50263418c255dc69fa3cfd009079d8eb42728887c3d0e1da8b127a7a6",
+  "receipt_sha256": "8969eec40a99d0c869482bd117501a7432603e7798d8138692cb77a15614fdaa"
+}

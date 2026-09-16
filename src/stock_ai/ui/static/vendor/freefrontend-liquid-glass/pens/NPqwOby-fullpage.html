@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  
+
+    <link rel="apple-touch-icon" type="image/png" href="https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png" />
+
+    <meta name="apple-mobile-web-app-title" content="CodePen">
+
+    <link rel="icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico" />
+
+    <link rel="mask-icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-b4b4269c16397ad2f0f7a01bcdf513a1994f4c94b8af2f191c09eb0d601762b1.svg" color="#111" />
+
+
+
+  <meta charset="utf-8">
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+  <title>LIQUID GLASS</title>
+
+  <link rel="stylesheet" href="https://cpwebassets.codepen.io/assets/fullpage/fullpage-defe0b00ddddc98ad4bc2c428e9d6182cd7742e2624f558656dbfb986d4ba13c.css" />
+  
+
+    <link rel="apple-touch-icon" type="image/png" href="https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png" />
+
+    <meta name="apple-mobile-web-app-title" content="CodePen">
+
+    <link rel="icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico" />
+
+    <link rel="mask-icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-b4b4269c16397ad2f0f7a01bcdf513a1994f4c94b8af2f191c09eb0d601762b1.svg" color="#111" />
+
+
+
+
+
+  <title>LIQUID GLASS</title>
+
+  <style>
+    html { font-size: 15px; }
+    html, body { margin: 0; padding: 0; min-height: 100%; }
+    body { height:100%; display: flex; flex-direction: column; }
+    .referer-warning {
+      background: black;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+      padding: 0.75em;
+      color: white;
+      text-align: center;
+      font-family: 'Lato', 'Lucida Grande', 'Lucida Sans Unicode', Tahoma, system-ui, Sans-Serif;
+      line-height: 1.2;
+      font-size: 1rem;
+      position: relative;
+      z-index: 2;
+    }
+    .referer-warning span { font-family: initial; }
+    .referer-warning h1 { font-size: 1.2rem; margin: 0; }
+    .referer-warning a { color: #56bcf9; }
+  </style>
+</head>
+
+<body class="">
+  <div class="referer-warning">
+    <h1><span>⚠️</span> Do not enter passwords or personal information on this page. <span>⚠️</span></h1>
+      This is a code demo posted by a web developer on <a href="https://codepen.io">CodePen</a>.
+    <br />
+    A referer from CodePen is required to render this page view, and your browser is not sending one (<a href="https://blog.codepen.io/2017/10/05/regarding-referer-headers/" target="_blank" rel="noreferrer noopener">more details</a>).</h1>
+  </div>
+
+  <div id="result-iframe-wrap" role="main">
+    <iframe
+      id="result"
+      srcdoc="<!DOCTYPE html>
+<html lang=&quot;en&quot; >
+
+<head>
+  <meta charset=&quot;UTF-8&quot;>
+  
+
+    <link rel=&quot;apple-touch-icon&quot; type=&quot;image/png&quot; href=&quot;https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png&quot; />
+
+    <meta name=&quot;apple-mobile-web-app-title&quot; content=&quot;CodePen&quot;>
+
+    <link rel=&quot;icon&quot; type=&quot;image/x-icon&quot; href=&quot;https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico&quot; />
+
+    <link rel=&quot;mask-icon&quot; type=&quot;image/x-icon&quot; href=&quot;https://cpwebassets.codepen.io/assets/favicon/logo-pin-b4b4269c16397ad2f0f7a01bcdf513a1994f4c94b8af2f191c09eb0d601762b1.svg&quot; color=&quot;#111&quot; />
+
+
+
+  
+    <script src=&quot;https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-f07739098a39bd4e74ddd974652dac904146f33fdc1ecab356e8c809a05faccb.js&quot;></script>
+
+
+  <title>LIQUID GLASS</title>
+
+    <link rel=&quot;canonical&quot; href=&quot;https://codepen.io/adamcurzon/pen/NPqwOby&quot;>
+  
+  
+  
+  
+<style>
+body {
+  background: #111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: system-ui;
+  color: white;
+}
+.dark-glass {
+  background: rgba(0,0,0,0.1);
+  border-radius: 25px;
+  backdrop-filter: blur(4px);
+  border: 2px solid rgba(0,0,0,0.2);
+}
+.glass {
+  background: rgba(255,255,255,0.1);
+  border-radius: 25px;
+  backdrop-filter: blur(4px);
+  border: 2px solid rgba(255,255,255,0.2);
+}
+.iphone {
+  width: 350px;
+  height: 700px;
+  border-radius: 60px;
+  background-image: URL('https://cdn.pixabay.com/photo/2020/05/27/22/18/meadow-5229169_1280.jpg');
+  background-position: center center;
+  position: relative;
+  filter: saturate(140%);
+}
+.player {
+  width: 320px;
+  height: 150px;
+  position: absolute;
+  left: 15px;
+  bottom: 95px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.player .song {
+  font-weight: 600;
+}
+.player .artist {
+  font-weight: 400;
+  color: #eee;
+}
+
+.player .track-holder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 10px;
+  margin-top: 10px;
+}
+
+.player .track-holder .track {
+  width: 220px;
+  height: 6px;
+  border-radius: 100px;
+  background: linear-gradient(90deg, white 60%, rgba(255,255,255,0.4) 50%);
+}
+.player .icons {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  font-size: 50px;
+}
+.notification {
+  width: 320px;
+  height: 70px;
+  position: absolute;
+  left: 15px;
+  bottom: 255px;
+  display: flex;
+  align-items: center;
+}
+.notification .icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 15px;
+  text-align: center;
+  font-size: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.2);
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.notification .text .app {
+  font-weight: 700;
+}
+.notification .text .description {
+  font-weight: 400;
+  color: #eee;
+}
+
+.extra-buttons {
+  width: 280px;
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  bottom: 40px;
+  left: 35px;
+  
+}
+.extra-buttons div {
+  height: 45px;
+  aspect-ratio: 1;
+  line-height: 45px;
+  text-align: center;
+}
+.date-time {
+  text-align: center;
+  width: 100%;
+  position: absolute;
+  top: 70px;
+}
+.date-time .date {
+  font-weight: 500;
+  font-size: 20px
+}
+.date-time .time {
+  font-weight: 700;
+  font-size: 80px;
+  margin-top: -10px;
+}
+
+.title {
+  font-size: 50px;
+  margin-left: 20px;
+}
+.title .sub {
+  font-weight: 700;
+  margin-top: -10px;
+}
+</style>
+
+  <script>
+  window.console = window.console || function(t) {};
+</script>
+
+  
+  
+</head>
+
+<body translate=&quot;no&quot;>
+  <div class=&quot;iphone&quot;>
+  <div class=&quot;date-time&quot;>
+    <div class=&quot;date&quot;>Monday 9 June</div>
+    <div class=&quot;time&quot;>11:14</div>
+  </div>
+  <div class=&quot;notification glass&quot;>
+    <div class=&quot;icon&quot;>
+      <!--       &amp;#x2709; -->
+    </div>
+    <div class=&quot;text&quot;>
+      <div class=&quot;app&quot;>Codpen</div>
+      <div class=&quot;description&quot;>The codepen newsletter...</div>
+    </div>
+  </div>
+  <div class=&quot;player glass&quot;>
+    <div class=&quot;song&quot;>Web Development</div>
+    <div class=&quot;artist&quot;>Adam Curzon</div>
+    <div class=&quot;track-holder&quot;>
+      <div>1:05</div>
+      <div class=&quot;track&quot;></div>
+      <div>-0:37</div>
+    </div>
+    <div class=&quot;icons&quot;>
+      <div>&amp;#x23EE;</div>
+      <div>&amp;#x23f8;</div>
+      <div>&amp;#x23ED;</div>
+    </div>
+  </div>
+  <div class=&quot;extra-buttons&quot;>
+    <div class=&quot;glass&quot;>
+      A
+    </div>
+    <div class=&quot;glass&quot;>
+      B
+    </div>
+  </div>
+</div>
+<div class=&quot;title&quot;>
+  <div class=&quot;main&quot;>LIQUID</div>
+  <div class=&quot;sub&quot;>GLASS</div>
+</div>
+  
+    <script id=&quot;rendered-js&quot; >
+document.addEventListener('mousemove', e => {
+  const xPercent = (e.clientX / window.innerWidth - 0.5) * 10;
+  const yPercent = (e.clientY / window.innerHeight - 0.5) * 10;
+  document.querySelector('.iphone').style.backgroundPosition = `calc(50% + ${xPercent}px) calc(50% + ${yPercent}px)`;
+});
+//# sourceURL=pen.js
+  </script>
+
+  
+</body>
+
+</html>
+"
+      sandbox="allow-downloads allow-forms allow-modals allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-same-origin allow-scripts allow-top-navigation-by-user-activation" allow="accelerometer *; ambient-light-sensor *; camera *; display-capture *; encrypted-media *; geolocation *; gyroscope *; microphone *; midi *; payment *; serial *; vr *; web-share *; xr-spatial-tracking *" allowTransparency="true"
+      allowpaymentrequest="true" allowfullscreen="true" class="result-iframe">
+      </iframe>
+  </div>
+
+</body>
+
+</html>

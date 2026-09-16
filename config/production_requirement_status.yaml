@@ -1,0 +1,1661 @@
+schema_version: stock_ai.production_requirement_status.v1
+source_of_truth: config/production_requirement_status.yaml
+status_definitions:
+  complete: Every stated acceptance condition has direct implementation and test evidence.
+  partial: A production path exists, but at least one acceptance blocker remains.
+  unverified: Names or code presence have not yet been accepted as evidence.
+gates:
+  master_p0:
+    requirement_ids: [Q-001, Q-002, Q-003, Q-004, Q-005, Q-006, Q-007, Q-008, Q-009, D-001, D-002, D-003, D-004, M-001, M-002, M-006, S-001, S-002, S-003, E-001, E-002, E-003, E-004, E-005, E-006, E-007, E-008, E-009, E-010, E-011, A-001, A-002, A-003, A-004, N-001, N-002, N-007, SEC-001, SEC-002, R-001, T-001, T-003, T-004, T-005, GOV-001, GOV-002]
+  quant_foundation:
+    requirement_ids: [Q-001, Q-002, Q-003, Q-004, Q-005, Q-006, Q-007, Q-008, Q-009]
+  research_execution_evidence:
+    requirement_ids: [Q-001, Q-002, Q-003, Q-004, Q-005, Q-006, Q-007, Q-008, Q-009, D-001, D-002, D-003, D-004, M-001, M-002, M-006, S-001, S-002, S-003, T-003, T-004, T-005]
+  sizing_and_execution_truth:
+    requirement_ids: [S-003, E-001]
+release_requirement_groups:
+  - priority: P1
+    domain: quant
+    ids: [Q-010, Q-011, Q-012, Q-013, Q-014, Q-015]
+  - priority: P2
+    domain: quant
+    ids: [Q-016]
+  - priority: P1
+    domain: data
+    ids: [D-005, D-006, D-007, D-008, D-009, D-010, D-011]
+  - priority: P2
+    domain: data
+    ids: [D-012]
+  - priority: P1
+    domain: model
+    ids: [M-003, M-004, M-005, M-007, M-008, M-009, M-010, M-011]
+  - priority: P2
+    domain: model
+    ids: [M-012]
+  - priority: P1
+    domain: strategy
+    ids: [S-004, S-005, S-006, S-007, S-008, S-009, S-010, S-011, S-012]
+  - priority: P1
+    domain: execution
+    ids: [E-012, E-013, E-014, E-015, E-016, E-017, E-018]
+  - priority: P1
+    domain: agent_security
+    ids: [A-005, A-006, A-007, A-008, A-009, A-010]
+  - priority: P2
+    domain: agent_security
+    ids: [A-011]
+  - priority: P1
+    domain: automation
+    ids: [N-003, N-004, N-005, N-006]
+  - priority: P1
+    domain: security
+    ids: [SEC-003, SEC-004, SEC-005, SEC-006, SEC-007, SEC-008, SEC-009]
+  - priority: P2
+    domain: security
+    ids: [SEC-010]
+  - priority: P1
+    domain: storage
+    ids: [R-002, R-003, R-004, R-005, R-006, R-007, R-008, R-009, R-010]
+  - priority: P2
+    domain: storage
+    ids: [R-011]
+  - priority: P1
+    domain: testing
+    ids: [T-002, T-006, T-007, T-008, T-009]
+  - priority: P1
+    domain: governance
+    ids: [GOV-003, GOV-004, GOV-005, GOV-006]
+release_requirement_overrides:
+  A-007:
+    status: partial
+    acceptance: Host mutation validation emits a content-addressed receipt binding tool name, exact arguments, result, before/after state hashes and acceptance, then emits a provider-scoped domain receipt bound to that verified Host receipt; tampered receipts fail verification and mutation completion still requires the existing Host checks.
+    evidence:
+      - src/open_stock_ai/agent_runtime/mutation_receipts.py
+      - src/open_stock_ai/agent_runtime/validators.py
+      - tests/test_mutation_receipts.py
+      - tests/test_mutation_receipts.py::test_host_mutation_postcondition_rejects_loose_domain_id_without_accepted_host_receipt
+      - tests/test_mutation_receipts.py::test_domain_mutation_receipt_binds_provider_to_host_validated_receipt
+      - src/stock_ai/broker_tools.py
+      - tests/test_broker_framework.py::test_broker_order_proposal_is_local_unapproved_and_never_submitted
+      - tests/test_broker_framework.py::test_broker_order_cancel_emits_accepted_receipt_only_for_existing_local_proposal
+    blockers:
+      - live_provider_side_effect_receipts_and_owner_verified_external_execution_evidence_are_not_yet_recorded
+  A-006:
+    status: partial
+    acceptance: Durable memory candidates carry evidence trust and provenance; explicitly untrusted or below-threshold content is quarantined, excluded from active retrieval, and retained for audit until Host verification.
+    evidence:
+      - src/open_stock_ai/agent_runtime/memory/trust.py
+      - src/open_stock_ai/agent_runtime/memory/governance.py
+      - src/open_stock_ai/agent_runtime/memory/durable_governance.py
+      - tests/test_memory_trust_quarantine.py
+    blockers:
+      - reviewed_malicious_memory_corpus_and_live_provider_to_memory_receipts_are_not_yet_recorded
+  A-005:
+    status: partial
+    acceptance: External web/news/provider content is labelled as data-only with a content hash, no instruction authority, and Host-only tool authorization before provider context; hostile corpus and real provider receipts remain separate release evidence.
+    evidence:
+      - src/open_stock_ai/agent_runtime/untrusted_content.py
+      - tests/fixtures/security/hostile_external_content.json
+      - src/open_stock_ai/agent_runtime/context_broker_v2.py
+      - src/open_stock_ai/agent_runtime/orchestrator.py
+      - src/stock_ai/agent_drivers.py
+      - tests/test_untrusted_content_boundary.py
+      - tests/test_agent_runtime.py::test_provider_turn_records_verified_external_context_without_raw_content
+      - src/stock_ai/ui/static/js/features/agent/agent-runtime-timeline.js
+    blockers:
+      - live_provider_runtime_receipt_and_independent_hostile_corpus_review_signoff_are_not_yet_recorded
+  A-008:
+    status: partial
+    acceptance: Host-owned global, session, provider and tool cost budgets are charged atomically; recursive depth, node, repeated-tool, total-call and no-progress limits fail closed with a durable execution-guard snapshot.
+    evidence:
+      - src/open_stock_ai/agent_runtime/guardrails.py
+      - src/open_stock_ai/agent_runtime/orchestrator.py
+      - tests/test_agent_guardrails.py
+    blockers:
+      - reviewed_provider_cost_schedule_and_real_provider_runaway_chaos_receipts_are_not_yet_recorded
+  A-009:
+    status: partial
+    acceptance: Provider failure is fail-closed by default; an alternate driver can be selected only by an explicit allowlist for advisory read-only work, with a visible quality-change notice and tamper-evident receipt, while paper, project, external and full execution remain blocked.
+    evidence:
+      - src/open_stock_ai/agent_runtime/provider_fallback.py
+      - src/open_stock_ai/agent_runtime/orchestrator.py
+      - tests/test_provider_fallback.py
+    blockers:
+      - real_primary_outage_and_alternate_provider_runtime_receipts_are_not_yet_recorded
+      - provider_fallback_matrix_has_not_been_accepted_against_each_production_provider
+  A-010:
+    status: complete
+    acceptance: A machine-readable matrix names exactly one authoritative durable store per domain; projections are explicitly read-only, capability status exposes the matrix hash, and transitional domains retain concrete migration blockers instead of being declared complete from class existence.
+    evidence:
+      - config/authoritative_store_matrix.yaml
+      - src/open_stock_ai/governance/authoritative_stores.py
+      - src/open_stock_ai/governance/capability_status.py
+      - docs/architecture/authoritative-store-matrix.md
+      - src/open_stock_ai/research/experiment_store.py
+      - src/open_stock_ai/research/model_registry.py
+      - src/open_stock_ai/agent_runtime/artifact_store.py
+      - tests/test_authoritative_store_matrix.py
+      - tests/test_research_model_runtime.py::test_registry_persists_immutable_models_and_receipt_backed_experiment
+    blockers: []
+  A-011:
+    status: complete
+    acceptance: A Session archive exports the Session, title history, messages and every durable Run snapshot as a secret-minimized, content-addressed decision lineage; restore verifies schema, hashes and cross-record IDs before materializing a fresh SQLite authoritative runtime without overwriting live stores.
+    evidence:
+      - src/open_stock_ai/agent_runtime/session_archival.py
+      - src/open_stock_ai/agent_runtime/session_archival.py::load_materialized_session_archive
+      - src/stock_ai/agent_run_store.py
+      - src/stock_ai/durable_agent_runtime.py
+      - src/stock_ai/agent_api.py
+      - tests/test_session_archival.py::test_session_archive_materializes_fresh_authoritative_database_without_overwrite
+      - src/open_stock_ai/agent_runtime/hosted_session_archive_gate.py
+      - scripts/run_hosted_session_archive_gate.py
+      - .github/workflows/session-archive-restore.yml
+      - tests/test_hosted_session_archive_gate.py
+      - docs/validation/hosted-a011-session-archive-restore-20260908.md
+    blockers: []
+  R-002:
+    status: complete
+    acceptance: SQLite authoritative storage can create an online backup with content, schema and integrity hashes, restore it into a clean target without overwriting existing data, and use a hash-bound off-host schedule/retention policy.
+    evidence:
+      - src/open_stock_ai/storage/sqlite_backup.py
+      - src/open_stock_ai/storage/backup_policy.py
+      - src/open_stock_ai/storage/hosted_backup_gate.py
+      - config/sqlite_backup_policy.yaml
+      - scripts/run_hosted_backup_gate.py
+      - .github/workflows/sqlite-backup-restore.yml
+      - tests/test_sqlite_backup.py
+      - tests/test_backup_policy.py
+      - tests/test_hosted_backup_gate.py
+      - docs/validation/hosted-r002-backup-restore-20260907.md
+    blockers: []
+  R-003:
+    status: complete
+    acceptance: Existing SQLite databases verify a contiguous migration source manifest and create a content-addressed backup before startup applies an irreversible schema upgrade; the receipt remains prepared on failure and becomes completed only after the migration commits.
+    evidence:
+      - src/open_stock_ai/storage/migration_safety.py
+      - src/open_stock_ai/storage/sqlite_store.py
+      - src/open_stock_ai/storage/hosted_migration_gate.py
+      - scripts/run_hosted_migration_gate.py
+      - .github/workflows/migration-retention.yml
+      - tests/test_migration_safety.py
+      - tests/test_hosted_migration_gate.py
+      - docs/validation/hosted-r003-migration-retention-20260907.md
+    blockers: []
+  R-004:
+    status: complete
+    acceptance: Runtime events carry W3C-compatible trace/span context; a pinned external OpenTelemetry Collector accepts OTLP/HTTP JSON and persists one request-to-decision-to-order trace across API, decision and order services for clean-runner verification.
+    evidence:
+      - src/open_stock_ai/agent_runtime/trace_contract.py
+      - src/open_stock_ai/agent_runtime/otlp_exporter.py
+      - src/open_stock_ai/agent_runtime/hosted_otel_gate.py
+      - src/open_stock_ai/agent_runtime/contracts.py
+      - src/open_stock_ai/agent_runtime/observability_store.py
+      - scripts/run_hosted_otel_gate.py
+      - .github/otel/collector-config.yaml
+      - .github/workflows/otel-tracing.yml
+      - tests/test_trace_contract.py
+      - tests/test_agent_event_contract.py
+      - tests/test_trace_contract.py::test_trace_recorder_preserves_request_decision_order_parent_chain
+      - tests/test_otlp_exporter.py
+      - docs/validation/hosted-r004-otel-tracing-20260907.md
+    blockers: []
+  R-005:
+    status: partial
+    acceptance: Data freshness, API, Agent, broker feed and order lifecycle observations can be evaluated against explicit latency, success and freshness SLO targets with a hash-verified report; missing samples fail closed.
+    evidence:
+      - src/open_stock_ai/agent_runtime/slo.py
+      - src/stock_ai/durable_agent_runtime.py
+      - src/stock_ai/agent_api.py
+      - src/stock_ai/main.py
+      - src/stock_ai/brokers/feed_recovery_runtime.py
+      - src/stock_ai/broker_tools.py
+      - src/stock_ai/data_platform/api.py
+      - src/stock_ai/paper_training_api.py
+      - src/stock_ai/ui/static/js/features/agent/agent-observability-dashboard.js
+      - tests/test_slo.py
+      - tests/test_slo.py::test_durable_slo_store_survives_restart_and_keeps_missing_samples_fail_closed
+      - tests/test_durable_agent_runtime.py::test_durable_runtime_records_agent_slo_and_marks_unwired_services_no_data
+      - tests/test_agent_runtime_api.py::test_critical_api_requests_record_runtime_slo_without_self_observing_dashboard
+      - tests/test_data_observability_notifications.py::test_source_freshness_slo_uses_oldest_real_success_time_not_dashboard_time
+      - tests/test_broker_market_feed_recovery_service.py::test_runtime_agent_subscription_records_durable_feed_slo_before_returning_event
+      - tests/test_broker_market_feed_recovery_service.py::test_runtime_agent_subscription_fails_closed_without_official_integration_evidence
+    blockers:
+      - production_slo_targets_require_owner_acceptance
+  R-006:
+    status: partial
+    acceptance: Feed staleness, reconciliation mismatch, unknown orders, database pressure, model drift and deterministic chaos triggers produce deduplicated hash-verified operational alerts with fail-closed order blocking where required; production alert delivery and on-call routing remain required before complete.
+    evidence:
+      - src/open_stock_ai/agent_runtime/operational_alerts.py
+      - src/open_stock_ai/agent_runtime/operational_alerts.py::DurableOperationalAlertStore
+      - src/open_stock_ai/agent_runtime/operational_alerts.py::OperationalAlertDispatcher
+      - src/open_stock_ai/agent_runtime/operational_alert_runtime.py
+      - src/stock_ai/agent_service.py
+      - src/stock_ai/agent_api.py
+      - src/stock_ai/ui/static/js/features/agent/agent-observability-dashboard.js
+      - src/stock_ai/brokers/monitoring.py
+      - src/open_stock_ai/agent_runtime/storage_health.py
+      - src/open_stock_ai/research/model_drift.py
+      - tests/test_operational_alerts.py
+      - tests/test_operational_alert_runtime.py
+    blockers:
+      - production_alert_sink_on_call_routing_and_chaos_recovery_receipts_are_not_yet_configured
+  R-009:
+    status: complete
+    acceptance: A tool-neutral load profile fixes concurrency, duration, request rate and p95/p99 latency, error-rate and throughput budgets; hosted measurements fail closed on missing samples or regressions and retain hash-verified baseline, candidate and gate receipts.
+    evidence:
+      - src/open_stock_ai/governance/load_test_contract.py
+      - src/open_stock_ai/governance/performance_regression.py
+      - src/open_stock_ai/governance/performance_regression.py::PerformanceBaselineStore
+      - src/open_stock_ai/governance/load_test_runner.py
+      - src/open_stock_ai/governance/hosted_load_gate.py
+      - scripts/run_hosted_load_gate.py
+      - .github/workflows/load-regression.yml
+      - docs/validation/hosted-r009-load-regression-20260907.md
+      - tests/test_load_test_contract.py
+      - tests/test_load_test_runner.py
+      - tests/test_performance_regression.py
+      - tests/test_hosted_load_gate.py
+    blockers: []
+  R-010:
+    status: complete
+    acceptance: A deterministic chaos catalog and guarded hosted workflow inject real process kill, network partition, disk full and timeout faults; every scenario must recover durable state, keep new orders blocked until safe and write an operator receipt, with hash-verified campaign evidence retained by GitHub Actions.
+    evidence:
+      - src/open_stock_ai/governance/chaos_recovery.py
+      - src/open_stock_ai/governance/chaos_recovery.py::DurableChaosRecoveryStore
+      - src/open_stock_ai/governance/hosted_chaos_gate.py
+      - src/open_stock_ai/agent_runtime/chaos_recovery_runtime.py
+      - src/open_stock_ai/agent_runtime/operational_alert_runtime.py
+      - src/stock_ai/agent_api.py::agent_chaos_recovery_dashboard
+      - src/stock_ai/ui/static/js/features/agent/agent-observability-dashboard.js
+      - src/open_stock_ai/agent_runtime/validation/chaos.py
+      - scripts/run_hosted_chaos_gate.py
+      - .github/workflows/chaos-recovery.yml
+      - docs/validation/hosted-r010-chaos-recovery-20260907.md
+      - tests/test_chaos_recovery.py
+      - tests/test_hosted_chaos_gate.py
+      - tests/test_operational_alert_runtime.py::test_runtime_projects_blocked_durable_chaos_campaign_into_operational_alerts
+      - tests/test_agent_provider_matrix_chaos.py::test_chaos_campaign_executes_all_fourteen_faults_and_recovers
+    blockers: []
+  R-011:
+    status: complete
+    acceptance: HA topology separates API, Agent runtime, market data, broker gateway and scheduler ownership; a hosted multi-process failover campaign kills each primary, requires standby takeover with a monotonic fencing epoch, rejects stale-owner renewal and retains hash-verified evidence.
+    evidence:
+      - src/open_stock_ai/governance/ha_leader_lease.py
+      - src/open_stock_ai/governance/hosted_ha_failover.py
+      - src/stock_ai/brokers/reconnect.py
+      - src/open_stock_ai/agent_runtime/workers/supervisor.py
+      - scripts/run_hosted_ha_failover.py
+      - .github/workflows/ha-failover.yml
+      - docs/validation/hosted-r011-ha-failover-20260907.md
+      - tests/test_ha_leader_lease.py
+      - tests/test_hosted_ha_failover.py
+    blockers: []
+  SEC-003:
+    status: complete
+    acceptance: CodeQL and Bandit run on the repository and unresolved high/critical findings block release.
+    evidence:
+      - .github/workflows/security-supply-chain.yml
+      - .github/codeql/codeql-config.yml
+      - scripts/check_codeql_sarif.py
+      - docs/security/local-supply-chain-preflight.md
+      - docs/validation/hosted-sec003-sec004-security-gates-20260907.md
+      - src/open_stock_ai/governance/security_controls.py
+      - tests/test_security_controls.py
+    blockers: []
+  SEC-004:
+    status: complete
+    acceptance: pip-audit and Dependabot provide a dependency supply-chain gate and high CVEs block release.
+    evidence:
+      - .github/workflows/security-supply-chain.yml
+      - .github/dependabot.yml
+      - scripts/build_sbom.py
+      - docs/security/local-supply-chain-preflight.md
+      - docs/validation/hosted-sec003-sec004-security-gates-20260907.md
+      - tests/test_security_controls.py
+    blockers: []
+  SEC-005:
+    status: complete
+    acceptance: A deterministic CycloneDX SBOM is generated from the pinned uv lockfile and retained as a release artifact.
+    evidence:
+      - scripts/build_sbom.py
+      - scripts/build_release_archive.py
+      - scripts/build_release_provenance.py
+      - scripts/verify_release_attestations.py
+      - .github/workflows/release-attestation.yml
+      - docs/validation/hosted-sec005-sec006-release-attestation-20260907.md
+      - tests/test_release_attestation_workflow.py
+      - uv.lock
+    blockers: []
+  SEC-006:
+    status: complete
+    acceptance: Release provenance and artifact signatures are verified before release artifacts are accepted.
+    evidence:
+      - src/open_stock_ai/governance/release_signing.py
+      - scripts/build_release_provenance.py
+      - scripts/verify_release_attestations.py
+      - .github/workflows/release-attestation.yml
+      - docs/validation/hosted-sec005-sec006-release-attestation-20260907.md
+      - tests/test_release_attestation_workflow.py
+    blockers: []
+  SEC-007:
+    status: partial
+    acceptance: macOS credentials use Keychain and non-macOS development credentials use environment variables without plaintext project fallbacks.
+    evidence:
+      - src/stock_ai/agent_secret_store.py
+      - tests/test_agent_secret_store.py
+      - src/open_stock_ai/governance/security_controls.py
+    blockers:
+      - production_vault_or_hsm_identity_and_secret_rotation_receipts_are_not_yet_configured
+  SEC-008:
+    status: partial
+    acceptance: API capabilities are bound to explicit identities and least-privilege roles; remote production service identity remains fail-closed until configured.
+    evidence:
+      - src/stock_ai/agent_api.py
+      - src/stock_ai/broker_tools.py
+      - tests/test_security_controls.py
+    blockers:
+      - production_service_identity_rbac_and_remote_token_rotation_are_not_yet_configured
+  SEC-009:
+    status: complete
+    acceptance: Security and trading decisions are append-only, hash-addressed and reconstructable from durable audit records.
+    evidence:
+      - src/open_stock_ai/integration_audit.py
+      - src/stock_ai/agent_run_store.py
+      - src/open_stock_ai/governance/security_audit.py
+      - src/open_stock_ai/governance/hosted_security_audit_gate.py
+      - scripts/run_hosted_retention_archive_gate.py
+      - .github/workflows/critical-retention-archive.yml
+      - docs/validation/hosted-sec009-offhost-audit-20260908.md
+      - tests/test_security_controls.py
+      - tests/test_security_audit.py
+    blockers: []
+  SEC-010:
+    status: partial
+    acceptance: A STRIDE/data-flow threat model names trust boundaries, assets, mitigations and residual risks for the production system.
+    evidence:
+      - docs/security/threat-model.md
+      - tests/test_security_controls.py
+    blockers:
+      - security_owner_signoff_and_reviewed_production_data_flow_are_not_yet_recorded
+  R-007:
+    status: complete
+    acceptance: Provider, source and broker scopes use independent closed/open/half-open circuit breakers with deterministic backoff, a single recovery probe and tamper-evident decisions; a hosted real-HTTP failure storm proves open-circuit blocking, scope isolation and recovery.
+    evidence:
+      - src/open_stock_ai/agent_runtime/transport_guard.py
+      - src/open_stock_ai/agent_runtime/circuit_breaker.py
+      - src/open_stock_ai/governance/hosted_circuit_gate.py
+      - src/open_stock_ai/agent_runtime/providers/http.py
+      - src/stock_ai/official_derivatives.py
+      - src/stock_ai/price_adjustments.py
+      - src/stock_ai/brokers/transport_guard.py
+      - src/stock_ai/brokers/gateway.py
+      - src/stock_ai/industry_metrics.py
+      - src/stock_ai/guidance_tracking.py
+      - src/stock_ai/twse_openapi.py
+      - src/stock_ai/taiwan_official.py
+      - src/stock_ai/phase1_data.py
+      - src/stock_ai/basic_valuation.py
+      - src/stock_ai/tdcc_holding_history.py
+      - src/stock_ai/liquidity.py
+      - src/stock_ai/valuation_percentiles.py
+      - src/stock_ai/monthly_revenue.py
+      - src/stock_ai/income_statement.py
+      - src/stock_ai/cash_flow_statement.py
+      - src/stock_ai/balance_sheet.py
+      - src/stock_ai/mvp_features.py
+      - src/stock_ai/realtime_quotes.py
+      - src/stock_ai/intraday_candles.py
+      - src/stock_ai/agent_general_tools.py
+      - src/stock_ai/short_daytrade_history.py
+      - src/stock_ai/n8n_automation.py
+      - src/stock_ai/services.py
+      - src/stock_ai/agent_drivers.py
+      - scripts/run_hosted_circuit_gate.py
+      - .github/workflows/circuit-breaker-recovery.yml
+      - docs/validation/hosted-r007-circuit-recovery-20260907.md
+      - tests/test_circuit_breaker.py
+      - tests/test_hosted_circuit_gate.py
+      - tests/test_external_transport_guard.py
+      - tests/test_broker_transport_guard.py
+      - tests/test_official_source_transport_guard.py
+      - tests/test_provider_protocol_layers.py::test_shared_provider_guard_isolates_upstream_circuits
+    blockers: []
+  R-008:
+    status: complete
+    acceptance: Endpoint, tool and provider scopes share a rate-limit governor with hash-verified policy and decision receipts; a hosted real-HTTP campaign proves verified windows, maximum concurrency, 429 backoff, recovery and conservative unknown-policy intervals.
+    evidence:
+      - src/open_stock_ai/agent_runtime/transport_guard.py
+      - src/open_stock_ai/agent_runtime/rate_limit.py
+      - src/open_stock_ai/governance/hosted_rate_limit_gate.py
+      - src/stock_ai/official_derivatives.py
+      - src/stock_ai/price_adjustments.py
+      - tests/test_rate_limit.py
+      - tests/test_external_transport_guard.py
+      - src/stock_ai/brokers/transport_guard.py
+      - src/stock_ai/brokers/gateway.py
+      - tests/test_broker_transport_guard.py
+      - src/stock_ai/industry_metrics.py
+      - src/stock_ai/guidance_tracking.py
+      - src/stock_ai/twse_openapi.py
+      - src/stock_ai/taiwan_official.py
+      - src/stock_ai/phase1_data.py
+      - src/stock_ai/basic_valuation.py
+      - src/stock_ai/tdcc_holding_history.py
+      - src/stock_ai/liquidity.py
+      - src/stock_ai/valuation_percentiles.py
+      - src/stock_ai/monthly_revenue.py
+      - src/stock_ai/income_statement.py
+      - src/stock_ai/cash_flow_statement.py
+      - src/stock_ai/balance_sheet.py
+      - src/stock_ai/mvp_features.py
+      - src/stock_ai/realtime_quotes.py
+      - src/stock_ai/intraday_candles.py
+      - src/stock_ai/agent_general_tools.py
+      - src/stock_ai/short_daytrade_history.py
+      - src/stock_ai/n8n_automation.py
+      - src/stock_ai/services.py
+      - src/stock_ai/agent_drivers.py
+      - scripts/run_hosted_rate_limit_gate.py
+      - .github/workflows/rate-limit-policy.yml
+      - docs/validation/hosted-r008-rate-limit-policy-20260907.md
+      - tests/test_hosted_rate_limit_gate.py
+      - tests/test_official_source_transport_guard.py
+      - tests/test_agent_drivers.py::test_model_discovery_uses_endpoint_isolated_shared_transport_guard
+      - tests/test_provider_protocol_layers.py::test_endpoint_transport_scope_is_endpoint_isolated_and_safe
+    blockers: []
+  GOV-003:
+    status: partial
+    acceptance: Capability promotion follows the ordered research-to-production ladder one level at a time, requires human evidence for promotion, and records signed content-addressed receipts for promotion or Host-triggered downgrade.
+    evidence:
+      - src/open_stock_ai/governance/promotion_ladder.py
+      - tests/test_promotion_ladder_durable_store.py
+      - src/open_stock_ai/governance/capability_status.py
+      - src/stock_ai/main.py
+      - config/capability_status.yaml
+      - tests/test_promotion_ladder.py
+      - tests/test_trading_governance.py::test_capability_status_exposes_durable_promotion_history
+      - tests/test_trading_governance.py::test_durable_promotion_receipt_controls_the_runtime_stage_after_restart
+    blockers:
+      - staging_acceptance_receipts_are_not_yet_recorded_for_each_capability_promotion
+  T-009:
+    status: complete
+    acceptance: The P0–P105 release checklist has a machine-readable gate that reports blocking requirement IDs, ledger hash and deterministic exit status without silently treating partial or unverified requirements as passed.
+    evidence:
+      - src/open_stock_ai/governance/release_gate.py
+      - scripts/check-release-gate.py
+      - tests/test_release_gate.py
+    blockers: []
+  T-006:
+    status: complete
+    acceptance: Research model receipts compare reference and replay metrics field by field under explicit absolute and relative tolerances, and a real isolated Qlib risk-analysis run independently recomputes the exact FinRL rollout and Qlib portfolio return paths; missing, altered, or mismatched values fail closed.
+    evidence:
+      - src/open_stock_ai/research/model_registry.py
+      - src/open_stock_ai/research/differential_metrics.py
+      - src/stock_ai/external_workflow_worker.py
+      - tests/test_research_model_runtime.py::test_registry_binds_feature_code_metrics_approval_and_metric_tolerance_replay
+      - tests/integration/test_external_model_runtime.py::test_real_finrl_policy_trains_persists_reloads_and_predicts_actions
+      - tests/integration/test_external_model_runtime.py::test_real_qlib_workflow_records_replayable_dataset_model_signal_and_portfolio_artifacts
+    blockers: []
+  T-007:
+    status: partial
+    acceptance: Supported broker contracts are covered by offline worker, capability, order and reconciliation tests, while the official sandbox/provider matrix remains fail-closed until each provider returns a real receipt.
+    evidence:
+      - config/broker_sandbox_matrix.yaml
+      - docs/integration/five-broker-gateway.md
+      - tests/test_broker_framework.py::test_declared_brokers_publish_unverified_capabilities_and_owner_checkpoints
+      - tests/test_broker_framework.py::test_broker_worker_executes_through_a_real_child_process
+    blockers:
+      - official_sandbox_provider_receipts_are_not_yet_recorded_for_each_supported_broker
+  T-008:
+    status: partial
+    acceptance: DB/API/backtest/model performance reports compare baseline and candidate p95 latency, error rate and throughput under explicit thresholds; missing samples and regressions fail closed with a hashed report.
+    evidence:
+      - src/open_stock_ai/governance/performance_regression.py
+      - src/open_stock_ai/governance/hosted_performance_gate.py
+      - scripts/run_hosted_performance_gate.py
+      - .github/workflows/performance-regression.yml
+      - tests/test_performance_regression.py
+      - tests/test_hosted_performance_gate.py
+      - docs/validation/hosted-t008-performance-regression-20260907.md
+    blockers:
+      - model_runtime_baseline_and_candidate_samples_are_deferred_while_model_execution_is_disabled
+  GOV-004:
+    status: complete
+    acceptance: Approved strategy and model artifacts are immutable, activation is restricted to human-approved versions, and a hosted authenticated API drill proves lane-scoped rollback immediately restores the previous artifact and survives restart with tamper-evident receipts.
+    evidence:
+      - src/open_stock_ai/governance/artifact_rollback.py
+      - src/open_stock_ai/governance/hosted_rollback_gate.py
+      - src/open_stock_ai/governance/durable_store.py
+      - src/open_stock_ai/strategy/strategy_registry.py
+      - src/open_stock_ai/research/model_registry.py
+      - tests/test_artifact_rollback.py
+      - src/stock_ai/paper_training_api.py
+      - src/stock_ai/ui/static/paper-training.js
+      - scripts/run_hosted_rollback_gate.py
+      - .github/workflows/artifact-rollback-drill.yml
+      - docs/validation/hosted-gov004-artifact-rollback-20260907.md
+      - tests/test_hosted_rollback_gate.py
+      - tests/test_artifact_rollback.py::test_scoped_rollback_never_restores_an_artifact_from_another_deployment_lane
+      - tests/test_paper_training_integration.py::test_paper_training_governance_api_rolls_back_only_the_selected_artifact_lane
+    blockers: []
+  GOV-005:
+    status: partial
+    acceptance: Full signal projections are bounded to the declared recent window while execution-critical hashes and artifacts remain content-addressed and reconstructable for long-term audit.
+    evidence:
+      - src/open_stock_ai/governance/content_retention.py
+      - src/open_stock_ai/governance/durable_store.py
+      - tests/test_content_retention.py
+      - src/stock_ai/main.py
+      - tests/test_runtime_governance.py
+      - src/stock_ai/brokers/oms.py
+      - tests/test_broker_framework.py::test_oms_persists_immutable_execution_state_to_critical_retention_ledger
+      - src/open_stock_ai/governance/retention_archive.py
+      - src/open_stock_ai/governance/hosted_retention_gate.py
+      - scripts/run_hosted_retention_archive_gate.py
+      - .github/workflows/critical-retention-archive.yml
+      - tests/test_retention_archive.py
+      - docs/validation/hosted-gov005-critical-retention-20260908.md
+      - src/open_stock_ai/execution/corporate_actions.py
+      - src/open_stock_ai/execution/paper_borrow.py
+      - src/open_stock_ai/execution/paper_oms.py
+      - src/open_stock_ai/risk/settlement_pnl_feed.py
+      - src/stock_ai/brokers/reconciliation_service.py
+      - src/stock_ai/brokers/account_reconciliation_receipts.py
+      - tests/test_corporate_actions.py::test_corporate_action_account_effect_has_durable_critical_receipt
+      - tests/test_paper_short_borrow.py::test_borrow_fee_cash_change_has_durable_critical_receipt
+      - tests/test_taiwan_paper_settlement.py::test_due_settlement_balance_change_has_durable_critical_receipt
+      - docs/validation/hosted-gov005-critical-writers-20260908.md
+    blockers:
+      - production_years_archive_retention_is_not_yet_provisioned
+  GOV-006:
+    status: partial
+    acceptance: Code, model, data and risk-policy hashes are pinned in an immutable approved change set, and each order records the exact change-set and version hashes used for its decision.
+    evidence:
+      - src/open_stock_ai/governance/change_management.py
+      - src/open_stock_ai/governance/durable_store.py
+      - tests/test_change_management.py
+      - src/stock_ai/brokers/oms.py
+      - tests/test_broker_framework.py::test_oms_can_require_durable_change_set_binding_before_order_persistence
+      - tests/test_change_management.py::test_order_binding_retry_returns_the_original_immutable_receipt
+      - src/open_stock_ai/execution/paper_oms.py
+      - src/open_stock_ai/execution/paper_broker.py
+      - tests/test_paper_oms.py::test_paper_oms_requires_and_persists_an_immutable_change_set_binding
+      - tests/test_paper_broker.py::test_paper_broker_propagates_the_immutable_change_set_to_paper_oms
+      - tests/test_runtime_governance.py::test_build_engine_can_fail_closed_for_paper_orders_without_an_approved_change
+    blockers:
+      - owner_approved_active_change_sets_are_not_yet_provisioned_for_default_paper_runtime_execution
+  N-003:
+    status: complete
+    acceptance: n8n callbacks authenticate the timestamp, nonce and exact request body with HMAC, reject stale requests, and reject nonce reuse within the replay TTL.
+    evidence:
+      - src/stock_ai/local_security.py
+      - src/stock_ai/n8n_automation.py
+      - src/stock_ai/main.py
+      - src/open_stock_ai/agent_runtime/automation/store.py
+      - tests/test_security_boundaries.py::test_n8n_callback_requires_signed_body_timestamp_and_one_time_nonce
+      - tests/test_n8n_callback_receipts.py::test_verified_callback_receipt_is_secret_free_immutable_and_queryable
+      - tests/test_agent_automation_final.py::test_n8n_api_deployment_is_idempotent_and_lifecycle_calls_real_endpoints
+    blockers: []
+  N-004:
+    status: complete
+    acceptance: n8n management API authentication and Stock AI callback authentication use independently stored secrets, and callback rotation does not rotate or expose the n8n API key.
+    evidence:
+      - src/stock_ai/config.py
+      - src/stock_ai/n8n_automation.py
+      - src/stock_ai/local_security.py
+      - scripts/setup-n8n-local-owner.sh
+      - scripts/rotate-n8n-callback-secret.sh
+      - tests/test_security_boundaries.py::test_n8n_callback_requires_signed_body_timestamp_and_one_time_nonce
+      - tests/test_agent_automation_final.py::test_n8n_requires_an_independent_callback_secret_before_activation
+    blockers: []
+  N-005:
+    status: complete
+    acceptance: n8n workflow and runtime execution history are secret-minimized, redacted, and bounded by explicit age/count/display retention limits.
+    evidence:
+      - src/stock_ai/n8n_automation.py
+      - src/stock_ai/durable_agent_runtime.py
+      - scripts/start-n8n-headless.sh
+      - scripts/maintain-n8n-executions.py
+      - src/stock_ai/n8n_runtime_hygiene.py
+      - tests/test_agent_automation_final.py::test_n8n_headless_runtime_sets_redacted_bounded_execution_retention
+      - tests/test_agent_automation_final.py::test_n8n_api_executor_health_checks_deploys_compiler_graph_and_keeps_secrets_out_of_workflow
+      - tests/test_n8n_runtime_hygiene.py
+    blockers: []
+  N-006:
+    status: complete
+    acceptance: Internal and n8n-backed schedules use the Taiwan market calendar and explicit misfire policy, deferring closed-market occurrences durably across restart.
+    evidence:
+      - src/open_stock_ai/agent_runtime/scheduler/market_schedule.py
+      - src/open_stock_ai/agent_runtime/scheduler/scheduler.py
+      - src/open_stock_ai/agent_runtime/automation/store.py
+      - src/stock_ai/durable_agent_runtime.py
+      - src/stock_ai/n8n_automation.py
+      - scripts/runtime-root.sh
+      - scripts/start-n8n-headless.sh
+      - tests/test_agent_runtime_v2.py::test_scheduler_planner_skips_taiwan_holiday_and_accepts_misfire_policies
+      - tests/test_agent_automation_final.py::test_product_time_poller_defers_taiwan_holiday_without_creating_run
+      - tests/test_agent_automation_final.py::test_n8n_api_executor_health_checks_deploys_compiler_graph_and_keeps_secrets_out_of_workflow
+      - tests/test_portable_launcher_contract.py::test_macos_launcher_moves_runtime_and_service_source_out_of_desktop_privacy_domain
+    blockers: []
+  S-004:
+    status: partial
+    acceptance: Every paper portfolio target is bounded by an immutable volatility-target, max-loss risk-budget and fractional-Kelly sizing receipt; absent point-in-time inputs withhold the target and never fall back to score-derived sizing.
+    evidence:
+      - src/open_stock_ai/main.py::session_to_dict
+      - src/open_stock_ai/research/portfolio_risk_context.py
+      - tests/test_open_stock_ai.py::test_batch_session_consumes_one_durable_pit_portfolio_context_for_all_targets
+      - tests/test_portfolio_risk_context.py::test_portfolio_construction_can_resolve_the_same_context_from_durable_receipt
+      - tests/test_portfolio_risk_context.py::test_portfolio_construction_withholds_when_durable_context_receipt_is_missing
+      - src/open_stock_ai/research/portfolio_risk_sizing.py
+      - src/open_stock_ai/research/portfolio_construction.py
+      - tests/test_portfolio_risk_sizing.py
+      - tests/test_portfolio_risk_context.py::test_materialized_context_wires_pit_sizing_inputs_into_portfolio_construction
+    blockers:
+      - versioned_point_in_time_risk_inputs_are_not_yet_materialized_for_live_portfolio_sizing
+  S-005:
+    status: partial
+    acceptance: Portfolio targets are emitted only from a versioned point-in-time covariance matrix plus factor exposure and limit matrices; volatility and factor constraints are independently verified and missing or malformed evidence withholds every target.
+    evidence:
+      - src/open_stock_ai/main.py::session_to_dict
+      - src/open_stock_ai/research/portfolio_risk_context.py
+      - tests/test_open_stock_ai.py::test_batch_session_consumes_one_durable_pit_portfolio_context_for_all_targets
+      - tests/test_portfolio_risk_context.py::test_portfolio_construction_can_resolve_the_same_context_from_durable_receipt
+      - src/open_stock_ai/research/portfolio_optimizer.py
+      - src/open_stock_ai/research/portfolio_construction.py
+      - tests/test_portfolio_risk_sizing.py
+      - tests/test_portfolio_risk_context.py::test_materializer_emits_one_deterministic_context_for_all_portfolio_risk_engines
+    blockers:
+      - production_point_in_time_covariance_factor_and_account_risk_context_is_not_yet_materialized
+  S-006:
+    status: partial
+    acceptance: Every paper portfolio target is checked against issuer, industry, factor, currency, broker and account concentration limits from the same point-in-time risk context; any missing metadata or breached limit withholds all targets.
+    evidence:
+      - src/open_stock_ai/main.py::session_to_dict
+      - src/open_stock_ai/research/portfolio_risk_context.py
+      - tests/test_open_stock_ai.py::test_batch_session_consumes_one_durable_pit_portfolio_context_for_all_targets
+      - tests/test_portfolio_risk_context.py::test_portfolio_construction_can_resolve_the_same_context_from_durable_receipt
+      - src/open_stock_ai/research/portfolio_risk_constraints.py
+      - src/open_stock_ai/research/portfolio_construction.py
+      - tests/test_portfolio_risk_constraints.py
+      - tests/test_portfolio_risk_context.py::test_risk_engines_withhold_a_materialized_context_after_any_content_tamper
+    blockers:
+      - production_point_in_time_position_risk_metadata_and_account_limits_are_not_yet_materialized
+  S-007:
+    status: partial
+    acceptance: Every non-zero portfolio target is checked against point-in-time ADV participation and days-to-liquidate limits; missing or invalid ADV withholds the target.
+    evidence:
+      - src/open_stock_ai/main.py::session_to_dict
+      - src/open_stock_ai/research/portfolio_risk_context.py
+      - tests/test_open_stock_ai.py::test_batch_session_consumes_one_durable_pit_portfolio_context_for_all_targets
+      - tests/test_portfolio_risk_context.py::test_portfolio_construction_withholds_when_durable_context_receipt_is_missing
+      - src/open_stock_ai/research/portfolio_risk_constraints.py
+      - tests/test_portfolio_risk_constraints.py
+      - tests/test_portfolio_risk_context.py::test_materializer_emits_one_deterministic_context_for_all_portfolio_risk_engines
+    blockers:
+      - historical_adv_and_liquidity_context_is_not_yet_materialized_for_all_active_symbols
+  S-008:
+    status: partial
+    acceptance: Portfolio receipts include historical and parametric CVaR at a declared confidence and withhold targets when the configured tail-loss limit is breached.
+    evidence:
+      - src/open_stock_ai/main.py::session_to_dict
+      - src/open_stock_ai/research/portfolio_risk_context.py
+      - tests/test_open_stock_ai.py::test_batch_session_consumes_one_durable_pit_portfolio_context_for_all_targets
+      - tests/test_portfolio_risk_context.py::test_portfolio_construction_can_resolve_the_same_context_from_durable_receipt
+      - src/open_stock_ai/research/portfolio_risk_constraints.py
+      - tests/test_portfolio_risk_constraints.py
+      - tests/test_portfolio_risk_context.py::test_materializer_emits_one_deterministic_context_for_all_portfolio_risk_engines
+    blockers:
+      - production_point_in_time_return_history_and_account_cvar_policy_are_not_yet_materialized
+  S-009:
+    status: partial
+    acceptance: Portfolio receipts independently verify factor exposure limits from point-in-time factor rows and never rely only on single-name factor caps.
+    evidence:
+      - src/open_stock_ai/main.py::session_to_dict
+      - src/open_stock_ai/research/portfolio_risk_context.py
+      - tests/test_open_stock_ai.py::test_batch_session_consumes_one_durable_pit_portfolio_context_for_all_targets
+      - tests/test_portfolio_risk_context.py::test_portfolio_construction_can_resolve_the_same_context_from_durable_receipt
+      - src/open_stock_ai/research/portfolio_risk_constraints.py
+      - src/open_stock_ai/research/portfolio_optimizer.py
+      - tests/test_portfolio_risk_constraints.py
+      - tests/test_portfolio_risk_context.py::test_materializer_emits_one_deterministic_context_for_all_portfolio_risk_engines
+    blockers:
+      - production_point_in_time_factor_exposure_and_limit_matrix_is_not_yet_materialized
+  S-010:
+    status: partial
+    acceptance: Pre-trade portfolio construction evaluates declared crash, gap, rate, FX or liquidity stress scenarios and withholds targets beyond the account stress-loss limit.
+    evidence:
+      - src/open_stock_ai/main.py::session_to_dict
+      - src/open_stock_ai/research/portfolio_risk_context.py
+      - tests/test_open_stock_ai.py::test_batch_session_consumes_one_durable_pit_portfolio_context_for_all_targets
+      - src/open_stock_ai/research/portfolio_risk_constraints.py
+      - src/open_stock_ai/research/portfolio_construction.py
+      - tests/test_portfolio_risk_constraints.py
+      - tests/test_portfolio_risk_context.py::test_materializer_emits_one_deterministic_context_for_all_portfolio_risk_engines
+    blockers:
+      - reviewed_account_stress_scenario_policy_and_historical_calibration_are_not_yet_materialized
+  S-011:
+    status: partial
+    acceptance: A durable kill switch can be activated and cleared independently for global, account, broker, strategy and symbol scopes; a restart preserves the switch and the order boundary blocks every matching new order.
+    evidence:
+      - src/open_stock_ai/risk/kill_switch.py
+      - src/open_stock_ai/risk/risk_engine.py
+      - tests/test_risk_control.py
+      - tests/test_open_stock_ai.py
+    blockers:
+      - live_broker_and_account_activation_evidence_is_not_yet_materialized
+  S-012:
+    status: partial
+    acceptance: Durable realized-P&L receipts evaluate intraday, daily, weekly, monthly and consecutive-loss limits, activate the matching scope switch on breach, and block new orders after restart.
+    evidence:
+      - src/open_stock_ai/risk/kill_switch.py
+      - src/open_stock_ai/risk/settlement_pnl_feed.py
+      - src/open_stock_ai/config/settings.py
+      - src/open_stock_ai/main.py
+      - src/open_stock_ai/storage/trade_store.py
+      - tests/test_risk_control.py
+      - tests/test_settlement_pnl_feed.py
+    blockers:
+      - production_broker_settlement_pnl_feed_and_account_activation_evidence_is_not_yet_materialized
+  M-003:
+    status: complete
+    acceptance: TradingAgents can execute its vendored graph only through an explicit OpenAI-compatible research runtime receipt; provider output is schema-validated, source/runtime failures fail closed, and every output remains evidence-only with no execution authority.
+    evidence:
+      - src/open_stock_ai/external_sources/tradingagents_runtime.py
+      - src/open_stock_ai/external_sources/tradingagents_source.py
+      - external/TradingAgents/pyproject.toml
+      - config/external_sources.lock.yaml
+      - docs/integration/tradingagents-release-smoke-20260825.md
+      - tests/test_tradingagents_runtime.py
+      - tests/integration/test_external_model_runtime.py::test_real_tradingagents_graph_runs_with_remote_openai_compatible_model
+    blockers: []
+  E-012:
+    status: complete
+    acceptance: Paper broker orders persist the complete submitted, acknowledged, partial-fill, filled, canceled, replaced, rejected and expired lifecycle. Replacement creates a new immutable ticket for only the remaining quantity; expiry, audit events and restart-safe SQLite records preserve the complete history, and generated liquidity traces never label a zero fill as partial.
+    evidence:
+      - src/open_stock_ai/execution/paper_broker.py
+      - src/open_stock_ai/storage/migrations.py
+      - src/stock_ai/paper_training_api.py
+      - src/stock_ai/ui/static/paper-training.js
+      - tests/test_paper_broker.py::test_acknowledged_partial_order_replaces_remaining_quantity_and_preserves_audit_chain
+      - tests/test_paper_broker.py::test_explicit_expiry_and_rejection_are_durable_terminal_lifecycle_events
+      - tests/test_paper_broker.py::test_generated_liquidity_paths_never_label_a_zero_fill_as_partial
+    blockers: []
+  E-013:
+    status: complete
+    acceptance: The Taiwan paper-broker path validates official tick increments, board-lot and odd-lot quantities, daily price bounds, regular and after-hours session eligibility, auction match receipts, ROD expiry and official halt restrictions. It refuses to substitute a regular-board-lot quote for an odd-lot or auction match.
+    evidence:
+      - src/open_stock_ai/execution/taiwan_market_rules.py
+      - src/open_stock_ai/execution/paper_broker.py
+      - src/open_stock_ai/execution/trading_restrictions.py
+      - src/stock_ai/paper_training_api.py
+      - src/stock_ai/ui/static/paper-training.js
+      - tests/test_taiwan_paper_market_rules.py
+      - tests/test_trading_restrictions.py::test_halt_blocks_preview_and_open_fill_until_official_resume
+    blockers: []
+  E-014:
+    status: partial
+    acceptance: Paper orders persist every broker-constrained partial fill with a stable fill-report idempotency key, cumulative quantity and weighted average price; ROD retains remaining quantity, IOC cancels only the remainder, FOK rejects insufficient available quantity, and a process restart preserves the exact order, fill, cash and position lifecycle.
+    evidence:
+      - src/open_stock_ai/execution/paper_oms.py
+      - src/open_stock_ai/execution/paper_broker.py
+      - src/open_stock_ai/execution/paper_execution_model.py
+      - tests/test_paper_broker.py::test_historical_order_book_receipt_store_replays_by_id_after_restart
+      - tests/test_paper_broker.py::test_paper_broker_resolves_historical_order_book_id_from_store
+      - tests/test_paper_broker.py::test_execution_model_rejects_order_book_id_without_durable_receipt_resolution
+      - src/open_stock_ai/research/market_impact_calibration.py
+      - tests/test_paper_oms.py::test_paper_oms_accumulates_partial_fills_with_fill_report_idempotency
+      - tests/test_paper_broker.py::test_marketable_order_persists_multiple_partial_fills_across_broker_restart
+      - tests/test_paper_broker.py::test_execution_model_replays_queue_consumption_and_resumes_after_queue_is_empty
+      - tests/test_paper_broker.py::test_execution_model_probability_and_latency_are_explicit_fail_closed_inputs
+      - tests/test_paper_broker.py::test_broker_persists_execution_model_receipt_and_market_impact
+      - tests/test_paper_broker.py::test_execution_model_enforces_explicit_participation_and_volume_caps
+      - tests/test_paper_broker.py::test_execution_model_rejects_incomplete_or_invalid_liquidity_contracts
+      - tests/test_paper_broker.py::test_broker_persists_participation_cap_in_fill_receipt
+      - tests/test_paper_broker.py::test_execution_model_marks_scenario_inputs_ineligible_without_historical_or_calibration_receipts
+      - tests/test_paper_broker.py::test_historical_order_book_receipt_binds_queue_inputs_and_rejects_tampering
+      - tests/test_market_impact_calibration.py
+    blockers:
+      - available_quantity_queue_and_participation_inputs_are_explicit_simulator_inputs_not_a_historical_order_book_or_exchange_queue_replay
+      - fill_probability_market_impact_and_participation_caps_are_explicit_scenario_inputs_not_empirically_calibrated_against_broker_or_exchange_execution_data
+  E-015:
+    status: complete
+    acceptance: Taiwan exchange-paper fills keep settled cash, unsettled payables and unsettled receivables as separate durable balances. Normal cash-equity trades settle only at the calendar-derived T+2 11:00 DVP boundary; sale receivables never become spendable before settlement, and every pending-to-settled transition has a replayable receipt.
+    evidence:
+      - src/open_stock_ai/execution/taiwan_settlement.py
+      - src/open_stock_ai/execution/paper_oms.py
+      - src/open_stock_ai/execution/paper_broker.py
+      - src/open_stock_ai/storage/migrations.py
+      - src/stock_ai/paper_training_api.py
+      - src/stock_ai/ui/static/paper-training.js
+      - tests/test_taiwan_paper_settlement.py
+    blockers: []
+  E-016:
+    status: partial
+    acceptance: A Paper short sale is fail-closed without an account-scoped borrow locate containing symbol, quantity, verified time, expiry, recall deadline and annual fee. Each accepted short reserves locate inventory, accrues a daily marked fee exactly once, preserves recall-required status, and releases the same borrow lots FIFO only when a matching buy-to-cover fill succeeds.
+    evidence:
+      - src/open_stock_ai/execution/paper_borrow.py
+      - src/open_stock_ai/execution/paper_oms.py
+      - src/open_stock_ai/execution/paper_broker.py
+      - src/stock_ai/data_platform/borrow_history_receipts.py
+      - src/open_stock_ai/storage/migrations.py
+      - src/stock_ai/paper_training_api.py
+      - src/stock_ai/ui/static/paper-training.js
+      - tests/test_paper_short_borrow.py
+      - tests/test_borrow_history_receipts.py
+      - tests/test_paper_short_borrow.py::test_historical_short_replay_requires_verified_coverage_and_pit_window
+    blockers:
+      - no_account_owner_verified_broker_or_twse_locate_rate_recall_and_fee_feed_is_connected
+      - paper_borrow_receipts_are_explicit_simulation_inputs_and_not_historical_pit_borrow_availability
+  E-017:
+    status: partial
+    acceptance: Multi-broker routing is deterministic and receipt-bound to broker health, quote freshness, liquidity, fees and route permission; routing never submits an order or bypasses the authoritative OMS.
+    evidence:
+      - src/open_stock_ai/execution/multi_broker_router.py
+      - tests/test_multi_broker_router.py
+    blockers:
+      - real_broker_health_liquidity_fee_and_permission_route_receipts_are_not_recorded
+  E-018:
+    status: partial
+    acceptance: Reconciliation runs have explicit startup, periodic and event-driven triggers, deduplicate event wakeups, execute through the authoritative OMS snapshot boundary and emit hash-verified receipts; production broker scheduler and provider receipts remain required before complete.
+    evidence:
+      - src/stock_ai/brokers/reconciliation_service.py
+      - src/stock_ai/brokers/oms.py
+      - src/stock_ai/brokers/order_store.py
+      - tests/test_broker_reconciliation_service.py
+      - tests/test_broker_framework.py::test_durable_oms_restores_idempotency_and_forces_open_order_reconciliation
+      - tests/test_broker_reconciliation_service.py::test_reconciliation_receipts_and_event_claims_survive_service_restart
+    blockers:
+      - production_broker_scheduler_and_provider_snapshot_receipts_are_not_yet_wired_to_every_supported_account
+  Q-010:
+    status: complete
+    acceptance: Sequential ledger receipts calculate CAGR, Sharpe, Sortino, Calmar, turnover, exposure, hit ratio, profit factor and tail loss, with undefined ratios explicitly unavailable and an independent NumPy reference check.
+    evidence:
+      - src/open_stock_ai/research/performance_metrics.py
+      - src/open_stock_ai/research/strategy_replay.py
+      - tests/test_performance_metrics.py::test_metrics_match_an_independent_numpy_reference_calculation
+      - tests/test_exact_strategy_replay.py::test_exact_replay_uses_production_strategy_with_walk_forward_and_version_hashes
+    blockers: []
+  Q-011:
+    status: complete
+    acceptance: Strategy-promotion evidence includes deterministic bootstrap Sharpe confidence intervals, a Deflated Sharpe probability and Holm-Bonferroni multiple-testing correction that fail closed below the declared thresholds.
+    evidence:
+      - src/open_stock_ai/research/statistical_significance.py
+      - src/open_stock_ai/learning/evaluation.py
+      - tests/test_statistical_significance.py
+    blockers: []
+  Q-012:
+    status: complete
+    acceptance: Point-in-time out-of-sample receipts stratify bull, bear, high-volatility, low-liquidity and earnings regimes, each with independent ledger-derived metrics and fail-closed temporal coverage checks.
+    evidence:
+      - src/open_stock_ai/research/regime_robustness.py
+      - src/open_stock_ai/research/strategy_replay.py
+      - tests/test_regime_robustness.py
+    blockers: []
+  Q-013:
+    status: complete
+    acceptance: Historical universe membership uses effective dates and knowledge cutoffs to restore listing and delisting state, rejecting incomplete coverage and records learned only after the requested historical date.
+    evidence:
+      - src/open_stock_ai/research/historical_universe.py
+      - src/open_stock_ai/research/pit_dataset.py
+      - tests/test_historical_universe.py
+      - tests/test_exact_strategy_replay.py::test_exact_replay_rejects_rows_without_known_historical_universe_membership
+    blockers: []
+  Q-014:
+    status: complete
+    acceptance: Official TWSE and TPEx factor receipts persist raw, forward-adjusted and backward-adjusted OHLC prices; either adjusted basis reconstructs the raw series and incomplete official factor coverage fails closed.
+    evidence:
+      - src/stock_ai/price_adjustments.py
+      - src/stock_ai/daily_history.py
+      - tests/test_price_adjustments.py::test_front_and_back_adjusted_prices_are_persisted_with_factors
+    blockers: []
+  Q-015:
+    status: complete
+    acceptance: Alpha, beta and information ratio are reproducible only from independent point-in-time benchmark and cash-rate observations with timestamp, availability, source, dataset and revision lineage; missing or late observations fail closed rather than substituting the analysed instrument.
+    evidence:
+      - src/open_stock_ai/research/benchmark_metrics.py
+      - src/open_stock_ai/research/strategy_replay.py
+      - src/open_stock_ai/learning/evaluation.py
+      - src/stock_ai/ui/static/js/features/quant-research.js
+      - tests/test_benchmark_metrics.py
+      - tests/test_exact_strategy_replay.py::test_exact_replay_rejects_missing_independent_benchmark_or_cash_rate_contract
+    blockers: []
+  Q-016:
+    status: complete
+    acceptance: A deterministic circular block-bootstrap scenario simulation reports VaR, CVaR, worst terminal loss, drawdown quantile and independent-batch tail-risk stability; insufficient return history fails closed.
+    evidence:
+      - src/open_stock_ai/research/monte_carlo.py
+      - src/open_stock_ai/research/strategy_replay.py
+      - src/open_stock_ai/learning/evaluation.py
+      - src/stock_ai/ui/static/js/features/quant-research.js
+      - tests/test_monte_carlo_tail_risk.py
+    blockers: []
+  M-004:
+    status: complete
+    acceptance: FinGPT's configured local runtime is explicitly reported disabled when no verified inference adapter is installed; every retained deterministic news/forecast baseline has a local_baseline provenance receipt with model_output false and cannot be represented as FinGPT inference.
+    evidence:
+      - config/agent_runtime.yaml
+      - src/open_stock_ai/external_sources/fingpt_source.py
+      - src/open_stock_ai/intelligence/intelligence_hub.py
+      - tests/test_open_stock_ai.py::test_fingpt_source_projects_forecaster_prompt_contract_into_intelligence
+    blockers: []
+  M-005:
+    status: complete
+    acceptance: FinRobot publishes an explicit disabled runtime capability and enforces provenance on every local report baseline; its adapter receipt is unloaded and model_output false, preventing a contract/projection from being presented as a real model runtime.
+    evidence:
+      - src/open_stock_ai/external_sources/finrobot_source.py
+      - src/open_stock_ai/intelligence/intelligence_hub.py
+      - tests/test_open_stock_ai.py::test_finrobot_source_projects_equity_report_contract_into_intelligence
+    blockers: []
+  M-007:
+    status: complete
+    acceptance: Every actual FinRL/Qlib research runtime creates immutable model versions that bind artifact, PIT dataset, feature schema/lineage/code hashes, reported metrics and a research-only approval contract; every resulting signal stores the model-version IDs and experiment receipt rather than implying an unversioned model.
+    evidence:
+      - src/open_stock_ai/research/model_registry.py
+      - src/open_stock_ai/research/model_runtime.py
+      - src/open_stock_ai/research/research_engine.py
+      - src/open_stock_ai/storage/migrations.py
+      - tests/test_research_model_runtime.py::test_registry_binds_feature_code_metrics_approval_and_metric_tolerance_replay
+      - tests/test_research_model_runtime.py::test_signal_model_provenance_references_immutable_registry_versions
+    blockers: []
+  M-008:
+    status: complete
+    acceptance: Rule scores become probabilities only through a point-in-time empirical isotonic calibration receipt with outcome-known-at cutoff, Brier score and expected calibration error; otherwise they remain explicitly uncalibrated and risk policy does not call them probabilities.
+    evidence:
+      - src/open_stock_ai/research/model_calibration.py
+      - src/open_stock_ai/strategy/strategy_engine.py
+      - src/open_stock_ai/risk/risk_engine.py
+      - tests/test_model_calibration_and_drift.py::test_empirical_isotonic_calibration_produces_pit_brier_and_ece_receipt
+      - tests/test_model_calibration_and_drift.py::test_strategy_and_risk_use_a_verified_calibrated_probability_when_supplied
+    blockers: []
+  M-009:
+    status: complete
+    acceptance: Actual model evidence is automatically disabled when its declared feature or prediction PSI, Brier degradation, or hit-rate decline exceeds a bounded monitor receipt threshold; an absent monitor receipt fails closed for a real model runtime.
+    evidence:
+      - src/open_stock_ai/research/model_drift.py
+      - src/open_stock_ai/research/research_engine.py
+      - tests/test_model_calibration_and_drift.py::test_drift_monitor_auto_disables_feature_prediction_or_performance_regressions
+    blockers: []
+  M-010:
+    status: complete
+    acceptance: Champion/challenger deployment is an append-only, human-receipted promotion record that names immutable model versions and an explicit shadow or production boundary; training and model receipts remain research-only and retain no execution authority.
+    evidence:
+      - src/open_stock_ai/research/model_registry.py
+      - src/open_stock_ai/storage/sqlite_store.py
+      - src/open_stock_ai/storage/migrations.py
+      - tests/test_research_model_runtime.py::test_human_champion_promotion_is_append_only_and_never_grants_execution
+    blockers: []
+  M-011:
+    status: complete
+    acceptance: Each model experiment receipt captures FinRL/Qlib random seeds, package lock, non-identifying hardware/runtime metadata and a declared metric-tolerance replay contract; bitwise reproducibility stays false until framework-level deterministic-kernel attestation exists.
+    evidence:
+      - src/stock_ai/external_workflow_worker.py
+      - src/stock_ai/external_project_tools.py
+      - src/open_stock_ai/research/model_runtime.py
+      - src/open_stock_ai/research/model_registry.py
+      - tests/test_research_model_runtime.py::test_registry_binds_feature_code_metrics_approval_and_metric_tolerance_replay
+    blockers: []
+  M-012:
+    status: complete
+    acceptance: Every recorded model run is a unified immutable Experiment entity, searchable by symbol or framework and comparable through its linked versioned metrics, reproducibility receipt and current human promotion state.
+    evidence:
+      - src/open_stock_ai/research/model_registry.py
+      - src/open_stock_ai/storage/sqlite_store.py
+      - tests/test_research_model_runtime.py::test_experiment_entities_are_searchable_and_comparable_with_promotion_state
+    blockers: []
+  T-002:
+    status: complete
+    acceptance: The complete local regression suite has no xfailed or xpassed cases; obsolete assertions were removed only after their current safety contracts were verified in focused tests.
+    evidence:
+      - tests/conftest.py
+      - tests/test_research_safety.py
+      - tests/test_external_source_locking.py
+      - tests/test_codex_agent_radar.py
+      - tests/test_production_requirement_status.py::test_release_test_policy_does_not_hide_obsolete_failures
+    blockers: []
+  D-005:
+    status: complete
+    acceptance: Each new market-intelligence decision persists a hash-verified immutable quality receipt that records freshness, completeness, declared anomalies, source-disagreement observation state and confidence; declared receipt sets fail closed on missing, mismatched or corrupt evidence, while lack of a cross-source observation remains partial rather than a pass.
+    evidence:
+      - src/stock_ai/data_platform/quality.py
+      - src/stock_ai/data_quality_contracts.py
+      - src/stock_ai/market_intelligence/contracts.py
+      - src/stock_ai/market_intelligence/service.py
+      - src/stock_ai/market_intelligence/snapshot_store.py
+      - src/stock_ai/shared_quality_store.py
+      - src/stock_ai/services.py
+      - src/stock_ai/data_quality_contracts.py
+      - src/stock_ai/models.py
+      - src/stock_ai/ui/static/js/features/explorer.js
+      - src/stock_ai/ui/static/js/features/market-intelligence/decision-board.js
+      - tests/test_market_intelligence_workspace.py::test_new_market_snapshot_persists_one_immutable_quality_receipt_per_decision
+      - tests/test_screener_conditions.py::test_screener_only_returns_symbols_passing_all_real_conditions
+      - tests/test_market_summary_quality_receipts.py
+      - tests/test_shared_decision_quality_receipts.py
+      - tests/test_market_summary_quality_receipts.py::test_same_day_independent_quote_is_recorded_without_replacing_primary_quote
+      - tests/test_market_summary_quality_receipts.py::test_independent_quote_conflict_blocks_quality_certification
+      - tests/test_market_intelligence_workspace.py::test_declared_quality_receipt_contract_rejects_missing_decision_receipts
+      - tests/test_market_intelligence_workspace.py::test_market_quality_store_hash_verifies_rows_on_read
+      - tests/test_shared_decision_quality_receipts.py::test_shared_quality_receipt_cannot_be_rebound_to_another_surface
+      - tests/test_shared_decision_quality_receipts.py::test_shared_quality_store_hash_verifies_rows_on_read
+      - docs/validation/native-d005-decision-quality-receipts-20260907.md
+    blockers: []
+  D-006:
+    status: complete
+    acceptance: Dataset manifests bind feature-schema versions and immutable partition hashes so every experiment can verify an exact restored materialization.
+    evidence:
+      - src/stock_ai/data_platform/feature_store.py
+      - tests/test_pit_feature_store.py
+      - src/open_stock_ai/research/pit_dataset.py
+      - src/open_stock_ai/research/model_runtime.py
+      - src/open_stock_ai/research/model_registry.py
+      - tests/test_pit_dataset.py::test_pit_dataset_manifest_binds_feature_schema_partitions_and_replay_rows
+      - tests/test_research_model_runtime.py::test_runtime_rejects_replay_rows_that_do_not_match_the_materialized_manifest
+    blockers: []
+  D-007:
+    status: complete
+    acceptance: Each point-in-time feature persists its formula, complete immutable input revision set and projection-code SHA-256; a canonical provenance graph is hashed into the dataset manifest and verified before research use.
+    evidence:
+      - src/open_stock_ai/research/pit_dataset.py
+      - src/open_stock_ai/research/model_runtime.py
+      - src/open_stock_ai/research/research_engine.py
+      - tests/test_pit_dataset.py::test_feature_lineage_binds_formula_inputs_and_exact_projection_code
+      - tests/test_research_model_runtime.py
+    blockers: []
+  D-008:
+    status: complete
+    acceptance: A shared TWSE calendar contract classifies regular sessions and official closures for quote and schedule consumers, with verifiable official-source receipts for regular hours and the captured absence of special-session exceptions.
+    evidence:
+      - config/taiwan_market_calendar.json
+      - src/stock_ai/market_calendar.py
+      - src/stock_ai/realtime_quotes.py
+      - src/stock_ai/schedule_guard.py
+      - tests/test_market_calendar.py
+      - tests/test_market_calendar.py::test_official_twse_calendar_snapshot_covers_holidays_and_regular_sessions
+    blockers: []
+  D-009:
+    status: complete
+    acceptance: Historical security identity resolution preserves listing, transfer, rename-compatible aliases, delisting and effective-date intervals; code reuse, ETF share classes and cross-venue collisions never silently merge entities.
+    evidence:
+      - src/stock_ai/data_platform/security_lifecycle.py
+      - src/stock_ai/data_platform/warehouse.py
+      - src/stock_ai/data_platform/security_loader.py
+      - tests/test_unified_market_data_platform.py::test_security_lifecycle_covers_venues_instruments_and_delisting
+      - tests/test_unified_market_data_platform.py::test_security_identity_unifies_business_transfer_but_separates_code_reuse
+      - tests/test_historical_universe.py
+    blockers: []
+  D-010:
+    status: partial
+    acceptance: Impact receipts explicitly distinguish spread/ADV proxy fills from retained PIT order-book depth simulations; missing L1/L5/depth snapshots cannot be represented as depth-based evidence.
+    evidence:
+      - src/open_stock_ai/research/cost_model.py
+      - src/open_stock_ai/research/market_impact_calibration.py
+      - src/open_stock_ai/research/strategy_replay.py
+      - tests/test_exact_strategy_replay.py::test_market_impact_quote_is_monotonic_in_order_size_and_inverse_liquidity
+      - tests/test_depth_market_impact.py
+      - tests/test_market_impact_calibration.py
+    blockers:
+      - historical_level_1_level_5_or_depth_snapshot_corpus_not_ingested
+      - depth_impact_calibration_not_empirically_validated
+  D-011:
+    status: partial
+    acceptance: Borrowed-short activity is explicitly separated from short-execution borrow availability; absent availability, rate, recall and fee histories block short execution replay.
+    evidence:
+      - src/stock_ai/data_platform/chip_pit_coverage.py
+      - src/stock_ai/data_platform/borrow_history_receipts.py
+      - src/stock_ai/short_daytrade_history.py
+      - tests/test_chip_pit_coverage.py
+      - tests/test_borrow_history_receipts.py
+    blockers:
+      - borrow_availability_rate_recall_and_fee_history_not_ingested
+  D-012:
+    status: complete
+    acceptance: The data-operations dashboard derives per-source SLO, lag, expected-partition and revision-correction alerts directly from immutable failover attempts, checkpoints, cache state and revisions; absent evidence remains an explicit alert.
+    evidence:
+      - config/data_observability_rules.yaml
+      - src/stock_ai/data_platform/observability.py
+      - src/stock_ai/data_platform/observability_notifications.py
+      - src/stock_ai/operator_notifications.py
+      - open-stock-ai.sh
+      - src/stock_ai/data_platform/warehouse.py
+      - src/stock_ai/data_platform/api.py
+      - src/stock_ai/ui/static/js/features/explorer.js
+      - tests/test_unified_market_data_platform.py::test_source_observability_exposes_slo_lag_missing_partitions_and_revision_alerts
+      - tests/test_data_observability_notifications.py
+      - tests/test_operator_notifications.py
+      - docs/validation/native-d012-operator-alert-delivery-20260907.md
+    blockers: []
+requirements:
+  - id: Q-001
+    priority: P0
+    domain: quant
+    status: complete
+    acceptance: Event-driven fill, cash, position and equity ledgers reconcile exactly.
+    evidence:
+      - src/open_stock_ai/research/strategy_replay.py
+      - tests/test_exact_strategy_replay.py::test_hand_calculated_golden_gap_ledger_matches_every_fill_cash_position_and_equity_value
+      - tests/test_exact_strategy_replay.py::test_exact_replay_accounting_invariant_holds_across_generated_price_paths
+    blockers: []
+  - id: Q-002
+    priority: P0
+    domain: quant
+    status: complete
+    acceptance: Feature, decision, order, broker receipt and fill are linked by durable IDs and actual timestamps.
+    evidence:
+      - src/open_stock_ai/research/strategy_replay.py
+      - tests/test_exact_strategy_replay.py::test_lifecycle_verifier_rejects_cross_linked_fill_even_when_all_timestamps_are_ordered
+    blockers: []
+  - id: Q-003
+    priority: P0
+    domain: quant
+    status: partial
+    acceptance: Commission, tax, exchange fee, slippage and impact are versioned by venue, product, side and date.
+    evidence:
+      - src/open_stock_ai/research/cost_model.py
+      - src/open_stock_ai/research/cost_schedule_receipts.py
+      - src/open_stock_ai/research/market_impact_calibration.py
+      - src/open_stock_ai/research/backtest_research.py
+      - tests/test_reviewed_cost_schedule_receipts.py
+      - config/taiwan_market_cost_rules.yaml
+      - config/taiwan_market_impact_rules.yaml
+      - tests/test_exact_strategy_replay.py::test_taiwan_cost_schedule_is_date_product_side_and_lot_aware
+      - tests/test_exact_strategy_replay.py::test_versioned_taiwan_impact_schedule_selects_effective_venue_product_side_rule
+      - tests/test_cost_schedule_receipts.py
+      - tests/test_cost_schedule_receipts.py::test_cost_quote_requires_reviewed_account_documents_for_execution_evidence
+      - tests/test_cost_schedule_receipts.py::test_taiwan_cost_rulebook_binds_official_source_capture_hashes
+      - tests/test_market_impact_calibration.py
+      - tests/test_market_impact_calibration.py::test_unreviewed_provider_claims_never_become_execution_evidence
+      - tests/test_research_safety.py::test_backtest_is_past_only_and_never_execution_evidence
+    blockers:
+      - production_account_owner_review_receipts_for_each_supported_broker_are_not_yet_recorded
+      - committed_market_impact_rules_are_research_baselines_not_reviewed_empirical_calibrations
+  - id: Q-004
+    priority: P0
+    domain: quant
+    status: complete
+    acceptance: Spread, volatility, ADV and order-size impact are PIT and monotonic.
+    evidence:
+      - src/open_stock_ai/research/cost_model.py
+      - tests/test_exact_strategy_replay.py::test_market_impact_quote_is_monotonic_in_order_size_and_inverse_liquidity
+      - tests/test_exact_strategy_replay.py::test_zero_participation_never_fabricates_a_one_share_fill
+    blockers: []
+  - id: Q-005
+    priority: P0
+    domain: quant
+    status: complete
+    acceptance: Every fold fits and selects on train, freezes state, then evaluates test without shared mutable model state.
+    evidence:
+      - src/open_stock_ai/research/strategy_replay.py
+      - tests/test_exact_strategy_replay.py::test_validation_folds_prove_train_test_information_is_disjoint_and_policy_is_frozen
+    blockers: []
+  - id: Q-006
+    priority: P0
+    domain: quant
+    status: complete
+    acceptance: Purging uses the full feature-lookback through forward-label information interval.
+    evidence:
+      - src/open_stock_ai/research/strategy_replay.py
+      - tests/test_exact_strategy_replay.py::test_adversarial_leaky_partition_cannot_be_certified_as_exact_or_execution_evidence
+    blockers: []
+  - id: Q-007
+    priority: P0
+    domain: quant
+    status: complete
+    acceptance: Embargoed post-test observations are excluded from training and verified per fold.
+    evidence:
+      - src/open_stock_ai/research/strategy_replay.py
+      - tests/test_exact_strategy_replay.py::test_validation_folds_prove_train_test_information_is_disjoint_and_policy_is_frozen
+    blockers: []
+  - id: Q-008
+    priority: P0
+    domain: data
+    status: complete
+    acceptance: Feature records carry event, published, available, effective and ingested times and fail closed as-of.
+    evidence:
+      - src/open_stock_ai/research/pit_dataset.py
+      - src/stock_ai/data_platform/availability.py
+      - src/stock_ai/data_platform/source_registry.py
+      - tests/test_exact_strategy_replay.py::test_exact_replay_rejects_feature_ingested_after_its_decision_time
+      - tests/test_pit_dataset.py::test_pit_dataset_defers_a_price_until_its_verified_known_at_time
+      - tests/test_data_availability_contracts.py::test_every_standard_research_dataset_has_an_explicit_source_contract
+      - tests/test_data_availability_contracts.py::test_feature_record_uses_the_persisted_contract_decision_not_current_registry
+      - tests/test_data_availability_contracts.py::test_legacy_feature_without_a_persisted_contract_snapshot_fails_closed
+      - tests/test_data_availability_contracts.py::test_availability_audit_receipt_is_exposed_and_content_hashed
+      - tests/test_data_availability_contracts.py::test_endpoint_contract_is_bound_to_the_exact_dataset_id
+    blockers: []
+  - id: Q-009
+    priority: P0
+    domain: governance
+    status: complete
+    acceptance: Exact and execution-evidence flags are projections of verified evidence and revoke on failure.
+    evidence:
+      - src/open_stock_ai/research/strategy_replay.py
+      - tests/test_exact_strategy_replay.py::test_adversarial_leaky_partition_cannot_be_certified_as_exact_or_execution_evidence
+    blockers: []
+  - id: S-003
+    priority: P0
+    domain: risk
+    status: complete
+    acceptance: Missing, zero, negative and non-finite executable sizing rejects without a policy-max fallback.
+    evidence:
+      - src/open_stock_ai/risk/risk_engine.py
+      - tests/test_open_stock_ai.py::test_risk_engine_never_turns_missing_zero_negative_or_nonfinite_sizing_into_maximum_position
+    blockers: []
+  - id: E-001
+    priority: P0
+    domain: execution
+    status: complete
+    acceptance: Only an authoritative OMS fill receipt may set execution true.
+    evidence:
+      - src/open_stock_ai/execution/execution_engine.py
+      - src/open_stock_ai/pipeline.py
+      - tests/test_research_safety.py::test_pipeline_marks_execution_true_only_from_authoritative_oms_fill_receipt
+      - tests/test_research_safety.py::test_pipeline_keeps_execution_false_for_oms_reject_or_missing_receipt
+    blockers: []
+  - id: D-001
+    priority: P0
+    domain: data
+    status: complete
+    acceptance: Historical financial records are either known at their original publication time or explicitly unavailable for PIT research.
+    evidence:
+      - src/stock_ai/financial_revisions.py
+      - src/open_stock_ai/research/pit_dataset.py
+      - config/data_availability_contracts.yaml
+      - tests/test_data_availability_contracts.py::test_every_financial_archive_endpoint_is_explicitly_unavailable_for_historical_pit
+      - tests/test_financial_revision_history.py::test_revision_diff_and_point_in_time_selection_do_not_look_ahead
+    blockers: []
+  - id: D-002
+    priority: P0
+    domain: data
+    status: partial
+    acceptance: News and event history is immutable and retains original publication timestamps for PIT replay.
+    evidence:
+      - src/stock_ai/data_platform/news_event_lake.py
+      - src/stock_ai/data_platform/news_history_coverage.py
+      - src/open_stock_ai/research/pit_dataset.py
+      - tests/test_news_event_lake.py
+      - tests/test_news_event_lake.py::test_news_event_lake_withholds_pit_when_provider_count_does_not_match_ingested_event_set
+      - tests/test_news_event_lake.py::test_news_event_lake_preserves_original_publication_time_for_as_of_replay
+      - tests/test_news_event_lake.py::test_news_history_store_rejects_hashed_but_inconsistent_complete_audit
+      - tests/test_news_event_lake.py::test_news_history_store_rejects_missing_receipt_audit_that_claims_completion
+      - tests/test_news_event_lake.py::test_unreviewed_provider_coverage_claim_never_certifies_pit_replay
+    blockers:
+      - reviewed_complete_historical_provider_coverage_receipts_are_not_yet_recorded
+  - id: D-003
+    priority: P0
+    domain: data
+    status: partial
+    acceptance: Institutional, margin, short and TDCC history is PIT-normalized with coverage and missingness receipts.
+    evidence:
+      - src/stock_ai/data_platform/chip_pit_coverage.py
+      - src/stock_ai/chip_history.py
+      - src/stock_ai/data_platform/warehouse.py
+      - tests/test_chip_pit_coverage.py::test_chip_pit_coverage_receipt_is_persisted_once_and_cannot_be_rewritten
+      - config/data_availability_contracts.yaml
+      - tests/test_chip_pit_coverage.py::test_chip_history_requires_every_stream_and_uses_actual_source_contracts
+      - tests/test_chip_pit_coverage.py::test_chip_pit_coverage_emits_hashed_stream_manifests_and_verifies_them
+      - tests/test_chip_pit_coverage.py::test_chip_pit_coverage_hashes_missingness_and_rejects_duplicate_observations
+      - tests/test_data_availability_contracts.py::test_tdcc_public_history_contract_never_certifies_a_caller_supplied_timestamp
+    blockers:
+      - tdcc_historical_coverage_and_acquisition_evidence_are_incomplete
+      - all_chip_source_contracts_require_production_endpoint_review
+  - id: D-004
+    priority: P0
+    domain: data
+    status: complete
+    acceptance: Every market dataset has an exact availability contract instead of a nullable availability placeholder.
+    evidence:
+      - config/data_availability_contracts.yaml
+      - src/stock_ai/data_platform/availability.py
+      - src/stock_ai/data_platform/source_registry.py
+      - src/stock_ai/data_platform/warehouse.py
+      - tests/test_data_availability_contracts.py::test_every_active_source_endpoint_has_a_reviewed_availability_contract
+      - tests/test_data_availability_contracts.py::test_daily_price_warehouse_persists_market_availability_separate_from_ingestion
+      - tests/test_data_availability_contracts.py::test_availability_audit_receipt_is_exposed_and_content_hashed
+      - tests/test_data_availability_contracts.py::test_endpoint_contract_is_bound_to_the_exact_dataset_id
+    blockers: []
+  - id: M-001
+    priority: P0
+    domain: model
+    status: complete
+    acceptance: FinRL runtime trains, saves, loads, infers and emits immutable runtime and model artifact receipts.
+    evidence:
+      - src/open_stock_ai/research/model_runtime.py
+      - src/open_stock_ai/research/model_registry.py
+      - tests/test_research_model_runtime.py::test_runtime_executes_canonical_finrl_and_qlib_with_pit_only_prices
+      - tests/integration/test_external_model_runtime.py::test_real_finrl_policy_trains_persists_reloads_and_predicts_actions
+      - docs/integration/finrl-qlib-runtime-smoke-20260828.md
+    blockers: []
+  - id: M-002
+    priority: P0
+    domain: model
+    status: complete
+    acceptance: Qlib Dataset, Model, Recorder, Signal and Portfolio workflow emits replayable recorder artifacts.
+    evidence:
+      - src/open_stock_ai/research/model_runtime.py
+      - src/open_stock_ai/research/model_registry.py
+      - tests/test_research_model_runtime.py::test_runtime_executes_canonical_finrl_and_qlib_with_pit_only_prices
+      - tests/integration/test_external_model_runtime.py::test_real_qlib_workflow_records_replayable_dataset_model_signal_and_portfolio_artifacts
+      - docs/integration/finrl-qlib-runtime-smoke-20260828.md
+    blockers: []
+  - id: M-006
+    priority: P0
+    domain: model
+    status: complete
+    acceptance: Fitted train state is immutable and cannot be refit or read during OOS evaluation.
+    evidence:
+      - src/open_stock_ai/research/model_runtime.py
+      - src/open_stock_ai/research/model_registry.py
+      - src/open_stock_ai/research/research_engine.py
+      - tests/test_research_model_runtime.py::test_oos_registry_boundary_forbids_refit_and_rejects_training_dataset_reuse
+    blockers: []
+  - id: S-001
+    priority: P0
+    domain: strategy
+    status: complete
+    acceptance: Heuristics are explicitly baseline artifacts and production strategies are versioned rule or model artifacts.
+    evidence:
+      - src/open_stock_ai/strategy/signal_builder.py
+      - src/open_stock_ai/research/strategy_replay.py
+      - src/open_stock_ai/strategy/strategy_registry.py
+      - tests/test_strategy_artifact_registry.py
+    blockers:
+      []
+  - id: S-002
+    priority: P0
+    domain: strategy
+    status: complete
+    acceptance: Targets and stops derive from volatility, liquidity, horizon and forecast evidence rather than fixed multipliers.
+    evidence:
+      - src/open_stock_ai/strategy/target_stop_calibration.py
+      - src/open_stock_ai/strategy/structured_decision.py
+      - tests/test_target_stop_calibration.py
+    blockers: []
+  - id: E-002
+    priority: P0
+    domain: execution
+    status: complete
+    acceptance: Live OMS order state, idempotency, mappings and reports survive restart in a durable database.
+    evidence:
+      - src/stock_ai/brokers/oms.py
+      - src/stock_ai/brokers/order_store.py
+      - tests/test_broker_framework.py::test_durable_oms_restores_idempotency_and_forces_open_order_reconciliation
+      - tests/test_broker_framework.py::test_durable_oms_restart_blocks_retry_for_every_nonterminal_lifecycle_state
+    blockers: []
+  - id: E-003
+    priority: P0
+    domain: execution
+    status: complete
+    acceptance: Order intent is committed durably before broker submission and recovery covers crashes before and after submission.
+    evidence:
+      - src/stock_ai/brokers/oms.py
+      - src/stock_ai/brokers/order_store.py
+      - tests/test_broker_framework.py::test_oms_commits_submission_barrier_before_gateway_call_and_recovers_after_crash
+    blockers: []
+  - id: E-004
+    priority: P0
+    domain: execution
+    status: complete
+    acceptance: Persistent idempotency and broker reconciliation prevent duplicate order submission after restart.
+    evidence:
+      - src/stock_ai/brokers/oms.py
+      - src/stock_ai/brokers/order_store.py
+      - tests/test_broker_framework.py::test_durable_oms_restores_idempotency_and_forces_open_order_reconciliation
+    blockers: []
+  - id: E-005
+    priority: P0
+    domain: execution
+    status: complete
+    acceptance: Unknown broker order state persists across restart and blocks unsafe retry.
+    evidence:
+      - src/stock_ai/brokers/oms.py
+      - src/stock_ai/brokers/order_store.py
+      - tests/test_broker_framework.py::test_durable_oms_restart_blocks_retry_for_every_nonterminal_lifecycle_state
+    blockers: []
+  - id: E-006
+    priority: P0
+    domain: execution
+    status: partial
+    acceptance: Each supported broker has a real official SDK worker and sandbox or read-only receipt.
+    evidence:
+      - src/stock_ai/brokers/integration_receipts.py
+      - src/stock_ai/brokers/provisioning.py
+      - tests/test_broker_integration_receipts.py
+    blockers:
+      - no_account_owner_confirmed_checksum_verified_official_sdk_and_readonly_worker_probe_receipt_is_recorded
+      - declared_broker_adapters_remain_non_operational_until_each_broker_receipt_is_provided
+  - id: E-007
+    priority: P0
+    domain: execution
+    status: partial
+    acceptance: Broker login, certificate, refresh, logout and reconnect lifecycle is accepted with an account owner.
+    evidence:
+      - src/stock_ai/brokers/session_receipts.py
+      - src/stock_ai/brokers/integration_receipts.py
+      - tests/test_broker_session_receipts.py
+    blockers:
+      - account_owner_session_lifecycle_receipts_are_not_recorded_for_any_real_broker
+      - no_real_official_sdk_worker_has_completed_certificate_login_refresh_logout_and_reconnect_acceptance
+  - id: E-008
+    priority: P0
+    domain: execution
+    status: partial
+    acceptance: Periodic account reconciliation proves broker cash, positions, orders and fills match the host ledger.
+    evidence:
+      - src/stock_ai/brokers/account_reconciliation.py
+      - src/stock_ai/brokers/account_reconciliation_receipts.py
+      - src/stock_ai/brokers/account_reconciliation_service.py
+      - tests/test_broker_account_reconciliation_receipts.py
+      - tests/test_broker_account_reconciliation_service.py
+    blockers:
+      - no_real_broker_cash_position_order_and_fill_snapshot_is_recorded_against_the_host_ledger
+      - periodic_account_owner_reconciliation_acceptance_is_missing
+  - id: E-009
+    priority: P0
+    domain: execution
+    status: partial
+    acceptance: Market feed has sequence, gap, snapshot recovery and failover receipts.
+    evidence:
+      - src/stock_ai/brokers/sequence_tracker.py
+      - src/stock_ai/brokers/feed_quality.py
+      - src/stock_ai/brokers/market_feed_recovery_receipts.py
+      - src/stock_ai/brokers/market_feed_recovery_service.py
+      - tests/test_broker_market_feed_recovery_receipts.py
+      - tests/test_broker_market_feed_recovery_service.py
+    blockers:
+      - real_broker_market_feed_chaos_gap_snapshot_recovery_and_failover_evidence_is_missing
+  - id: E-010
+    priority: P0
+    domain: execution
+    status: complete
+    acceptance: Pre-trade risk verifies notional, quantity, collar, ADV, phase, exposure and fat-finger constraints.
+    evidence:
+      - src/stock_ai/brokers/risk.py
+      - src/stock_ai/brokers/oms.py
+      - src/stock_ai/brokers/order_store.py
+      - tests/test_broker_framework.py::test_live_pretrade_receipt_binds_exact_intent_context_and_calculations
+      - tests/test_broker_framework.py::test_live_pretrade_adversarial_matrix_fails_each_bounded_check
+      - tests/test_broker_framework.py::test_live_oms_requires_host_signed_human_receipt_and_persists_it
+    blockers: []
+  - id: E-011
+    priority: P0
+    domain: execution
+    status: complete
+    acceptance: Live activation requires an approval receipt independent of any LLM output.
+    evidence:
+      - config/capability_status.yaml
+      - src/open_stock_ai/governance/capability_status.py
+      - src/stock_ai/brokers/live_activation.py
+      - src/stock_ai/brokers/oms.py
+      - src/stock_ai/brokers/order_store.py
+      - tests/test_broker_framework.py::test_live_oms_requires_host_signed_activation_and_human_receipts
+      - tests/test_agent_runtime_v2.py::test_capability_registry_host_firewall_denies_live_brokerage_before_provider_dispatch
+    blockers: []
+  - id: A-001
+    priority: P0
+    domain: agent_security
+    status: complete
+    acceptance: An Agent can never submit a live order directly; deterministic host policy is the only execution authority.
+    evidence:
+      - src/open_stock_ai/governance/capability_status.py
+      - src/open_stock_ai/execution/execution_engine.py
+      - src/stock_ai/capability_registry.py
+      - src/open_stock_ai/agent_runtime/policy_engine.py
+      - tests/test_agent_runtime_v2.py::test_capability_registry_host_firewall_denies_live_brokerage_before_provider_dispatch
+      - tests/test_agent_runtime.py::test_stock_agent_manifest_has_no_live_brokerage_capability_and_proposals_stay_local
+    blockers: []
+  - id: A-002
+    priority: P0
+    domain: agent_security
+    status: complete
+    acceptance: Project tools run in an isolated worker with filesystem and network escape resistance.
+    evidence:
+      - src/stock_ai/sandbox_executor.py
+      - src/stock_ai/worker_process.py
+      - src/open_stock_ai/agent_runtime/workers/terminal_worker.py
+      - tests/test_agent_general_tools.py::test_terminal_sandbox_blocks_project_file_writes_at_os_boundary
+      - tests/test_agent_general_tools.py::test_terminal_sandbox_blocks_foreign_temp_reads_and_writes_at_os_boundary
+      - tests/test_security_boundaries.py::test_terminal_cancellation_terminates_process_group
+    blockers: []
+  - id: A-003
+    priority: P0
+    domain: agent_security
+    status: complete
+    acceptance: Project file tools reject symlink traversal using resolved safe IO.
+    evidence:
+      - src/stock_ai/agent_general_tools.py
+      - src/stock_ai/sandbox_executor.py
+      - tests/test_agent_general_tools.py::test_project_tools_reject_every_symbolic_link_component_before_resolution
+    blockers: []
+  - id: A-004
+    priority: P0
+    domain: agent_security
+    status: complete
+    acceptance: Read-only Git execution disables repository hooks, external diff and textconv.
+    evidence:
+      - src/stock_ai/sandbox_executor.py
+      - tests/test_agent_general_tools.py::test_terminal_git_rejects_malicious_repository_diff_and_textconv_configuration
+    blockers: []
+  - id: N-001
+    priority: P0
+    domain: automation
+    status: complete
+    acceptance: n8n contract digest is recomputed from canonical backend, definition and credential references before use.
+    evidence:
+      - src/stock_ai/n8n_automation.py
+      - tests/test_agent_automation_final.py::test_n8n_rejects_tampered_compiler_definition_even_with_hex_digest
+    blockers: []
+  - id: N-002
+    priority: P0
+    domain: automation
+    status: complete
+    acceptance: Local n8n mode only permits loopback, while remote mode requires TLS and explicit authenticated allowlisting.
+    evidence:
+      - src/stock_ai/n8n_automation.py
+      - tests/test_agent_automation_final.py::test_n8n_local_mode_rejects_remote_gateway_and_remote_mode_requires_allowlist
+      - tests/test_agent_automation_final.py::test_n8n_remote_transport_verifies_the_configured_tls_certificate_pin
+    blockers: []
+  - id: N-007
+    priority: P0
+    domain: automation
+    status: complete
+    acceptance: Automation callbacks can wake research but cannot grant trading permission.
+    evidence:
+      - src/stock_ai/n8n_automation.py
+      - config/capability_status.yaml
+      - tests/test_agent_automation_final.py::test_policy_separates_monitoring_external_message_and_trade_approval
+      - tests/test_durable_agent_runtime.py::test_targeted_n8n_callback_dispatches_without_a_local_scheduler_row
+    blockers: []
+  - id: SEC-001
+    priority: P0
+    domain: security
+    status: partial
+    acceptance: Historical leaked secrets are revoked, rotated, rewritten and proven absent from full Git history.
+    evidence:
+      - docs/security/secret-scanning.md
+      - tests/test_secret_scanning_gate.py::test_secret_history_audit_documentation_keeps_rotation_and_rewrite_as_owner_actions
+    blockers:
+      - credential_rotation_and_history_rewrite_are_not_evidenced
+  - id: SEC-002
+    priority: P0
+    domain: security
+    status: complete
+    acceptance: Full-history secret scans and required pull request scanning block release on detected secrets.
+    evidence:
+      - .github/workflows/core-safety.yml
+      - .gitleaksignore
+      - docs/security/secret-scanning.md
+      - tests/test_secret_scanning_gate.py
+    blockers: []
+  - id: R-001
+    priority: P0
+    domain: storage
+    status: complete
+    acceptance: Live OMS uses durable execution storage and recovers after process termination at every lifecycle state.
+    evidence:
+      - src/stock_ai/brokers/oms.py
+      - src/stock_ai/brokers/order_store.py
+      - tests/test_broker_framework.py::test_durable_oms_restart_blocks_retry_for_every_nonterminal_lifecycle_state
+    blockers: []
+  - id: T-001
+    priority: P0
+    domain: testing
+    status: partial
+    acceptance: Branch protection requires the Core Safety evidence set before merge.
+    evidence:
+      - docs/security/github-branch-protection.md
+      - tests/test_production_requirement_status.py::test_p0_production_requirement_ledger_is_complete_unique_and_evidence_backed
+    blockers:
+      - github_plan_does_not_allow_private_repository_branch_protection
+      - github_branch_protection_and_required_core_safety_statuses_are_not_enabled
+  - id: T-003
+    priority: P0
+    domain: testing
+    status: complete
+    acceptance: Financial and OMS state machines have property-based invariant coverage.
+    evidence:
+      - tests/test_oms_properties.py
+      - tests/test_exact_strategy_replay.py
+      - tests/test_paper_oms.py::test_paper_oms_generated_order_sequences_preserve_persistent_accounting_invariants
+    blockers: []
+  - id: T-004
+    priority: P0
+    domain: testing
+    status: complete
+    acceptance: Independent hand-calculated golden ledgers exactly match replay accounting.
+    evidence:
+      - tests/test_exact_strategy_replay.py::test_hand_calculated_golden_gap_ledger_matches_every_fill_cash_position_and_equity_value
+      - tests/test_exact_strategy_replay.py::test_hand_calculated_golden_ledger_includes_commission_exchange_fee_and_seller_tax
+      - tests/test_exact_strategy_replay.py::test_hand_calculated_partial_fill_ledger_matches_taiwan_market_cost_rules
+    blockers: []
+  - id: T-005
+    priority: P0
+    domain: testing
+    status: complete
+    acceptance: Deliberately leaky datasets are detected and cannot become false-safe evidence.
+    evidence:
+      - tests/test_exact_strategy_replay.py::test_adversarial_temporal_leakage_matrix_cannot_become_execution_evidence
+      - tests/test_exact_strategy_replay.py::test_adversarial_leaky_partition_cannot_be_certified_as_exact_or_execution_evidence
+      - tests/test_pit_dataset.py::test_pit_dataset_rejects_future_feature_in_each_required_domain
+    blockers: []
+  - id: GOV-001
+    priority: P0
+    domain: governance
+    status: complete
+    acceptance: README, API and release status derive from one machine-readable master P0-P105 requirement ledger.
+    evidence:
+      - config/production_requirement_status.yaml
+      - src/open_stock_ai/governance/production_requirements.py
+      - src/open_stock_ai/governance/capability_status.py
+      - tests/test_production_requirement_status.py
+      - tests/test_trading_governance.py
+    blockers: []
+  - id: GOV-002
+    priority: P0
+    domain: governance
+    status: complete
+    acceptance: Research, paper, shadow, broker sandbox, restricted live and production live are ordered and cannot be skipped.
+    evidence:
+      - config/capability_status.yaml
+      - src/open_stock_ai/governance/capability_status.py
+      - tests/test_trading_governance.py
+    blockers: []

@@ -1,0 +1,55 @@
+schema_version: stock_ai.broker_compliance_registry.v1
+updated_at: "2026-07-26T00:00:00+08:00"
+policy:
+  official_broker_terms_are_authoritative: true
+  unverified_fields_must_remain_null: true
+  secrets_in_repository: false
+  model_direct_submit: false
+  live_trading_enabled: false
+  bank_transfer_automation: false
+brokers:
+  taishin:
+    official_terms_url: https://mlapi.tssco.com.tw/web_api/service/home
+    account_owner_review_status: pending
+    market_data_authorization_scope: null
+    market_data_redistribution_allowed: null
+    automation_authorization_scope: null
+    sandbox_permission: null
+    live_permission_recorded: false
+    fixed_ip_required: null
+  fubon:
+    official_terms_url: https://www.fbs.com.tw/TradeAPI/docs/trading/prepare/
+    account_owner_review_status: pending
+    market_data_authorization_scope: null
+    market_data_redistribution_allowed: null
+    automation_authorization_scope: null
+    sandbox_permission: null
+    live_permission_recorded: false
+    fixed_ip_required: null
+  sinopac:
+    official_terms_url: https://sinotrade.github.io/tutor/prepare/terms/
+    account_owner_review_status: pending
+    market_data_authorization_scope: null
+    market_data_redistribution_allowed: null
+    automation_authorization_scope: null
+    sandbox_permission: null
+    live_permission_recorded: false
+    fixed_ip_required: null
+  yuanta:
+    official_terms_url: https://www.yuanta.com.tw/file-repository/content/API/page/index.html
+    account_owner_review_status: pending
+    market_data_authorization_scope: null
+    market_data_redistribution_allowed: null
+    automation_authorization_scope: null
+    sandbox_permission: null
+    live_permission_recorded: false
+    fixed_ip_required: null
+  masterlink:
+    official_terms_url: https://ml-fugle-api.masterlink.com.tw/FugleSDK/docs/trading/quickstart/
+    account_owner_review_status: pending
+    market_data_authorization_scope: null
+    market_data_redistribution_allowed: null
+    automation_authorization_scope: null
+    sandbox_permission: null
+    live_permission_recorded: false
+    fixed_ip_required: null

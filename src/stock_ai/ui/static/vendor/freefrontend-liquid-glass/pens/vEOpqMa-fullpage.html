@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  
+
+    <link rel="apple-touch-icon" type="image/png" href="https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png" />
+
+    <meta name="apple-mobile-web-app-title" content="CodePen">
+
+    <link rel="icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico" />
+
+    <link rel="mask-icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-b4b4269c16397ad2f0f7a01bcdf513a1994f4c94b8af2f191c09eb0d601762b1.svg" color="#111" />
+
+
+
+  <meta charset="utf-8">
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+  <title>Apple Liquid Glass (from lucasromerodb/liquid-glass-effect-macos)</title>
+
+  <link rel="stylesheet" href="https://cpwebassets.codepen.io/assets/fullpage/fullpage-defe0b00ddddc98ad4bc2c428e9d6182cd7742e2624f558656dbfb986d4ba13c.css" />
+  
+
+    <link rel="apple-touch-icon" type="image/png" href="https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png" />
+
+    <meta name="apple-mobile-web-app-title" content="CodePen">
+
+    <link rel="icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico" />
+
+    <link rel="mask-icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-b4b4269c16397ad2f0f7a01bcdf513a1994f4c94b8af2f191c09eb0d601762b1.svg" color="#111" />
+
+
+
+
+
+  <title>Apple Liquid Glass (from lucasromerodb/liquid-glass-effect-macos)</title>
+
+  <style>
+    html { font-size: 15px; }
+    html, body { margin: 0; padding: 0; min-height: 100%; }
+    body { height:100%; display: flex; flex-direction: column; }
+    .referer-warning {
+      background: black;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+      padding: 0.75em;
+      color: white;
+      text-align: center;
+      font-family: 'Lato', 'Lucida Grande', 'Lucida Sans Unicode', Tahoma, system-ui, Sans-Serif;
+      line-height: 1.2;
+      font-size: 1rem;
+      position: relative;
+      z-index: 2;
+    }
+    .referer-warning span { font-family: initial; }
+    .referer-warning h1 { font-size: 1.2rem; margin: 0; }
+    .referer-warning a { color: #56bcf9; }
+  </style>
+</head>
+
+<body class="">
+  <div class="referer-warning">
+    <h1><span>⚠️</span> Do not enter passwords or personal information on this page. <span>⚠️</span></h1>
+      This is a code demo posted by a web developer on <a href="https://codepen.io">CodePen</a>.
+    <br />
+    A referer from CodePen is required to render this page view, and your browser is not sending one (<a href="https://blog.codepen.io/2017/10/05/regarding-referer-headers/" target="_blank" rel="noreferrer noopener">more details</a>).</h1>
+  </div>
+
+  <div id="result-iframe-wrap" role="main">
+    <iframe
+      id="result"
+      srcdoc="<!DOCTYPE html>
+<html lang=&quot;en&quot; >
+
+<head>
+  <meta charset=&quot;UTF-8&quot;>
+  
+
+    <link rel=&quot;apple-touch-icon&quot; type=&quot;image/png&quot; href=&quot;https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png&quot; />
+
+    <meta name=&quot;apple-mobile-web-app-title&quot; content=&quot;CodePen&quot;>
+
+    <link rel=&quot;icon&quot; type=&quot;image/x-icon&quot; href=&quot;https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico&quot; />
+
+    <link rel=&quot;mask-icon&quot; type=&quot;image/x-icon&quot; href=&quot;https://cpwebassets.codepen.io/assets/favicon/logo-pin-b4b4269c16397ad2f0f7a01bcdf513a1994f4c94b8af2f191c09eb0d601762b1.svg&quot; color=&quot;#111&quot; />
+
+
+
+  
+  
+
+  <title>Apple Liquid Glass (from lucasromerodb/liquid-glass-effect-macos)</title>
+
+    <link rel=&quot;canonical&quot; href=&quot;https://codepen.io/lassiterda/pen/vEOpqMa&quot;>
+  
+  
+  
+  
+<style>
+/* LIQUID GLASS STYLES */
+
+.liquidGlass-wrapper {
+  position: relative;
+  display: flex;
+  font-weight: 600;
+  overflow: hidden;
+
+  box-shadow: 0 6px 6px rgba(0, 0, 0, 0.2), 0 0 20px rgba(0, 0, 0, 0.1);
+
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
+}
+
+.liquidGlass-effect {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+
+  backdrop-filter: blur(3px);
+  filter: url(#glass-distortion);
+  overflow: hidden;
+}
+
+.liquidGlass-tint {
+  z-index: 1;
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.50);
+}
+
+.liquidGlass-shine {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+
+  overflow: hidden;
+
+  box-shadow: inset 2px 2px 1px 0 rgba(255, 255, 255, 0.5),
+    inset -1px -1px 1px 1px rgba(255, 255, 255, 0.5);
+}
+
+.liquidGlass-text {
+  z-index: 3;
+  font-size: 2rem;
+  color: black;
+}
+
+/* OTHER STYLES */
+
+body {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: url(&quot;https://media.istockphoto.com/id/1430511443/vector/christmas-mistletoe-foliage-and-berries-vector-seamless-pattern.jpg?s=612x612&amp;w=0&amp;k=20&amp;c=oqxlH7ytgd5yjBQroACirJ1gH7Au1tq8gmsdeGd-Crk=&quot;)
+    center center;
+  background-size: 500px;
+  font-family: sans-serif;
+  font-weight: 300;
+
+  animation: moveBackground 60s linear infinite;
+}
+
+/*
+GREEN BACKGROUND
+https://media.istockphoto.com/id/1430511443/vector/christmas-mistletoe-foliage-and-berries-vector-seamless-pattern.jpg?s=612x612&amp;w=0&amp;k=20&amp;c=oqxlH7ytgd5yjBQroACirJ1gH7Au1tq8gmsdeGd-Crk=
+
+ORANGE BACKGROUND
+https://images.fineartamerica.com/images/artworkimages/mediumlarge/3/beautiful-orange-and-pastel-flowers-seamless-pattern-julien.jpg
+
+MARGARITAS BACKGROUND
+https://static.vecteezy.com/system/resources/previews/056/652/082/non_2x/hand-drawn-white-flower-seamless-pattern-floral-repeating-wallpaper-for-textile-design-fabric-print-wrapping-paper-cute-daisy-flowers-on-blue-background-repeated-ditsy-texture-vector.jpg
+
+SPRING FLOWERS BACKGROUND
+https://img.freepik.com/free-vector/flat-floral-spring-pattern-design_23-2150117078.jpg
+
+VECTOR WINDS BACKGROUND
+https://i.ibb.co/MDbLn4N4/vectors.png
+
+RED FLOWERS BACKGROUND
+https://www.publicdomainpictures.net/pictures/610000/velka/seamless-floral-wallpaper-art-1715193626Gct.jpg
+*/
+
+a {
+  text-decoration: none;
+}
+
+.wrapper {
+  display: flex;
+  gap: 25px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+
+.dock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 2rem;
+  padding: 0.6rem;
+}
+
+/* NOTE: You need to duplicate styles onto the child `div`s (`> div`) so that the glass wrapper and all the layers are affected in the same way.  */
+.dock,
+.dock > div {
+  border-radius: 2rem;
+}
+
+.dock:hover {
+  padding: 0.8rem;
+  border-radius: 2.5rem;
+}
+.dock:hover > div {
+  border-radius: 2.5rem;
+}
+
+.dock img {
+  width: 75px;
+  padding: 0;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2);
+  cursor: pointer;
+}
+
+.dock img:hover {
+  transform: scale(0.95);
+  transform-origin: center center;
+}
+
+@keyframes moveBackground {
+  from {
+    background-position: 0% 0%;
+  }
+  to {
+    background-position: 0% -1500%;
+  }
+}
+</style>
+
+  <script>
+  window.console = window.console || function(t) {};
+</script>
+
+  
+  
+</head>
+
+<body translate=&quot;no&quot;>
+  <div class=&quot;wrapper&quot;>
+        <div class=&quot;liquidGlass-wrapper dock&quot;>
+          <div class=&quot;liquidGlass-effect&quot;></div>
+          <div class=&quot;liquidGlass-tint&quot;></div>
+          <div class=&quot;liquidGlass-shine&quot;></div>
+          <div class=&quot;liquidGlass-text&quot;>
+            <div class=&quot;dock&quot;>
+              <img
+                src=&quot;https://raw.githubusercontent.com/lucasromerodb/liquid-glass-effect-macos/refs/heads/main/assets/finder.png&quot;
+                alt=&quot;Finder&quot;
+              />
+              <img
+                src=&quot;https://raw.githubusercontent.com/lucasromerodb/liquid-glass-effect-macos/refs/heads/main/assets/map.png&quot;
+                alt=&quot;Finder&quot;
+              />
+              <img
+                src=&quot;https://raw.githubusercontent.com/lucasromerodb/liquid-glass-effect-macos/refs/heads/main/assets/messages.png&quot;
+                alt=&quot;Finder&quot;
+              />
+              <img
+                src=&quot;https://raw.githubusercontent.com/lucasromerodb/liquid-glass-effect-macos/refs/heads/main/assets/notes.png&quot;
+                alt=&quot;Finder&quot;
+              />
+              <img
+                src=&quot;https://raw.githubusercontent.com/lucasromerodb/liquid-glass-effect-macos/refs/heads/main/assets/safari.png&quot;
+                alt=&quot;Finder&quot;
+              />
+              <img
+                src=&quot;https://raw.githubusercontent.com/lucasromerodb/liquid-glass-effect-macos/refs/heads/main/assets/books.png&quot;
+                alt=&quot;Finder&quot;
+              />
+            </div>
+          </div>
+        </div>
+
+    <svg style=&quot;display: none&quot;>
+      <filter
+        id=&quot;glass-distortion&quot;
+        x=&quot;0%&quot;
+        y=&quot;0%&quot;
+        width=&quot;100%&quot;
+        height=&quot;100%&quot;
+        filterUnits=&quot;objectBoundingBox&quot;
+      >
+        <feTurbulence
+          type=&quot;fractalNoise&quot;
+          baseFrequency=&quot;0.01 0.01&quot;
+          numOctaves=&quot;1&quot;
+          seed=&quot;5&quot;
+          result=&quot;turbulence&quot;
+        />
+        <!-- Seeds: 14, 17,  -->
+
+        <feComponentTransfer in=&quot;turbulence&quot; result=&quot;mapped&quot;>
+          <feFuncR type=&quot;gamma&quot; amplitude=&quot;1&quot; exponent=&quot;10&quot; offset=&quot;0.5&quot; />
+          <feFuncG type=&quot;gamma&quot; amplitude=&quot;0&quot; exponent=&quot;1&quot; offset=&quot;0&quot; />
+          <feFuncB type=&quot;gamma&quot; amplitude=&quot;0&quot; exponent=&quot;1&quot; offset=&quot;0.5&quot; />
+        </feComponentTransfer>
+
+        <feGaussianBlur in=&quot;turbulence&quot; stdDeviation=&quot;3&quot; result=&quot;softMap&quot; />
+
+        <feSpecularLighting
+          in=&quot;softMap&quot;
+          surfaceScale=&quot;5&quot;
+          specularConstant=&quot;1&quot;
+          specularExponent=&quot;100&quot;
+          lighting-color=&quot;white&quot;
+          result=&quot;specLight&quot;
+        >
+          <fePointLight x=&quot;-200&quot; y=&quot;-200&quot; z=&quot;300&quot; />
+        </feSpecularLighting>
+
+        <feComposite
+          in=&quot;specLight&quot;
+          operator=&quot;arithmetic&quot;
+          k1=&quot;0&quot;
+          k2=&quot;1&quot;
+          k3=&quot;1&quot;
+          k4=&quot;0&quot;
+          result=&quot;litImage&quot;
+        />
+
+        <feDisplacementMap
+          in=&quot;SourceGraphic&quot;
+          in2=&quot;softMap&quot;
+          scale=&quot;150&quot;
+          xChannelSelector=&quot;R&quot;
+          yChannelSelector=&quot;G&quot;
+        />
+      </filter>
+    </svg>
+  
+  
+  
+</body>
+
+</html>
+"
+      sandbox="allow-downloads allow-forms allow-modals allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-same-origin allow-scripts allow-top-navigation-by-user-activation" allow="accelerometer *; ambient-light-sensor *; camera *; display-capture *; encrypted-media *; geolocation *; gyroscope *; microphone *; midi *; payment *; serial *; vr *; web-share *; xr-spatial-tracking *" allowTransparency="true"
+      allowpaymentrequest="true" allowfullscreen="true" class="result-iframe">
+      </iframe>
+  </div>
+
+</body>
+
+</html>

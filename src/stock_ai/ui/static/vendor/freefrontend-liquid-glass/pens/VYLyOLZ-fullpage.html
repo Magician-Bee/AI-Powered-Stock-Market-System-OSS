@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  
+
+    <link rel="apple-touch-icon" type="image/png" href="https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png" />
+
+    <meta name="apple-mobile-web-app-title" content="CodePen">
+
+    <link rel="icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico" />
+
+    <link rel="mask-icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-b4b4269c16397ad2f0f7a01bcdf513a1994f4c94b8af2f191c09eb0d601762b1.svg" color="#111" />
+
+
+
+  <meta charset="utf-8">
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+  <title>Liquid Glass Effect WWDC25</title>
+
+  <link rel="stylesheet" href="https://cpwebassets.codepen.io/assets/fullpage/fullpage-defe0b00ddddc98ad4bc2c428e9d6182cd7742e2624f558656dbfb986d4ba13c.css" />
+  
+
+    <link rel="apple-touch-icon" type="image/png" href="https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png" />
+
+    <meta name="apple-mobile-web-app-title" content="CodePen">
+
+    <link rel="icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico" />
+
+    <link rel="mask-icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-b4b4269c16397ad2f0f7a01bcdf513a1994f4c94b8af2f191c09eb0d601762b1.svg" color="#111" />
+
+
+
+
+
+  <title>Liquid Glass Effect WWDC25</title>
+
+  <style>
+    html { font-size: 15px; }
+    html, body { margin: 0; padding: 0; min-height: 100%; }
+    body { height:100%; display: flex; flex-direction: column; }
+    .referer-warning {
+      background: black;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+      padding: 0.75em;
+      color: white;
+      text-align: center;
+      font-family: 'Lato', 'Lucida Grande', 'Lucida Sans Unicode', Tahoma, system-ui, Sans-Serif;
+      line-height: 1.2;
+      font-size: 1rem;
+      position: relative;
+      z-index: 2;
+    }
+    .referer-warning span { font-family: initial; }
+    .referer-warning h1 { font-size: 1.2rem; margin: 0; }
+    .referer-warning a { color: #56bcf9; }
+  </style>
+</head>
+
+<body class="">
+  <div class="referer-warning">
+    <h1><span>⚠️</span> Do not enter passwords or personal information on this page. <span>⚠️</span></h1>
+      This is a code demo posted by a web developer on <a href="https://codepen.io">CodePen</a>.
+    <br />
+    A referer from CodePen is required to render this page view, and your browser is not sending one (<a href="https://blog.codepen.io/2017/10/05/regarding-referer-headers/" target="_blank" rel="noreferrer noopener">more details</a>).</h1>
+  </div>
+
+  <div id="result-iframe-wrap" role="main">
+    <iframe
+      id="result"
+      srcdoc="<!DOCTYPE html>
+<html lang=&quot;en&quot; >
+
+<head>
+  <meta charset=&quot;UTF-8&quot;>
+  
+
+    <link rel=&quot;apple-touch-icon&quot; type=&quot;image/png&quot; href=&quot;https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png&quot; />
+
+    <meta name=&quot;apple-mobile-web-app-title&quot; content=&quot;CodePen&quot;>
+
+    <link rel=&quot;icon&quot; type=&quot;image/x-icon&quot; href=&quot;https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico&quot; />
+
+    <link rel=&quot;mask-icon&quot; type=&quot;image/x-icon&quot; href=&quot;https://cpwebassets.codepen.io/assets/favicon/logo-pin-b4b4269c16397ad2f0f7a01bcdf513a1994f4c94b8af2f191c09eb0d601762b1.svg&quot; color=&quot;#111&quot; />
+
+
+
+  
+  
+
+  <title>Liquid Glass Effect WWDC25</title>
+
+    <link rel=&quot;canonical&quot; href=&quot;https://codepen.io/FlorianWoelki/pen/VYLyOLZ&quot;>
+  
+  
+  
+  
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  background-color: #f0f2f5;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+.content {
+  padding: 4rem 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+h1 {
+  text-align: center;
+  color: #111;
+  margin-bottom: 2rem;
+}
+
+.container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+}
+
+.button-container {
+	position: relative;
+  border-radius: 16px;
+}
+
+.glass-button {
+	z-index: 9999;
+	position: relative;
+  padding: 1.2rem 2.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #000;
+  background: rgba(255, 255, 255, 0.2); 
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 16px;
+  cursor: pointer;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
+}
+.glass-button span {
+	width: 100%;
+	height: 100%;
+	position: relative;
+}
+
+.glass-container {
+	position: absolute;
+	inset: 0;
+	border-radius: 16px;
+	height: 100%;
+	width: 100%;
+}
+
+.glass-effect-backdrop {
+  border-radius: 16px;
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+  -webkit-backdrop-filter: blur(0.5px);
+  backdrop-filter: blur(0.5px);
+}
+
+.glass-effect {
+  border-radius: 9999px;
+	position: absolute;
+	left: 0px;
+	right: 0;
+	height: 0.8rem;
+	width: 100%;
+  -webkit-backdrop-filter: url(#distortion);
+  backdrop-filter: url(#distortion);
+}
+
+.glass-effect.top {
+	top: 0;
+}
+
+.glass-effect.bottom {
+	bottom: 0;
+}
+
+.glass-effect.left {
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: 0.8rem;
+	height: 100%;
+}
+
+.glass-effect.right {
+	right: 0;
+	left: auto;
+	top: 0;
+	bottom: 0;
+	width: 0.8rem;
+	height: 100%
+}
+</style>
+
+  <script>
+  window.console = window.console || function(t) {};
+</script>
+
+  
+  
+</head>
+
+<body translate=&quot;no&quot;>
+  <!DOCTYPE html>
+<html lang=&quot;en&quot;>
+<head>
+    <meta charset=&quot;UTF-8&quot;>
+    <meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;>
+    <link rel=&quot;stylesheet&quot; href=&quot;style.css&quot;>
+</head>
+<body>
+    <div class=&quot;container&quot;>
+				<div class=&quot;button-container&quot;>
+					<button class=&quot;glass-button&quot;>
+						<div class=&quot;glass-effect-backdrop&quot;></div>
+						<span>Distorted Glass</span>
+					</button>
+					<div class=&quot;glass-container&quot;>
+						<div class=&quot;glass-effect top&quot;></div>
+						<div class=&quot;glass-effect bottom&quot;></div>
+						<div class=&quot;glass-effect left&quot;></div>
+						<div class=&quot;glass-effect right&quot;></div>
+					</div>
+				</div>
+    </div>
+
+    <div class=&quot;content&quot;>
+        <h1>Scroll Down to See the Effect</h1>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <p>Phasellus egestas tellus rutrum tellus pellentesque eu. Amet consectetur adipiscing elit duis tristique. Sagittis purus sit amet volutpat consequat mauris nunc congue. Nunc sed velit dignissim sodales ut eu sem integer. Viverra nam libero justo laoreet sit. Nibh praesent tristique magna sit amet purus gravida. Magna fermentum iaculis eu non diam phasellus vestibulum lorem sed. Eu sem integer vitae justo eget magna fermentum. Eget nunc scelerisque viverra mauris in aliquam sem fringilla. Leo vel fringilla est ullamcorper eget nulla facilisi etiam. Amet commodo nulla facilisi nullam vehicula ipsum a.</p>
+        <p>Massa tincidunt dui ut ornare lectus sit. Orci a scelerisque purus semper eget duis at tellus at. In est ante in nibh mauris cursus mattis. Tellus in metus vulputate eu scelerisque felis imperdiet proin. Tincidunt augue interdum velit euismod in pellentesque massa. Sit amet consectetur adipiscing elit pellentesque habitant morbi tristique. Egestas purus viverra accumsan in nisl nisi scelerisque. Ut etiam sit amet nisl purus in mollis nunc sed. Nisi lacus sed viverra tellus in hac. Gravida cum sociis natoque penatibus et magnis dis parturient. Aliquet enim tortor at auctor urna nunc id. Vitae purus faucibus ornare suspendisse sed nisi lacus. Fermentum et sollicitudin ac orci phasellus egestas tellus rutrum.</p>
+        <p>Quis lectus nulla at volutpat diam ut venenatis. Pellentesque habitant morbi tristique senectus et. Ut sem viverra aliquet eget sit amet. Convallis aenean et tortor at risus viverra adipiscing at in. Facilisis magna etiam tempor orci eu lobortis elementum. Enim ut tellus elementum sagittis vitae et leo duis. Amet justo donec enim diam vulputate ut pharetra sit. Risus quis varius quam quisque id diam vel. Non curabitur gravida arcu ac tortor. Nulla facilisi morbi tempus iaculis urna id volutpat. Egestas erat imperdiet sed euismod nisi porta lorem mollis. Porttitor rhoncus dolor purus non enim praesent elementum facilisis.</p>
+    </div>
+
+    <svg style=&quot;display:none;&quot;>
+      <filter id=&quot;distortion&quot;>
+        <feTurbulence type=&quot;turbulence&quot; baseFrequency=&quot;0.01 0.1&quot; numOctaves=&quot;1&quot; result=&quot;turbulence&quot;/>
+        <feDisplacementMap in2=&quot;turbulence&quot; in=&quot;SourceGraphic&quot; scale=&quot;8&quot; xChannelSelector=&quot;R&quot; yChannelSelector=&quot;G&quot;/>
+      </filter>
+    </svg>
+</body>
+</html>
+  
+  
+  
+</body>
+
+</html>
+"
+      sandbox="allow-downloads allow-forms allow-modals allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-same-origin allow-scripts allow-top-navigation-by-user-activation" allow="accelerometer *; ambient-light-sensor *; camera *; display-capture *; encrypted-media *; geolocation *; gyroscope *; microphone *; midi *; payment *; serial *; vr *; web-share *; xr-spatial-tracking *" allowTransparency="true"
+      allowpaymentrequest="true" allowfullscreen="true" class="result-iframe">
+      </iframe>
+  </div>
+
+</body>
+
+</html>

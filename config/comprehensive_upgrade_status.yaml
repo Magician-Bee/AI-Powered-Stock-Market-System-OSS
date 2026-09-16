@@ -1,0 +1,290 @@
+schema_version: stock_ai.comprehensive_upgrade_status.v1
+status_definitions:
+  complete: Runtime and every stated acceptance condition have direct evidence.
+  partial: Some production path exists, but at least one stated acceptance condition remains.
+  unverified: Existing names or code are not accepted as proof; requirement requires a fresh audit.
+
+phase_1:
+  DATA-001: complete
+  DATA-002: complete
+  DATA-003: complete
+  DATA-004: complete
+  DATA-005: complete
+  DATA-006: complete
+  DATA-007: complete
+  DATA-008: complete
+  DATA-009: complete
+  DATA-010: complete
+  DATA-011: complete
+  DATA-012: complete
+  DATA-013: complete
+  DATA-014: complete
+  DATA-015: complete
+
+phase_2:
+  STOCK-001: complete
+  STOCK-002: complete
+  STOCK-003: complete
+  STOCK-004: complete
+  STOCK-005: complete
+  STOCK-006: complete
+  STOCK-007: complete
+  STOCK-008: complete
+  FIN-001: complete
+  FIN-002: complete
+  FIN-003: complete
+  FIN-004: complete
+  FIN-005: complete
+  FIN-006: complete
+  FIN-007: complete
+  FIN-008: complete
+  FIN-009: complete
+  FIN-010: complete
+  VAL-001: complete
+  VAL-002: complete
+  VAL-003: complete
+  VAL-004: complete
+  VAL-005: complete
+  VAL-006: complete
+  VAL-007: complete
+  VAL-008: complete
+  CHIP-001: complete
+  CHIP-002: complete
+  CHIP-003: complete
+  CHIP-004: complete
+  CHIP-005: unverified
+  CHIP-006: unverified
+  CHIP-007: unverified
+  CHIP-008: unverified
+  CHIP-009: unverified
+  CHIP-010: unverified
+  EVENT-001: unverified
+  EVENT-002: unverified
+  EVENT-003: unverified
+  EVENT-004: unverified
+  EVENT-005: unverified
+  EVENT-006: unverified
+  EVENT-007: unverified
+  EVENT-008: unverified
+  EVENT-009: unverified
+  EVENT-010: unverified
+
+phase_3:
+  MARKET-001: unverified
+  MARKET-002: unverified
+  MARKET-003: unverified
+  MARKET-004: unverified
+  MARKET-005: unverified
+  MARKET-006: unverified
+  MARKET-007: unverified
+  MARKET-008: unverified
+  MARKET-009: unverified
+  MARKET-010: unverified
+  MARKET-011: unverified
+  MARKET-012: unverified
+  MARKET-013: unverified
+  MARKET-014: unverified
+  MARKET-015: unverified
+  MARKET-016: unverified
+  MARKET-017: unverified
+  MARKET-018: unverified
+
+phase_4:
+  RESEARCH-001: unverified
+  RESEARCH-002: unverified
+  RESEARCH-003: unverified
+  RESEARCH-004: unverified
+  RESEARCH-005: unverified
+  RESEARCH-006: unverified
+  RESEARCH-007: unverified
+  RESEARCH-008: unverified
+  RESEARCH-009: unverified
+  RESEARCH-010: unverified
+  RESEARCH-011: unverified
+  RESEARCH-012: unverified
+  RESEARCH-013: unverified
+  RESEARCH-014: unverified
+  RESEARCH-015: unverified
+  RESEARCH-016: unverified
+  RESEARCH-017: unverified
+  RESEARCH-018: unverified
+  RESEARCH-019: unverified
+  RESEARCH-020: unverified
+
+phase_5:
+  EXT-TA-01: unverified
+  EXT-TA-02: unverified
+  EXT-TA-03: unverified
+  EXT-TA-04: unverified
+  EXT-FR-01: unverified
+  EXT-FR-02: unverified
+  EXT-FR-03: unverified
+  EXT-FGPT-01: unverified
+  EXT-FGPT-02: unverified
+  EXT-FGPT-03: unverified
+  EXT-FINRL-01: unverified
+  EXT-FINRL-02: unverified
+  EXT-FINRL-03: unverified
+  EXT-QLIB-01: unverified
+  EXT-QLIB-02: unverified
+  EXT-QLIB-03: unverified
+  EXT-FRLT-01: unverified
+  EXT-AIT-01: unverified
+  EXT-AIT-02: unverified
+  EXT-COMMON-01: unverified
+  EXT-COMMON-02: unverified
+  EXT-COMMON-03: unverified
+  EXT-COMMON-04: unverified
+
+phase_6:
+  MODEL-001: unverified
+  MODEL-002: unverified
+  MODEL-003: unverified
+  MODEL-004: unverified
+  MODEL-005: unverified
+  MODEL-006: unverified
+  MODEL-007: unverified
+  MODEL-008: unverified
+  MODEL-009: unverified
+  MODEL-010: unverified
+  MODEL-011: unverified
+  MODEL-012: unverified
+  MODEL-013: unverified
+  MODEL-014: unverified
+  MODEL-015: unverified
+  MODEL-016: unverified
+  MODEL-017: unverified
+  MODEL-018: unverified
+  MODEL-019: unverified
+  MODEL-020: unverified
+  MODEL-021: unverified
+  MODEL-022: unverified
+  MODEL-023: unverified
+  MODEL-024: unverified
+  MODEL-025: unverified
+
+phase_7:
+  PLAN-001: unverified
+  PLAN-002: unverified
+  PLAN-003: unverified
+  PLAN-004: unverified
+  PLAN-005: unverified
+  PLAN-006: unverified
+  PLAN-007: unverified
+  PLAN-008: unverified
+  PLAN-009: unverified
+  PLAN-010: unverified
+  PLAN-011: unverified
+  PLAN-012: unverified
+  PLAN-013: unverified
+  PLAN-014: unverified
+  PLAN-015: unverified
+  THINK-001: unverified
+  THINK-002: unverified
+  THINK-003: unverified
+  THINK-004: unverified
+  THINK-005: unverified
+  THINK-006: unverified
+  THINK-007: unverified
+  THINK-008: unverified
+  THINK-009: unverified
+  THINK-010: unverified
+  THINK-011: unverified
+  THINK-012: unverified
+  AGENT-001: unverified
+  AGENT-002: unverified
+  AGENT-003: unverified
+  AGENT-004: unverified
+  AGENT-005: unverified
+  AGENT-006: unverified
+  AGENT-007: unverified
+  AGENT-008: unverified
+  AGENT-009: unverified
+  AGENT-010: unverified
+
+phase_8:
+  MEMORY-001: unverified
+  MEMORY-002: unverified
+  MEMORY-003: unverified
+  MEMORY-004: unverified
+  MEMORY-005: unverified
+  MEMORY-006: unverified
+  MEMORY-007: unverified
+  MEMORY-008: unverified
+  MEMORY-009: unverified
+  MEMORY-010: unverified
+
+phase_9:
+  UI-001: unverified
+  UI-002: unverified
+  UI-003: unverified
+  UI-004: unverified
+  UI-005: unverified
+  UI-006: unverified
+  UI-007: unverified
+  UI-008: unverified
+  UI-009: unverified
+  UI-010: unverified
+  UI-011: unverified
+  UI-012: unverified
+  UI-013: unverified
+  UI-014: unverified
+  UI-015: unverified
+
+phase_10:
+  TEST-001: unverified
+  TEST-002: unverified
+  TEST-003: unverified
+  TEST-004: unverified
+  TEST-005: unverified
+  TEST-006: unverified
+  TEST-007: unverified
+  TEST-008: unverified
+  TEST-009: unverified
+  TEST-010: unverified
+  TEST-011: unverified
+  TEST-012: unverified
+  TEST-013: unverified
+  TEST-014: unverified
+  TEST-015: unverified
+  TEST-016: unverified
+  TEST-017: unverified
+  TEST-018: unverified
+  TEST-019: unverified
+  TEST-020: unverified
+
+phase_1_evidence:
+  architecture: docs/architecture/unified-market-data-platform.md
+  migration: docs/migration/unified-market-data-v11.md
+  security_lifecycle_migration: docs/migration/security-lifecycle-v12.md
+  contracts: src/stock_ai/data_platform/contracts.py
+  source_registry: config/market_data_sources.yaml
+  warehouse: src/stock_ai/data_platform/warehouse.py
+  runtime: src/stock_ai/data_platform/service.py
+  incremental_loader: src/stock_ai/data_platform/incremental.py
+  incremental_loader_migration: docs/migration/incremental-loader-v18.md
+  revision_history_migration: docs/migration/revision-history-v19.md
+  research_gateway: src/stock_ai/data_platform/gateway.py
+  api: src/stock_ai/data_platform/api.py
+  browser_surface: src/stock_ai/ui/static/js/features/explorer.js
+  actual_source_verifier: scripts/verify_unified_data_platform.py
+  tests: tests/test_unified_market_data_platform.py
+  remaining_acceptance:
+    - migrate every remaining intraday, event, derivative, macro, UI, Agent and external-framework reader
+    - connect each later historical domain loader to the shared incremental contract and production scheduler
+    - run actual-source replay, Browser and performance acceptance
+
+phase_2_evidence:
+  realtime_quote_contract: docs/data/realtime-quote-contract.md
+  intraday_candle_contract: docs/data/intraday-candle-contract.md
+  intraday_candle_runtime: src/stock_ai/intraday_candles.py
+  realtime_stream_runtime: src/stock_ai/realtime_quotes.py
+  intraday_candle_verifier: scripts/verify_intraday_candles.py
+  intraday_candle_tests: tests/test_intraday_candles.py
+  financial_revision_contract: docs/data/financial-revision-history-contract.md
+  financial_revision_runtime: src/stock_ai/financial_revisions.py
+  financial_revision_verifier: scripts/verify_financial_revision_history.py
+  financial_revision_tests: tests/test_financial_revision_history.py
+  financial_revision_ui:
+    - src/stock_ai/ui/static/index.html
+    - src/stock_ai/ui/static/js/features/dashboard.js

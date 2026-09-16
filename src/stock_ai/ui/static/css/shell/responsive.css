@@ -1,0 +1,109 @@
+/* Compact workstation layout. Keep the shared glass shell, but prevent tiny
+   control lenses from optically stretching labels on narrow screens. */
+@media(max-width:1200px){
+  .agent-settings-toolbar{grid-template-columns:minmax(260px,1fr) auto}
+  .agent-settings-summary{grid-column:1/-1;grid-row:2}
+  .agent-provider-grid{grid-template-columns:1fr}
+}
+@media(max-width:760px){
+  .agent-settings-toolbar,.agent-provider-grid,.agent-provider-group,.agent-provider-panel{grid-template-columns:1fr}.agent-provider-panel small{grid-column:auto}.agent-settings-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.agent-setting-wide{grid-column:auto}.agent-settings-actions{align-items:stretch;flex-direction:column}
+  body{min-width:0;overflow-x:hidden}
+  .app-shell{width:100%;overflow:clip}
+  .sidebar{
+    width:auto;
+    margin:8px;
+    padding:0;
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:8px;
+    background:rgba(5,8,11,.78)!important;
+  }
+  .sidebar-content{padding:14px!important;overflow:hidden}
+  .brand{min-height:54px;margin-bottom:10px;padding:0 0 10px}
+  .brand h1{font-size:18px}
+  .nav-menu{
+    width:100%;
+    display:flex;
+    grid-template-columns:none;
+    gap:7px;
+    padding:2px 0 7px;
+    overflow-x:auto;
+    scroll-snap-type:x proximity;
+    scrollbar-width:none;
+  }
+  .nav-menu::-webkit-scrollbar{display:none}
+  .nav-btn{
+    min-width:116px;
+    min-height:42px;
+    padding:7px 9px;
+    scroll-snap-align:start;
+    white-space:nowrap;
+  }
+  .nav-btn > span:not(.glass-control-lens){width:27px;height:25px;flex-basis:27px}
+  .side-card,.nav-section-label{display:none}
+  .glass-control-lens{display:none!important}
+
+  .main{width:100%;padding:0 12px 24px;overflow:visible}
+  .topbar{
+    width:auto;
+    margin:0 0 12px;
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:8px;
+    background:rgba(5,8,11,.74)!important;
+  }
+  .topbar-content{
+    min-height:0;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto;
+    gap:12px;
+    padding:14px;
+  }
+  .title-stack{align-self:center}
+  .eyebrow{margin-bottom:4px;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .topbar h2{font-size:26px}
+  .account-menu-btn{grid-column:2;grid-row:1;align-self:center}
+  .searchbar{
+    grid-column:1/-1;
+    grid-row:2;
+    width:100%;
+    min-width:0;
+    margin:0;
+  }
+  .searchbar input{width:0;min-width:0;padding-inline:8px}
+  .searchbar button{flex:0 0 auto}.agent-global-composer{width:100%}.global-agent-pulse{display:none}
+
+  .design-strip{
+    display:flex;
+    gap:7px;
+    margin-bottom:16px;
+    padding-bottom:3px;
+    overflow-x:auto;
+    scrollbar-width:none;
+  }
+  .design-strip::-webkit-scrollbar{display:none}
+  .design-strip span{min-width:112px;min-height:38px;flex:0 0 112px;padding-inline:20px 8px}
+  .design-strip span::before{left:9px}
+
+  .panel.content-surface{padding:14px}
+  .panel::before{left:14px;right:14px}
+  .home-status-bar{gap:16px;margin-bottom:12px;padding-bottom:14px}
+  .home-status-bar h3{font-size:25px}
+  .home-status-actions{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}
+  .home-action-brief{grid-template-columns:1fr;gap:6px}.home-action-brief>small{text-align:left}
+  .decision-lane{min-height:210px;padding:14px}
+  .decision-plan-list{grid-template-columns:1fr}
+  .home-workspace{display:grid;grid-template-columns:1fr}
+  .codex-composer-actions{align-items:stretch;flex-direction:column}
+  .codex-composer-actions button{width:100%}
+  .project-facts > div{grid-template-columns:78px minmax(0,1fr)}
+  .settings-section{padding:18px 0}
+  .panel-head,.settings-section-head{gap:10px}
+  #screenerTable .row{grid-template-columns:1fr;gap:10px;column-gap:10px}
+  #screenerTable .row.header{display:none}
+  #screenerTable .row.clickable > div{display:grid;grid-template-columns:92px minmax(0,1fr);gap:10px}
+  #screenerTable .row.clickable > div::before{color:var(--muted);font-size:11px;font-weight:800}
+  #screenerTable .row.clickable > div:nth-child(1)::before{content:"股票"}
+  #screenerTable .row.clickable > div:nth-child(2)::before{content:"即時源漲跌"}
+  #screenerTable .row.clickable > div:nth-child(3)::before{content:"理由"}
+  #screenerTable .row.clickable > div:nth-child(4)::before{content:"可見指標規則"}
+  canvas{max-width:100%;height:360px}
+}

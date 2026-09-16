@@ -1,0 +1,51 @@
+schema_version: stock_ai.data_reconciliation_rules.v1
+
+defaults:
+  missing_is_conflict: true
+
+datasets:
+  prices_daily:
+    domain: prices
+    fields:
+      open: {method: numeric, absolute_tolerance: 0.01, relative_tolerance: 0.001}
+      high: {method: numeric, absolute_tolerance: 0.01, relative_tolerance: 0.001}
+      low: {method: numeric, absolute_tolerance: 0.01, relative_tolerance: 0.001}
+      close: {method: numeric, absolute_tolerance: 0.01, relative_tolerance: 0.001}
+      volume: {method: numeric, absolute_tolerance: 1, relative_tolerance: 0.001}
+  prices_intraday:
+    domain: prices
+    fields:
+      close: {method: numeric, absolute_tolerance: 0.01, relative_tolerance: 0.001}
+      volume: {method: numeric, absolute_tolerance: 1, relative_tolerance: 0.001}
+  fundamentals:
+    domain: financials
+    fields:
+      revenue: {method: numeric, absolute_tolerance: 1, relative_tolerance: 0.001}
+      net_income: {method: numeric, absolute_tolerance: 1, relative_tolerance: 0.001}
+      eps: {method: numeric, absolute_tolerance: 0.01, relative_tolerance: 0.001}
+  fundamentals_quarterly:
+    domain: financials
+    fields:
+      revenue: {method: numeric, absolute_tolerance: 1, relative_tolerance: 0.001}
+      net_income: {method: numeric, absolute_tolerance: 1, relative_tolerance: 0.001}
+      eps: {method: numeric, absolute_tolerance: 0.01, relative_tolerance: 0.001}
+  revenues_monthly:
+    domain: financials
+    fields:
+      current_revenue: {method: numeric, absolute_tolerance: 1, relative_tolerance: 0.001}
+      previous_revenue: {method: numeric, absolute_tolerance: 1, relative_tolerance: 0.001}
+      last_year_revenue: {method: numeric, absolute_tolerance: 1, relative_tolerance: 0.001}
+      ytd_revenue: {method: numeric, absolute_tolerance: 1, relative_tolerance: 0.001}
+      last_ytd_revenue: {method: numeric, absolute_tolerance: 1, relative_tolerance: 0.001}
+  events:
+    domain: events
+    fields:
+      event_type: {method: exact}
+      title: {method: normalized_text}
+      event_time: {method: timestamp, seconds_tolerance: 300}
+  company_events:
+    domain: events
+    fields:
+      event_type: {method: exact}
+      title: {method: normalized_text}
+      event_time: {method: timestamp, seconds_tolerance: 300}

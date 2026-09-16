@@ -1,0 +1,69 @@
+schema_version: stock_ai.data_quality_rules.v1
+
+defaults:
+  minimum_outlier_sample_size: 5
+  mad_zscore_threshold: 6.0
+  flat_series_deviation_ratio: 0.5
+  informational_flags:
+    - publication_time_unavailable
+    - index_master_derived_from_official_series
+
+datasets:
+  prices_daily:
+    required_fields: [close]
+    numeric_fields: [open, high, low, close, volume, turnover]
+    non_negative_fields: [open, high, low, close, volume, turnover]
+    observation_date_fields: [trade_date]
+    consistency_rules: [ohlc]
+  prices_intraday:
+    required_fields: [close]
+    numeric_fields: [open, high, low, close, volume]
+    non_negative_fields: [open, high, low, close, volume]
+    observation_date_fields: [trade_date]
+    consistency_rules: [ohlc]
+  fundamentals:
+    required_fields: []
+    numeric_fields: []
+    non_negative_fields: []
+    observation_date_fields: []
+    consistency_rules: []
+  fundamentals_quarterly:
+    required_fields: [period]
+    numeric_fields: []
+    non_negative_fields: []
+    observation_date_fields: [period]
+    consistency_rules: []
+  revenues_monthly:
+    required_fields: [symbol, period, current_revenue]
+    numeric_fields:
+      - current_revenue
+      - previous_revenue
+      - last_year_revenue
+      - ytd_revenue
+      - last_ytd_revenue
+    non_negative_fields:
+      - current_revenue
+      - previous_revenue
+      - last_year_revenue
+      - ytd_revenue
+      - last_ytd_revenue
+    observation_date_fields: [period]
+    consistency_rules: []
+  institutional_flows:
+    required_fields: []
+    numeric_fields: []
+    non_negative_fields: []
+    observation_date_fields: [trade_date]
+    consistency_rules: []
+  margin_trading:
+    required_fields: []
+    numeric_fields: []
+    non_negative_fields: []
+    observation_date_fields: [trade_date]
+    consistency_rules: []
+  security_master:
+    required_fields: [code, display_symbol, legal_name]
+    numeric_fields: []
+    non_negative_fields: []
+    observation_date_fields: []
+    consistency_rules: []

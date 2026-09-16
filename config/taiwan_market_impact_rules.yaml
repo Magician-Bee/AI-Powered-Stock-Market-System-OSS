@@ -1,0 +1,107 @@
+schema_version: open_stock_ai.taiwan_market_impact_rules.v1
+snapshot_id: taiwan-secondary-market-impact-2026-08-13
+reviewed_at: "2026-08-13T16:30:00+08:00"
+
+# These are explicitly conservative research coefficients, not a claim that
+# they have been calibrated to an account's executions.  The runtime records
+# the selected rule and fails closed for execution evidence until a rule is
+# replaced by a reviewed empirical calibration artifact.
+calibration_artifact: docs/research/taiwan-market-impact-baseline.md
+calibration_artifact_sha256: "04aa66deec4ff5ab04160d8ea6ec1487047b1267ae1f97f71d17683083d72b34"
+
+rules:
+  - rule_id: twse-stock-buy-research-baseline-2026
+    venues: [TWSE]
+    product_types: [stock]
+    sides: [buy]
+    valid_from: "2026-01-01"
+    valid_to: null
+    base_slippage_bps: 0.0
+    impact_coefficient_bps: 15.0
+    volatility_coefficient: 0.05
+    calibration_status: research_baseline
+    execution_evidence_eligible: false
+
+  - rule_id: twse-stock-sell-research-baseline-2026
+    venues: [TWSE]
+    product_types: [stock]
+    sides: [sell]
+    valid_from: "2026-01-01"
+    valid_to: null
+    base_slippage_bps: 0.0
+    impact_coefficient_bps: 16.0
+    volatility_coefficient: 0.05
+    calibration_status: research_baseline
+    execution_evidence_eligible: false
+
+  - rule_id: tpex-stock-buy-research-baseline-2026
+    venues: [TPEX]
+    product_types: [stock]
+    sides: [buy]
+    valid_from: "2026-01-01"
+    valid_to: null
+    base_slippage_bps: 0.0
+    impact_coefficient_bps: 18.0
+    volatility_coefficient: 0.06
+    calibration_status: research_baseline
+    execution_evidence_eligible: false
+
+  - rule_id: tpex-stock-sell-research-baseline-2026
+    venues: [TPEX]
+    product_types: [stock]
+    sides: [sell]
+    valid_from: "2026-01-01"
+    valid_to: null
+    base_slippage_bps: 0.0
+    impact_coefficient_bps: 19.0
+    volatility_coefficient: 0.06
+    calibration_status: research_baseline
+    execution_evidence_eligible: false
+
+  - rule_id: tw-etf-buy-research-baseline-2026
+    venues: [TWSE, TPEX]
+    product_types: [etf]
+    sides: [buy]
+    valid_from: "2026-01-01"
+    valid_to: null
+    base_slippage_bps: 0.0
+    impact_coefficient_bps: 12.0
+    volatility_coefficient: 0.04
+    calibration_status: research_baseline
+    execution_evidence_eligible: false
+
+  - rule_id: tw-etf-sell-research-baseline-2026
+    venues: [TWSE, TPEX]
+    product_types: [etf]
+    sides: [sell]
+    valid_from: "2026-01-01"
+    valid_to: null
+    base_slippage_bps: 0.0
+    impact_coefficient_bps: 13.0
+    volatility_coefficient: 0.04
+    calibration_status: research_baseline
+    execution_evidence_eligible: false
+
+  - rule_id: tw-bond-etf-buy-research-baseline-2026
+    venues: [TWSE, TPEX]
+    product_types: [bond_etf]
+    sides: [buy]
+    valid_from: "2026-01-01"
+    valid_to: null
+    base_slippage_bps: 0.0
+    impact_coefficient_bps: 10.0
+    volatility_coefficient: 0.03
+    calibration_status: research_baseline
+    execution_evidence_eligible: false
+
+  - rule_id: tw-bond-etf-sell-research-baseline-2026
+    venues: [TWSE, TPEX]
+    product_types: [bond_etf]
+    sides: [sell]
+    valid_from: "2026-01-01"
+    valid_to: null
+    base_slippage_bps: 0.0
+    impact_coefficient_bps: 11.0
+    volatility_coefficient: 0.03
+    calibration_status: research_baseline
+    execution_evidence_eligible: false

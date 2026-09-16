@@ -1,0 +1,140 @@
+{
+  "access": {
+    "immutable": false,
+    "query_only": true,
+    "sqlite_mode": "ro",
+    "transaction": "BEGIN"
+  },
+  "account_id": "autonomous-paper-v1",
+  "audited_at": "2026-09-14T02:44:16.864718+00:00",
+  "current_row_count": 49262,
+  "database_path_sha256": "54393fa050541d0951e46c8bd727fc53120cb73f47351d5d504c334425c6cff7",
+  "duplicate_current_entity_count": 0,
+  "missing_cycle_reference_count": 0,
+  "missing_evidence_reference_count": 0,
+  "missing_tables": [],
+  "observed_at": "2026-09-14T02:43:38.002486+00:00",
+  "passed": true,
+  "problem_counts": {},
+  "problem_samples": [],
+  "problems": [],
+  "receipt_sha256": "3b3ff58dbf43f85abc160de7e0c9d048e22202034847cfe8adb543efad376bca",
+  "row_snapshot_hash_mismatch_count": 0,
+  "saved_summary_matches": true,
+  "schema_version": "open_stock_ai.security_research_coverage_audit.v1",
+  "snapshot_id": "ACV-b714a0ddac1699b05413506671eb92cd5a6d8b5332a11b8b6b89dea166f45ef0",
+  "source_cycle_id": "AC-3273b5bc7a97f3ac85c0772cc4961722e9756541c2ea9c67fb9fe890ea7b0b03",
+  "summary": {
+    "account_id": "autonomous-paper-v1",
+    "all_domains_current": false,
+    "complete_deep_coverage": false,
+    "data_domain_counts": {
+      "cross_market": {
+        "conflict": 0,
+        "needs_update": 49262,
+        "partial": 0,
+        "ready_current": 0,
+        "stale": 0,
+        "unavailable": 49262
+      },
+      "daily_price": {
+        "conflict": 0,
+        "needs_update": 49262,
+        "partial": 2350,
+        "ready_current": 0,
+        "stale": 0,
+        "unavailable": 46912
+      },
+      "financials": {
+        "conflict": 0,
+        "needs_update": 49262,
+        "partial": 0,
+        "ready_current": 0,
+        "stale": 0,
+        "unavailable": 49262
+      },
+      "identity": {
+        "conflict": 0,
+        "needs_update": 0,
+        "partial": 0,
+        "ready_current": 49262,
+        "stale": 0,
+        "unavailable": 0
+      },
+      "industry": {
+        "conflict": 0,
+        "needs_update": 939,
+        "partial": 0,
+        "ready_current": 48323,
+        "stale": 0,
+        "unavailable": 939
+      },
+      "intraday_price": {
+        "conflict": 0,
+        "needs_update": 49262,
+        "partial": 0,
+        "ready_current": 0,
+        "stale": 0,
+        "unavailable": 49262
+      },
+      "news_events": {
+        "conflict": 0,
+        "needs_update": 49262,
+        "partial": 0,
+        "ready_current": 0,
+        "stale": 0,
+        "unavailable": 49262
+      },
+      "order_book": {
+        "conflict": 0,
+        "needs_update": 49262,
+        "partial": 0,
+        "ready_current": 0,
+        "stale": 0,
+        "unavailable": 49262
+      },
+      "ownership_flows": {
+        "conflict": 0,
+        "needs_update": 49262,
+        "partial": 1359,
+        "ready_current": 0,
+        "stale": 1359,
+        "unavailable": 47903
+      },
+      "price_history": {
+        "conflict": 0,
+        "needs_update": 49234,
+        "partial": 0,
+        "ready_current": 28,
+        "stale": 0,
+        "unavailable": 49234
+      },
+      "revenue": {
+        "conflict": 0,
+        "needs_update": 49262,
+        "partial": 1082,
+        "ready_current": 0,
+        "stale": 1077,
+        "unavailable": 48180
+      }
+    },
+    "deep_research_status_counts": {
+      "current": 28,
+      "failed": 2,
+      "never_researched": 49217,
+      "not_attributed": 15
+    },
+    "lifecycle_status_counts": {
+      "active": 47355,
+      "listed_pending_quote": 358,
+      "unknown": 1549
+    },
+    "new_entry_eligible_count": 1936,
+    "observed_at": "2026-09-14T02:43:38.002486+00:00",
+    "schema_version": "open_stock_ai.security_research_coverage_summary.v1",
+    "scope": "latest_official_research_universe_expanded_by_entity_identity",
+    "security_count": 49262,
+    "source_cycle_id": "AC-3273b5bc7a97f3ac85c0772cc4961722e9756541c2ea9c67fb9fe890ea7b0b03",
+    "universe_expires_at": "2026-09-14T07:30:00+00:00"
+  }
+}

@@ -1,0 +1,382 @@
+/* Dedicated real-market paper-trading workspace and light-glass geometry fixes. */
+
+/* --------------------------------------------------------------------------
+   Settings: concentric rounded geometry with real breathing room
+   -------------------------------------------------------------------------- */
+.settings-rows{
+  position:relative;
+  box-sizing:border-box;
+  display:grid;
+  gap:0;
+  overflow:hidden!important;
+  padding:10px!important;
+  border:1px solid rgba(255,255,255,.24)!important;
+  border-radius:28px!important;
+  background:linear-gradient(145deg,rgba(255,255,255,.095),rgba(255,255,255,.025))!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.40),
+    inset 0 -1px 0 rgba(0,0,0,.13),
+    0 18px 42px rgba(0,0,0,.12)!important;
+  backdrop-filter:saturate(145%) blur(22px)!important;
+  -webkit-backdrop-filter:saturate(145%) blur(22px)!important;
+  isolation:isolate;
+}
+.settings-rows::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  border:1px solid rgba(255,255,255,.26);
+  box-shadow:inset 0 2px 2px rgba(255,255,255,.26),inset 0 -2px 3px rgba(30,52,68,.10);
+  pointer-events:none;
+  z-index:3;
+}
+.setting-row{
+  position:relative;
+  z-index:1;
+  box-sizing:border-box;
+  display:grid!important;
+  grid-template-columns:minmax(260px,1fr) minmax(300px,520px)!important;
+  gap:36px!important;
+  align-items:center!important;
+  min-height:108px;
+  margin:0!important;
+  padding:22px 24px!important;
+  border:0!important;
+  border-bottom:1px solid rgba(255,255,255,.17)!important;
+  border-radius:18px!important;
+  background:rgba(255,255,255,.018)!important;
+}
+.setting-row:last-child{border-bottom:0!important}
+.setting-row>span:first-child{
+  display:grid;
+  gap:6px;
+  min-width:0;
+  padding-left:2px;
+}
+.setting-row strong{line-height:1.25}
+.setting-row small{line-height:1.45}
+.setting-row>select,
+.setting-row>.range-control{
+  box-sizing:border-box;
+  width:min(100%,520px)!important;
+  min-width:0;
+  justify-self:end!important;
+  margin-right:2px!important;
+}
+.setting-row select,
+.setting-row input[type="text"],
+.setting-row input[type="number"]{
+  box-sizing:border-box;
+  min-height:48px;
+  padding-inline:16px 44px!important;
+  border-radius:16px!important;
+}
+.setting-row>.range-control{
+  display:grid!important;
+  grid-template-columns:minmax(180px,1fr) 72px;
+  gap:20px;
+  align-items:center;
+}
+.setting-row .range-control input[type="range"]{width:100%;min-width:0}
+.setting-row .range-control output{min-width:72px;text-align:right;font-variant-numeric:tabular-nums}
+
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .settings-rows{
+  border-color:rgba(48,80,102,.22)!important;
+  background:linear-gradient(145deg,rgba(255,255,255,.46),rgba(216,235,247,.18))!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.92),
+    inset 0 -1px 0 rgba(52,82,101,.12),
+    0 18px 42px rgba(67,102,126,.10)!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .settings-rows::after{
+  border-color:rgba(255,255,255,.70);
+  box-shadow:inset 0 2px 2px rgba(255,255,255,.75),inset 0 -2px 3px rgba(44,78,102,.10);
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .setting-row{
+  color:#314a5b!important;
+  background:rgba(255,255,255,.09)!important;
+  border-bottom-color:rgba(47,78,101,.14)!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .setting-row strong{color:#1f3342!important}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .setting-row small{color:#536b7b!important}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .range-control output{color:#314a5b!important;opacity:1!important}
+
+/* Dark capsule labels must keep white text even inside a light theme. */
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .panel-head>.chip{
+  color:#f7fbff!important;
+  text-shadow:0 1px 1px rgba(0,0,0,.22)!important;
+  opacity:1!important;
+}
+
+/* --------------------------------------------------------------------------
+   Paper trading navigation and page shell
+   -------------------------------------------------------------------------- */
+.nav-btn[data-paper-trading-nav],
+.nav-btn[data-paper-trading-nav] *{
+  font-family:inherit!important;
+  font-style:normal!important;
+  letter-spacing:inherit!important;
+}
+.nav-btn[data-paper-trading-nav] .paper-nav-label{
+  font:inherit!important;
+  color:inherit!important;
+}
+.paper-trading-view{
+  box-sizing:border-box;
+  padding:0 0 64px;
+  font-family:var(--font-ui,-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","PingFang TC","Noto Sans TC",sans-serif);
+}
+.paper-trading-hero{
+  box-sizing:border-box;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(280px,390px);
+  gap:28px;
+  align-items:center;
+  margin-bottom:20px;
+  padding:24px 28px;
+  border:1px solid rgba(255,255,255,.22);
+  border-radius:26px;
+  background:linear-gradient(145deg,rgba(255,255,255,.10),rgba(255,255,255,.025));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.34),0 18px 42px rgba(0,0,0,.14);
+  backdrop-filter:saturate(145%) blur(22px);
+  -webkit-backdrop-filter:saturate(145%) blur(22px);
+}
+.paper-trading-hero h3{margin:0 0 9px;font-size:25px;line-height:1.2;letter-spacing:.01em}
+.paper-trading-hero p{max-width:980px;margin:0;color:var(--muted);line-height:1.7}
+.paper-trading-truth{
+  box-sizing:border-box;
+  display:grid;
+  gap:6px;
+  width:100%;
+  padding:15px 17px;
+  border:1px solid rgba(73,190,151,.32);
+  border-radius:19px;
+  background:rgba(73,190,151,.08);
+}
+.paper-trading-truth strong{font-size:13px;line-height:1.35;letter-spacing:.035em}
+.paper-trading-truth small{color:var(--muted);line-height:1.5}
+
+/* --------------------------------------------------------------------------
+   Paper trading panel: consistent hierarchy, fields, spacing and controls
+   -------------------------------------------------------------------------- */
+.paper-trading-view .paper-training-panel{
+  box-sizing:border-box;
+  display:block!important;
+  width:100%;
+  margin:0!important;
+  padding:26px 28px 30px!important;
+  border-radius:26px!important;
+  overflow:visible!important;
+}
+.paper-trading-view .paper-training-panel>.panel-head{
+  display:flex!important;
+  align-items:flex-start!important;
+  justify-content:space-between!important;
+  gap:24px!important;
+  margin:0 0 22px!important;
+  padding:0 2px 18px!important;
+  border-bottom:1px solid rgba(255,255,255,.14);
+}
+.paper-trading-view .paper-training-panel>.panel-head>div{min-width:0;max-width:980px}
+.paper-trading-view .paper-training-panel>.panel-head h3{margin:0 0 7px!important;font-size:23px!important;line-height:1.25}
+.paper-trading-view .paper-training-panel>.panel-head .panel-copy{margin:0!important;line-height:1.6}
+.paper-trading-view .paper-training-grid{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:15px!important;
+  margin:0 0 22px!important;
+}
+.paper-trading-view .paper-training-grid .mini-card{
+  box-sizing:border-box;
+  min-height:116px;
+  padding:17px 18px!important;
+  border-radius:20px!important;
+}
+.paper-trading-view .paper-training-grid .mini-card span{line-height:1.35}
+.paper-trading-view .paper-training-grid .mini-card strong{display:block;margin:7px 0 5px;font-size:23px;line-height:1.2}
+.paper-trading-view .paper-training-grid .mini-card small{line-height:1.4}
+
+.paper-trading-view .paper-training-controls{
+  box-sizing:border-box;
+  display:grid!important;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr))!important;
+  gap:18px!important;
+  align-items:end!important;
+  width:100%;
+  margin:0 0 18px!important;
+  padding:0!important;
+}
+.paper-trading-view .paper-training-controls label{
+  box-sizing:border-box;
+  display:flex!important;
+  flex-direction:column!important;
+  gap:9px!important;
+  min-width:0;
+  margin:0!important;
+  color:var(--muted);
+  font-family:inherit!important;
+  font-size:14px!important;
+  font-weight:750!important;
+  line-height:1.25!important;
+}
+.paper-trading-view .paper-training-controls input,
+.paper-trading-view .paper-training-controls select{
+  box-sizing:border-box;
+  width:100%!important;
+  min-width:0!important;
+  min-height:54px!important;
+  margin:0!important;
+  padding:0 16px!important;
+  border-radius:17px!important;
+  font-family:inherit!important;
+  font-size:16px!important;
+  font-weight:650!important;
+  line-height:1!important;
+}
+.paper-trading-view #paperTrainingEpisodeId{font-size:14px!important}
+
+.paper-trading-view .paper-training-policy{
+  box-sizing:border-box;
+  display:flex!important;
+  flex-direction:column!important;
+  gap:10px!important;
+  width:100%!important;
+  margin:14px 0 0!important;
+  padding:16px 18px!important;
+  border:1px solid var(--line)!important;
+  border-radius:19px!important;
+  background:rgba(255,255,255,.045)!important;
+  color:var(--muted);
+  font-family:inherit!important;
+  font-size:14px!important;
+  font-weight:750!important;
+  line-height:1.35!important;
+}
+.paper-trading-view .paper-training-policy input,
+.paper-trading-view .paper-training-policy textarea{
+  box-sizing:border-box;
+  display:block!important;
+  width:100%!important;
+  min-width:0!important;
+  margin:0!important;
+  padding:14px 16px!important;
+  border-radius:17px!important;
+  font-family:inherit!important;
+  font-size:16px!important;
+  font-weight:500!important;
+  line-height:1.55!important;
+}
+.paper-trading-view .paper-training-policy input{min-height:52px!important}
+.paper-trading-view .paper-training-policy textarea{min-height:132px!important;resize:vertical}
+
+.paper-trading-view .paper-training-actions{
+  box-sizing:border-box;
+  display:flex!important;
+  align-items:center!important;
+  gap:12px!important;
+  flex-wrap:wrap!important;
+  width:100%;
+  margin:18px 0 0!important;
+  padding:18px 0 0!important;
+  border-top:1px solid rgba(255,255,255,.13);
+}
+.paper-trading-view .paper-training-actions button{
+  box-sizing:border-box;
+  min-height:50px!important;
+  margin:0!important;
+  padding:0 20px!important;
+  border:1px solid rgba(255,255,255,.21)!important;
+  border-radius:17px!important;
+  background:linear-gradient(145deg,rgba(255,255,255,.13),rgba(255,255,255,.035))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.34),0 9px 22px rgba(0,0,0,.11)!important;
+  backdrop-filter:saturate(145%) blur(18px)!important;
+  -webkit-backdrop-filter:saturate(145%) blur(18px)!important;
+  font-family:inherit!important;
+  font-size:15px!important;
+  font-weight:750!important;
+  line-height:1.15!important;
+}
+.paper-trading-view .paper-training-actions button.primary{
+  background:linear-gradient(145deg,rgba(70,158,221,.30),rgba(86,188,172,.16))!important;
+  border-color:rgba(102,190,239,.38)!important;
+}
+.paper-trading-view .paper-training-status{
+  box-sizing:border-box;
+  min-height:54px!important;
+  margin:18px 0 0!important;
+  padding:14px 17px!important;
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:17px;
+  background:rgba(255,255,255,.035);
+  line-height:1.55;
+}
+.paper-trading-view .paper-training-status[data-tone="ok"]{color:#2aa679}
+.paper-trading-view .paper-training-status[data-tone="warn"]{color:#b77a24}
+.paper-trading-view .paper-training-status[data-tone="error"]{color:#d64d61}
+.paper-trading-view .paper-training-panel>.grid.two-col{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:16px!important;
+  margin:18px 0 0!important;
+}
+.paper-trading-view .paper-training-ledger{display:grid;gap:10px;margin:0!important}
+.paper-trading-view .paper-training-ledger .event{box-sizing:border-box;margin:0!important;border-radius:18px!important}
+
+/* Light paper-trading treatment. */
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .paper-trading-hero,
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .paper-trading-view .paper-training-panel{
+  color:#314a5b!important;
+  border-color:rgba(47,78,101,.20)!important;
+  background:linear-gradient(145deg,rgba(255,255,255,.38),rgba(214,234,247,.14))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.88),0 18px 42px rgba(60,96,122,.10)!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .paper-trading-hero h3,
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .paper-trading-view h3,
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .paper-trading-view h4,
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .paper-trading-view strong{color:#1f3342!important}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .paper-trading-hero p,
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .paper-trading-view p,
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .paper-trading-view small,
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .paper-trading-view label{color:#536b7b!important}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .paper-trading-view .paper-training-policy{
+  color:#40596a!important;
+  background:rgba(255,255,255,.24)!important;
+  border-color:rgba(47,78,101,.18)!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .paper-trading-view .paper-training-status{
+  color:#40596a;
+  background:rgba(255,255,255,.22);
+  border-color:rgba(47,78,101,.16);
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .paper-trading-view .paper-training-actions button{
+  color:#314a5b!important;
+  background:linear-gradient(145deg,rgba(255,255,255,.44),rgba(204,229,245,.18))!important;
+  border-color:rgba(47,78,101,.21)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.90),0 9px 22px rgba(60,96,122,.09)!important;
+}
+html:is([data-ui-theme="pearl"],[data-ui-theme="daylight"]) .paper-trading-view .paper-training-actions button.primary{
+  color:#244a64!important;
+  background:linear-gradient(145deg,rgba(255,255,255,.60),rgba(138,204,244,.30))!important;
+  border-color:rgba(62,137,190,.38)!important;
+}
+
+@media(max-width:1200px){
+  .setting-row{grid-template-columns:minmax(220px,.8fr) minmax(260px,1.2fr)!important;gap:26px!important}
+  .paper-trading-view .paper-training-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:900px){
+  .settings-rows{padding:8px!important}
+  .setting-row{grid-template-columns:1fr!important;gap:14px!important;min-height:0;padding:20px!important}
+  .setting-row>select,.setting-row>.range-control{width:100%!important;max-width:none!important;justify-self:stretch!important;margin-right:0!important}
+  .paper-trading-hero{grid-template-columns:1fr;padding:21px 22px}
+  .paper-trading-truth{min-width:0}
+  .paper-trading-view .paper-training-panel{padding:22px!important}
+  .paper-trading-view .paper-training-panel>.panel-head{display:grid!important}
+  .paper-trading-view .paper-training-panel>.grid.two-col{grid-template-columns:1fr!important}
+}
+@media(max-width:620px){
+  .paper-trading-view .paper-training-grid{grid-template-columns:1fr!important}
+  .paper-trading-view .paper-training-controls{grid-template-columns:1fr!important}
+  .paper-trading-view .paper-training-actions button{width:100%}
+}

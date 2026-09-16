@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  
+
+    <link rel="apple-touch-icon" type="image/png" href="https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png" />
+
+    <meta name="apple-mobile-web-app-title" content="CodePen">
+
+    <link rel="icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico" />
+
+    <link rel="mask-icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-b4b4269c16397ad2f0f7a01bcdf513a1994f4c94b8af2f191c09eb0d601762b1.svg" color="#111" />
+
+
+
+  <meta charset="utf-8">
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+  <title>Liquid Glass | Cubiq</title>
+
+  <link rel="stylesheet" href="https://cpwebassets.codepen.io/assets/fullpage/fullpage-defe0b00ddddc98ad4bc2c428e9d6182cd7742e2624f558656dbfb986d4ba13c.css" />
+  
+
+    <link rel="apple-touch-icon" type="image/png" href="https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png" />
+
+    <meta name="apple-mobile-web-app-title" content="CodePen">
+
+    <link rel="icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico" />
+
+    <link rel="mask-icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-b4b4269c16397ad2f0f7a01bcdf513a1994f4c94b8af2f191c09eb0d601762b1.svg" color="#111" />
+
+
+
+
+
+  <title>Liquid Glass | Cubiq</title>
+
+  <style>
+    html { font-size: 15px; }
+    html, body { margin: 0; padding: 0; min-height: 100%; }
+    body { height:100%; display: flex; flex-direction: column; }
+    .referer-warning {
+      background: black;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+      padding: 0.75em;
+      color: white;
+      text-align: center;
+      font-family: 'Lato', 'Lucida Grande', 'Lucida Sans Unicode', Tahoma, system-ui, Sans-Serif;
+      line-height: 1.2;
+      font-size: 1rem;
+      position: relative;
+      z-index: 2;
+    }
+    .referer-warning span { font-family: initial; }
+    .referer-warning h1 { font-size: 1.2rem; margin: 0; }
+    .referer-warning a { color: #56bcf9; }
+  </style>
+</head>
+
+<body class="">
+  <div class="referer-warning">
+    <h1><span>⚠️</span> Do not enter passwords or personal information on this page. <span>⚠️</span></h1>
+      This is a code demo posted by a web developer on <a href="https://codepen.io">CodePen</a>.
+    <br />
+    A referer from CodePen is required to render this page view, and your browser is not sending one (<a href="https://blog.codepen.io/2017/10/05/regarding-referer-headers/" target="_blank" rel="noreferrer noopener">more details</a>).</h1>
+  </div>
+
+  <div id="result-iframe-wrap" role="main">
+    <iframe
+      id="result"
+      srcdoc="<!DOCTYPE html>
+<html lang=&quot;en&quot; >
+
+<head>
+  <meta charset=&quot;UTF-8&quot;>
+  
+
+    <link rel=&quot;apple-touch-icon&quot; type=&quot;image/png&quot; href=&quot;https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png&quot; />
+
+    <meta name=&quot;apple-mobile-web-app-title&quot; content=&quot;CodePen&quot;>
+
+    <link rel=&quot;icon&quot; type=&quot;image/x-icon&quot; href=&quot;https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico&quot; />
+
+    <link rel=&quot;mask-icon&quot; type=&quot;image/x-icon&quot; href=&quot;https://cpwebassets.codepen.io/assets/favicon/logo-pin-b4b4269c16397ad2f0f7a01bcdf513a1994f4c94b8af2f191c09eb0d601762b1.svg&quot; color=&quot;#111&quot; />
+
+
+
+  
+    <script src=&quot;https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-f07739098a39bd4e74ddd974652dac904146f33fdc1ecab356e8c809a05faccb.js&quot;></script>
+
+
+  <title>Liquid Glass | Cubiq</title>
+
+    <link rel=&quot;canonical&quot; href=&quot;https://codepen.io/thecubiq/pen/ZYbQmZN&quot;>
+  
+  
+  
+  
+<style>
+@import url(&quot;https://fonts.googleapis.com/css2?family=Manrope&quot;);
+
+:root {
+  font-size: clamp(1.5rem, 2vw + 1rem, 2.5rem);
+}
+
+@keyframes bg-move {
+  from { background-position-y: bottom; }
+  to   { background-position-y: 70%; }
+}
+
+body {
+  background: rgb(2, 6, 23);
+  height: 100svh;
+  display: grid;
+  place-items: center;    
+  place-content: center;
+  
+  color:white;
+  font-family: &quot;Manrope&quot;, sans-serif;
+  
+  background-image: url('https://i.ibb.co/ZpTYhmfq/tulip.jpg'); 
+/*   background-image: url('https://images.unsplash.com/photo-1745986143057-e611033e37e8');  */
+
+  background-size: cover;
+  background-position: bottom;
+
+  animation: bg-move 20s ease-in-out infinite alternate;
+  
+  overflow: hidden;
+  
+  grid-template-area: &quot;stack&quot;;
+  
+  > * {
+    grid-area: stack;
+  }
+  
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+h1 {
+  text-decoration: none;
+  font-weight: normal;
+  outline: none;
+  text-align: center;
+  font-size: 1.7em;
+  line-height: 6em;
+  min-width: 1em;
+}
+
+nav{
+  width: 100%;
+  position: relative;    
+  font-size: 1.5rem;
+  padding: .5em;
+  
+  resize: horizontal;
+  overflow: hidden;  
+  
+/*   body:not(:hover) &amp; {
+    transition: .5s;
+    width: 100% !important;
+  } */
+  
+  &amp;.glass::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    
+    /* 
+    | Converts background to 7bit colors 
+    | (128 levels for each channel)
+    */
+    backdrop-filter: url(#pack-upper);
+  }
+  
+  &amp;.glass::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    
+    /* variations <3 */
+    backdrop-filter: url(#glass);
+    backdrop-filter: url(#liquid-glass);
+    backdrop-filter: url(#liquid-glass-new);
+    backdrop-filter: 
+      url(#liquid-glass-new) 
+      url(#fresnel)
+      drop-shadow(0 0 10px #0003)
+    ;
+  }
+
+  &amp;::-webkit-resizer {
+      background: #fff;
+      border-radius: 99em;
+      box-shadow: 0 0 20px 1px #fff;
+      outline: 20px solid transparent;
+      pointer-events: all;
+  }
+}
+
+.icons {
+  display:flex;
+  flex-wrap: wrap;
+  justify-content:space-around;  
+  
+  filter: url(#round);  
+  filter: url(#pack-lower);  
+  filter: url(#round) url(#pack-lower);  
+  
+  /* correct channel addition blend mode */
+  mix-blend-mode: plus-lighter;
+}
+
+.icon {
+  pointer-events: all;
+  width: 3em;
+  aspect-ratio: 1;  
+
+  transition: 1s;
+  border-radius: 0em;
+  border-radius: 1em;
+  border-radius: 1.5em;
+
+  background: #fff;
+  
+  /* color: black; */
+  
+  padding: .85em;
+  
+  /* to make it kinda morph*/
+  margin: -0.2em;
+  
+  cursor: pointer;
+  overflow: visible;
+  
+  transition: 
+    scale 1s linear(0, 0.038 1.6%, 0.154 3.4%, 1.026 12.6%, 1.166 15.2%, 1.234 18%, 1.221 21.6%, 1.005 31.2%, 0.944 37%, 1.013 56%, 1)
+/*     , border-radius .3s ease-in-out */
+  ;
+  
+  will-change: transform;
+  
+  nav:has(&amp;:active) &amp;:hover {
+    transition-timing-function: ease-out;
+    transition-duration: 130ms;
+    scale: .75;
+  }
+}
+
+body > svg{
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+</style>
+
+  <script>
+  window.console = window.console || function(t) {};
+</script>
+
+  
+  
+</head>
+
+<body translate=&quot;no&quot;>
+  <!--  
+| HTML + CSS Only Liquid Glass 
+| ..that's actually liquid..
+-->
+
+<h1 contenteditable spellcheck=&quot;false&quot;>Made by cubiq.</h1>
+<nav class=&quot;glass&quot;>
+  <div class=&quot;icons&quot;>
+    <svg class=&quot;icon&quot;>
+      <use href=&quot;#home&quot;></use>
+    </svg>
+    <svg class=&quot;icon&quot;>
+      <use href=&quot;#store&quot;></use>
+    </svg>
+    <svg class=&quot;icon&quot;>
+      <use href=&quot;#camera&quot;></use>
+    </svg>
+    <svg class=&quot;icon&quot;>
+      <use href=&quot;#search&quot;></use>
+    </svg>
+  </div>
+</nav>
+
+<!-- ✴️ lucide icons <3 -->
+<svg>
+  <symbol id=&quot;search&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; class=&quot;lucide lucide-search&quot;>
+    <circle cx=&quot;11&quot; cy=&quot;11&quot; r=&quot;8&quot;></circle>
+    <path d=&quot;m21 21-4.3-4.3&quot;></path>
+  </symbol>
+
+  <symbol id=&quot;camera&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; class=&quot;lucide lucide-camera&quot;>
+    <path d=&quot;M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z&quot;></path>
+    <circle cx=&quot;12&quot; cy=&quot;13&quot; r=&quot;3&quot;></circle>
+  </symbol>
+
+  <symbol id=&quot;home&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; class=&quot;lucide lucide-home&quot;>
+    <path d=&quot;m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z&quot;></path>
+    <polyline points=&quot;9 22 9 12 15 12 15 22&quot;></polyline>
+  </symbol>
+
+  <symbol id=&quot;store&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; class=&quot;lucide lucide-store&quot;>
+    <path d=&quot;m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7&quot;></path>
+    <path d=&quot;M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8&quot;></path>
+    <path d=&quot;M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4&quot;></path>
+    <path d=&quot;M2 7h20&quot;></path>
+    <path d=&quot;M22 7v3a2 2 0 0 1-2 2v0a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12v0a2 2 0 0 1-2-2V7&quot;></path>
+  </symbol>
+</svg>
+
+<!-- Utilities -->
+<svg color-interpolation-filters=&quot;sRGB&quot;>
+  <filter id=&quot;round&quot;>
+    <feGaussianBlur in=&quot;SourceGraphic&quot; stdDeviation=&quot;10&quot;></feGaussianBlur>
+    <feComponentTransfer result=&quot;threshold&quot;>
+      <feFuncA type=&quot;gamma&quot; amplitude=&quot;80&quot; exponent=&quot;10&quot; offset=&quot;-2&quot;></feFuncA>
+    </feComponentTransfer>
+    <feComposite in=&quot;SourceGraphic&quot; operator=&quot;atop&quot;></feComposite>
+  </filter>
+</svg>
+
+<!-- 
+| 7:1 bit packing 
+| https://codepen.io/Cubiq/pen/yyYYRzP
+-->
+<svg width=&quot;0&quot; height=&quot;0&quot; color-interpolation-filters=&quot;sRGB&quot;>
+  <!-- Pack Lower Channel -->
+  <filter id=&quot;pack-lower&quot;>
+    <feColorMatrix type=&quot;matrix&quot; id=&quot;pack-lower-matrix&quot; values=&quot;
+              0.00392156862745098 0 0 0 0
+              0 0.00392156862745098 0 0 0
+              0 0 0.00392156862745098 0 0
+              0 0 0 1 0
+          &quot;></feColorMatrix>
+  </filter>
+
+  <!-- Pack Upper Channel -->
+  <filter id=&quot;pack-upper&quot;>
+    <feColorMatrix type=&quot;matrix&quot; id=&quot;pack-upper-quantize&quot; result=&quot;quantized&quot; values=&quot;
+              0.4980392156862745 0 0 0 0
+              0 0.4980392156862745 0 0 0
+              0 0 0.4980392156862745 0 0
+              0 0 0 1 0
+          &quot;></feColorMatrix>
+    <feComposite in=&quot;quantized&quot; operator=&quot;over&quot; result=&quot;composited&quot;></feComposite>
+    <feColorMatrix in=&quot;composited&quot; type=&quot;matrix&quot; id=&quot;pack-upper-shift&quot; values=&quot;
+              2 0 0 0 0
+              0 2 0 0 0
+              0 0 2 0 0
+              0 0 0 1 0
+          &quot;></feColorMatrix>
+  </filter>
+
+  <!-- Unpack Lower Channel -->
+  <filter id=&quot;unpack-lower&quot;>
+    <feComponentTransfer>
+      <feFuncR type=&quot;discrete&quot; id=&quot;unpack-lower-r&quot; tableValues=&quot;0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000&quot;></feFuncR>
+      <feFuncG type=&quot;discrete&quot; id=&quot;unpack-lower-g&quot; tableValues=&quot;0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000&quot;></feFuncG>
+      <feFuncB type=&quot;discrete&quot; id=&quot;unpack-lower-b&quot; tableValues=&quot;0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000&quot;></feFuncB>
+    </feComponentTransfer>
+  </filter>
+
+  <!-- Unpack Upper Channel -->
+  <filter id=&quot;unpack-upper&quot;>
+      <feComponentTransfer>
+        <feFuncR type=&quot;discrete&quot; id=&quot;unpack-upper-r&quot; tableValues=&quot;0.000 0.008 0.016 0.024 0.031 0.039 0.047 0.055 0.063 0.071 0.079 0.087 0.094 0.102 0.110 0.118 0.126 0.134 0.142 0.150 0.157 0.165 0.173 0.181 0.189 0.197 0.205 0.213 0.220 0.228 0.236 0.244 0.252 0.260 0.268 0.276 0.283 0.291 0.299 0.307 0.315 0.323 0.331 0.339 0.346 0.354 0.362 0.370 0.378 0.386 0.394 0.402 0.409 0.417 0.425 0.433 0.441 0.449 0.457 0.465 0.472 0.480 0.488 0.496 0.504 0.512 0.520 0.528 0.535 0.543 0.551 0.559 0.567 0.575 0.583 0.591 0.598 0.606 0.614 0.622 0.630 0.638 0.646 0.654 0.661 0.669 0.677 0.685 0.693 0.701 0.709 0.717 0.724 0.732 0.740 0.748 0.756 0.764 0.772 0.780 0.787 0.795 0.803 0.811 0.819 0.827 0.835 0.843 0.850 0.858 0.866 0.874 0.882 0.890 0.898 0.906 0.913 0.921 0.929 0.937 0.945 0.953 0.961 0.969 0.976 0.984 0.992 1.000&quot;></feFuncR>
+        <feFuncG type=&quot;discrete&quot; id=&quot;unpack-upper-g&quot; tableValues=&quot;0.000 0.008 0.016 0.024 0.031 0.039 0.047 0.055 0.063 0.071 0.079 0.087 0.094 0.102 0.110 0.118 0.126 0.134 0.142 0.150 0.157 0.165 0.173 0.181 0.189 0.197 0.205 0.213 0.220 0.228 0.236 0.244 0.252 0.260 0.268 0.276 0.283 0.291 0.299 0.307 0.315 0.323 0.331 0.339 0.346 0.354 0.362 0.370 0.378 0.386 0.394 0.402 0.409 0.417 0.425 0.433 0.441 0.449 0.457 0.465 0.472 0.480 0.488 0.496 0.504 0.512 0.520 0.528 0.535 0.543 0.551 0.559 0.567 0.575 0.583 0.591 0.598 0.606 0.614 0.622 0.630 0.638 0.646 0.654 0.661 0.669 0.677 0.685 0.693 0.701 0.709 0.717 0.724 0.732 0.740 0.748 0.756 0.764 0.772 0.780 0.787 0.795 0.803 0.811 0.819 0.827 0.835 0.843 0.850 0.858 0.866 0.874 0.882 0.890 0.898 0.906 0.913 0.921 0.929 0.937 0.945 0.953 0.961 0.969 0.976 0.984 0.992 1.000&quot;></feFuncG>
+        <feFuncB type=&quot;discrete&quot; id=&quot;unpack-upper-b&quot; tableValues=&quot;0.000 0.008 0.016 0.024 0.031 0.039 0.047 0.055 0.063 0.071 0.079 0.087 0.094 0.102 0.110 0.118 0.126 0.134 0.142 0.150 0.157 0.165 0.173 0.181 0.189 0.197 0.205 0.213 0.220 0.228 0.236 0.244 0.252 0.260 0.268 0.276 0.283 0.291 0.299 0.307 0.315 0.323 0.331 0.339 0.346 0.354 0.362 0.370 0.378 0.386 0.394 0.402 0.409 0.417 0.425 0.433 0.441 0.449 0.457 0.465 0.472 0.480 0.488 0.496 0.504 0.512 0.520 0.528 0.535 0.543 0.551 0.559 0.567 0.575 0.583 0.591 0.598 0.606 0.614 0.622 0.630 0.638 0.646 0.654 0.661 0.669 0.677 0.685 0.693 0.701 0.709 0.717 0.724 0.732 0.740 0.748 0.756 0.764 0.772 0.780 0.787 0.795 0.803 0.811 0.819 0.827 0.835 0.843 0.850 0.858 0.866 0.874 0.882 0.890 0.898 0.906 0.913 0.921 0.929 0.937 0.945 0.953 0.961 0.969 0.976 0.984 0.992 1.000&quot;></feFuncB>
+      </feComponentTransfer>
+    </filter>
+</svg>
+
+<!--  
+| 🫧 GLASS
+-->
+<svg width=&quot;0&quot; height=&quot;0&quot; color-interpolation-filters=&quot;sRGB&quot;>
+  <filter id=&quot;glass&quot;>
+    <feComponentTransfer result=&quot;SourceBackground&quot; in=&quot;SourceGraphic&quot;>
+      <feFuncR type=&quot;discrete&quot; tableValues=&quot;0.000 0.008 0.016 0.024 0.031 0.039 0.047 0.055 0.063 0.071 0.079 0.087 0.094 0.102 0.110 0.118 0.126 0.134 0.142 0.150 0.157 0.165 0.173 0.181 0.189 0.197 0.205 0.213 0.220 0.228 0.236 0.244 0.252 0.260 0.268 0.276 0.283 0.291 0.299 0.307 0.315 0.323 0.331 0.339 0.346 0.354 0.362 0.370 0.378 0.386 0.394 0.402 0.409 0.417 0.425 0.433 0.441 0.449 0.457 0.465 0.472 0.480 0.488 0.496 0.504 0.512 0.520 0.528 0.535 0.543 0.551 0.559 0.567 0.575 0.583 0.591 0.598 0.606 0.614 0.622 0.630 0.638 0.646 0.654 0.661 0.669 0.677 0.685 0.693 0.701 0.709 0.717 0.724 0.732 0.740 0.748 0.756 0.764 0.772 0.780 0.787 0.795 0.803 0.811 0.819 0.827 0.835 0.843 0.850 0.858 0.866 0.874 0.882 0.890 0.898 0.906 0.913 0.921 0.929 0.937 0.945 0.953 0.961 0.969 0.976 0.984 0.992 1.000&quot;></feFuncR>
+      <feFuncG type=&quot;discrete&quot; tableValues=&quot;0.000 0.008 0.016 0.024 0.031 0.039 0.047 0.055 0.063 0.071 0.079 0.087 0.094 0.102 0.110 0.118 0.126 0.134 0.142 0.150 0.157 0.165 0.173 0.181 0.189 0.197 0.205 0.213 0.220 0.228 0.236 0.244 0.252 0.260 0.268 0.276 0.283 0.291 0.299 0.307 0.315 0.323 0.331 0.339 0.346 0.354 0.362 0.370 0.378 0.386 0.394 0.402 0.409 0.417 0.425 0.433 0.441 0.449 0.457 0.465 0.472 0.480 0.488 0.496 0.504 0.512 0.520 0.528 0.535 0.543 0.551 0.559 0.567 0.575 0.583 0.591 0.598 0.606 0.614 0.622 0.630 0.638 0.646 0.654 0.661 0.669 0.677 0.685 0.693 0.701 0.709 0.717 0.724 0.732 0.740 0.748 0.756 0.764 0.772 0.780 0.787 0.795 0.803 0.811 0.819 0.827 0.835 0.843 0.850 0.858 0.866 0.874 0.882 0.890 0.898 0.906 0.913 0.921 0.929 0.937 0.945 0.953 0.961 0.969 0.976 0.984 0.992 1.000&quot;></feFuncG>
+      <feFuncB type=&quot;discrete&quot; tableValues=&quot;0.000 0.008 0.016 0.024 0.031 0.039 0.047 0.055 0.063 0.071 0.079 0.087 0.094 0.102 0.110 0.118 0.126 0.134 0.142 0.150 0.157 0.165 0.173 0.181 0.189 0.197 0.205 0.213 0.220 0.228 0.236 0.244 0.252 0.260 0.268 0.276 0.283 0.291 0.299 0.307 0.315 0.323 0.331 0.339 0.346 0.354 0.362 0.370 0.378 0.386 0.394 0.402 0.409 0.417 0.425 0.433 0.441 0.449 0.457 0.465 0.472 0.480 0.488 0.496 0.504 0.512 0.520 0.528 0.535 0.543 0.551 0.559 0.567 0.575 0.583 0.591 0.598 0.606 0.614 0.622 0.630 0.638 0.646 0.654 0.661 0.669 0.677 0.685 0.693 0.701 0.709 0.717 0.724 0.732 0.740 0.748 0.756 0.764 0.772 0.780 0.787 0.795 0.803 0.811 0.819 0.827 0.835 0.843 0.850 0.858 0.866 0.874 0.882 0.890 0.898 0.906 0.913 0.921 0.929 0.937 0.945 0.953 0.961 0.969 0.976 0.984 0.992 1.000&quot;></feFuncB>
+    </feComponentTransfer>
+
+    <feComponentTransfer>
+      <feFuncR type=&quot;linear&quot; slope=&quot;.9&quot; intercept=&quot;0.05&quot;></feFuncR>
+      <feFuncG type=&quot;linear&quot; slope=&quot;.9&quot; intercept=&quot;0.05&quot;></feFuncG>
+      <feFuncB type=&quot;linear&quot; slope=&quot;.9&quot; intercept=&quot;0.05&quot;></feFuncB>
+    </feComponentTransfer>
+
+    <feGaussianBlur result=&quot;gaussian-blur-0&quot; stdDeviation=&quot;8&quot;></feGaussianBlur>
+    <feComponentTransfer result=&quot;SourceMask&quot; in=&quot;SourceGraphic&quot;>
+      <feFuncR type=&quot;discrete&quot; tableValues=&quot;0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000&quot;></feFuncR>
+      <feFuncG type=&quot;discrete&quot; tableValues=&quot;0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000&quot;></feFuncG>
+      <feFuncB type=&quot;discrete&quot; tableValues=&quot;0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000&quot;></feFuncB>
+    </feComponentTransfer>
+    <feComposite result=&quot;composite-1&quot; in=&quot;SourceMask&quot; in2=&quot;none&quot;></feComposite>
+    <feColorMatrix result=&quot;SourceMask&quot; in=&quot;composite-1&quot; values=&quot;1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 -1 -1 -1 1 0&quot;></feColorMatrix>
+    <feComposite result=&quot;balls-masked&quot; in=&quot;gaussian-blur-0&quot; in2=&quot;SourceMask&quot; operator=&quot;out&quot;></feComposite>
+
+    <feColorMatrix result=&quot;color-matrix-0&quot; in=&quot;balls-masked&quot; values=&quot;0 0 0 0 0.3 0 0 0 0 0.3 0 0 0 0 0.3 0 0 0 1 0&quot;></feColorMatrix>
+    <feMorphology result=&quot;morphology-0&quot; in=&quot;color-matrix-0&quot; radius=&quot;1.5&quot;></feMorphology>
+    <feComposite result=&quot;composite-4&quot; in=&quot;balls-masked&quot; in2=&quot;morphology-0&quot; operator=&quot;out&quot;></feComposite>
+    <feColorMatrix result=&quot;color-matrix-2&quot; in=&quot;composite-4&quot; values=&quot;2 0 0 0 0 0 2 0 0 0 0 0 2 0 0 0 0 0 0.2 0&quot;></feColorMatrix>
+    <feComposite result=&quot;composite-3&quot; in=&quot;color-matrix-2&quot; in2=&quot;balls-masked&quot; operator=&quot;over&quot;></feComposite>
+
+    <feDropShadow dx=&quot;1&quot; stdDeviation=&quot;5&quot; dy=&quot;1&quot; style=&quot;flood-opacity: 0.3&quot;></feDropShadow>
+
+    <feComposite in2=&quot;SourceBackground&quot;></feComposite>
+  </filter>
+
+  <!-- 🫧🫧🫧🫧🫧🫧 -->
+
+  <filter id=&quot;liquid-glass&quot; x=&quot;-20%&quot; y=&quot;-20%&quot; width=&quot;140%&quot; height=&quot;140%&quot;>
+    <!-- #region Unpacking Sources -->
+
+    <!-- Unpack Upper channel - Background  (XXXX XXX0) -->
+    <feComponentTransfer result=&quot;SourceBackground&quot; in=&quot;SourceGraphic&quot;>
+      <feFuncR type=&quot;discrete&quot; tableValues=&quot;0.000 0.008 0.016 0.024 0.031 0.039 0.047 0.055 0.063 0.071 0.079 0.087 0.094 0.102 0.110 0.118 0.126 0.134 0.142 0.150 0.157 0.165 0.173 0.181 0.189 0.197 0.205 0.213 0.220 0.228 0.236 0.244 0.252 0.260 0.268 0.276 0.283 0.291 0.299 0.307 0.315 0.323 0.331 0.339 0.346 0.354 0.362 0.370 0.378 0.386 0.394 0.402 0.409 0.417 0.425 0.433 0.441 0.449 0.457 0.465 0.472 0.480 0.488 0.496 0.504 0.512 0.520 0.528 0.535 0.543 0.551 0.559 0.567 0.575 0.583 0.591 0.598 0.606 0.614 0.622 0.630 0.638 0.646 0.654 0.661 0.669 0.677 0.685 0.693 0.701 0.709 0.717 0.724 0.732 0.740 0.748 0.756 0.764 0.772 0.780 0.787 0.795 0.803 0.811 0.819 0.827 0.835 0.843 0.850 0.858 0.866 0.874 0.882 0.890 0.898 0.906 0.913 0.921 0.929 0.937 0.945 0.953 0.961 0.969 0.976 0.984 0.992 1.000&quot;></feFuncR>
+      <feFuncG type=&quot;discrete&quot; tableValues=&quot;0.000 0.008 0.016 0.024 0.031 0.039 0.047 0.055 0.063 0.071 0.079 0.087 0.094 0.102 0.110 0.118 0.126 0.134 0.142 0.150 0.157 0.165 0.173 0.181 0.189 0.197 0.205 0.213 0.220 0.228 0.236 0.244 0.252 0.260 0.268 0.276 0.283 0.291 0.299 0.307 0.315 0.323 0.331 0.339 0.346 0.354 0.362 0.370 0.378 0.386 0.394 0.402 0.409 0.417 0.425 0.433 0.441 0.449 0.457 0.465 0.472 0.480 0.488 0.496 0.504 0.512 0.520 0.528 0.535 0.543 0.551 0.559 0.567 0.575 0.583 0.591 0.598 0.606 0.614 0.622 0.630 0.638 0.646 0.654 0.661 0.669 0.677 0.685 0.693 0.701 0.709 0.717 0.724 0.732 0.740 0.748 0.756 0.764 0.772 0.780 0.787 0.795 0.803 0.811 0.819 0.827 0.835 0.843 0.850 0.858 0.866 0.874 0.882 0.890 0.898 0.906 0.913 0.921 0.929 0.937 0.945 0.953 0.961 0.969 0.976 0.984 0.992 1.000&quot;></feFuncG>
+      <feFuncB type=&quot;discrete&quot; tableValues=&quot;0.000 0.008 0.016 0.024 0.031 0.039 0.047 0.055 0.063 0.071 0.079 0.087 0.094 0.102 0.110 0.118 0.126 0.134 0.142 0.150 0.157 0.165 0.173 0.181 0.189 0.197 0.205 0.213 0.220 0.228 0.236 0.244 0.252 0.260 0.268 0.276 0.283 0.291 0.299 0.307 0.315 0.323 0.331 0.339 0.346 0.354 0.362 0.370 0.378 0.386 0.394 0.402 0.409 0.417 0.425 0.433 0.441 0.449 0.457 0.465 0.472 0.480 0.488 0.496 0.504 0.512 0.520 0.528 0.535 0.543 0.551 0.559 0.567 0.575 0.583 0.591 0.598 0.606 0.614 0.622 0.630 0.638 0.646 0.654 0.661 0.669 0.677 0.685 0.693 0.701 0.709 0.717 0.724 0.732 0.740 0.748 0.756 0.764 0.772 0.780 0.787 0.795 0.803 0.811 0.819 0.827 0.835 0.843 0.850 0.858 0.866 0.874 0.882 0.890 0.898 0.906 0.913 0.921 0.929 0.937 0.945 0.953 0.961 0.969 0.976 0.984 0.992 1.000&quot;></feFuncB>
+    </feComponentTransfer>
+
+    <!-- Unpack Lower channel - Mask (0000 000X) -->
+    <feComponentTransfer in=&quot;SourceGraphic&quot;>
+      <feFuncR type=&quot;discrete&quot; tableValues=&quot;0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000&quot;></feFuncR>
+      <feFuncG type=&quot;discrete&quot; tableValues=&quot;0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000&quot;></feFuncG>
+      <feFuncB type=&quot;discrete&quot; tableValues=&quot;0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000&quot;></feFuncB>
+    </feComponentTransfer>
+
+    <feColorMatrix type=&quot;luminanceToAlpha&quot;></feColorMatrix>
+
+    <!-- FXAAAAAA -->
+    <feGaussianBlur stdDeviation=&quot;2&quot;></feGaussianBlur>
+    <!-- alpha minus + sharpen -->
+    <feColorMatrix values=&quot;
+            1 0 0 0 1
+            0 1 0 0 1 
+            0 0 1 0 1 
+            0 0 0 8 -2&quot;></feColorMatrix>
+    <feComposite result=&quot;SourceMask&quot;></feComposite>
+
+    <!-- #endregion -->
+
+    <!-- #region Red (top) -->
+    <feDiffuseLighting result=&quot;diffuse-lighting-0&quot; in=&quot;SourceMask&quot; diffuseConstant=&quot;1&quot; surfaceScale=&quot;100&quot; style=&quot;&quot;>
+      <feDistantLight azimuth=&quot;90&quot; elevation=&quot;180&quot;></feDistantLight>
+    </feDiffuseLighting>
+    <feColorMatrix result=&quot;color-matrix-0&quot; in=&quot;diffuse-lighting-0&quot; type=&quot;luminanceToAlpha&quot;></feColorMatrix>
+    <feColorMatrix result=&quot;side-red&quot; in=&quot;color-matrix-0&quot; values=&quot;
+          0 0 0 0.0 1 
+          0 0 0 0.0 0 
+          0 0 0 0.0 0 
+          0 0 0 255 0&quot;></feColorMatrix>
+    <!-- #endregion -->
+
+    <!-- #region Green (left) -->
+    <feDiffuseLighting result=&quot;diffuse-lighting-1&quot; in=&quot;SourceMask&quot; diffuseConstant=&quot;1&quot; surfaceScale=&quot;100&quot;>
+      <feDistantLight azimuth=&quot;0&quot; elevation=&quot;180&quot;></feDistantLight>
+    </feDiffuseLighting>
+    <feColorMatrix result=&quot;color-matrix-3&quot; in=&quot;diffuse-lighting-1&quot; type=&quot;luminanceToAlpha&quot;></feColorMatrix>
+    <feColorMatrix result=&quot;side-green&quot; in=&quot;color-matrix-3&quot; values=&quot;
+            0 0 0 0.0 0 
+            0 0 0 0.0 1 
+            0 0 0 0.0 0 
+            0 0 0 255 0&quot;></feColorMatrix>
+    <!-- #endregion -->
+
+    <!-- #region Black (bottom) -->
+    <feDiffuseLighting in=&quot;SourceMask&quot; diffuseConstant=&quot;1&quot; surfaceScale=&quot;100&quot;>
+      <feDistantLight azimuth=&quot;270&quot; elevation=&quot;180&quot;></feDistantLight>
+    </feDiffuseLighting>
+    <feColorMatrix result=&quot;color-matrix-5&quot; type=&quot;luminanceToAlpha&quot;></feColorMatrix>
+    <feColorMatrix result=&quot;side-black&quot; in=&quot;color-matrix-5&quot; values=&quot;
+            0 0 0 0.0 0 
+            0 0 0 0.0 0 
+            0 0 0 0.0 0 
+            0 0 0 255 0&quot;></feColorMatrix>
+    <!-- #endregion -->
+
+    <!-- #region Normal Map Creation -->
+    <feBlend result=&quot;top-left&quot; in=&quot;side-green&quot; in2=&quot;side-red&quot; mode=&quot;screen&quot;></feBlend>
+    <feBlend result=&quot;top-left-bottom&quot; in=&quot;side-black&quot; in2=&quot;top-left&quot; mode=&quot;screen&quot;></feBlend>
+
+    <!-- CONTROLS -->
+    <feMorphology result=&quot;thickness&quot; in=&quot;top-left-bottom&quot; radius=&quot;2&quot; operator=&quot;dilate&quot;></feMorphology>
+    <feGaussianBlur result=&quot;dispersion-smoothness&quot; stdDeviation=&quot;4&quot;></feGaussianBlur>
+
+    <feColorMatrix result=&quot;mask-normalized&quot; in=&quot;SourceMask&quot; values=&quot;
+            0 0 0 0 0.5 
+            0 0 0 0 0.5 
+            0 0 0 0 0.5 
+            0 0 0 1 0.0&quot;></feColorMatrix>
+    <feComposite result=&quot;balls-masked&quot; in=&quot;dispersion-smoothness&quot; in2=&quot;mask-normalized&quot; operator=&quot;atop&quot;></feComposite>
+    <feFlood result=&quot;flood-0&quot; flood-color=&quot;#808000&quot;></feFlood>
+    <feComposite result=&quot;NormalMapFull&quot; in=&quot;balls-masked&quot; in2=&quot;flood-0&quot; operator=&quot;over&quot;></feComposite>
+    <!-- #endregion -->
+
+    <!-- #region Compositing -->
+    <feDisplacementMap result=&quot;displacement&quot; in=&quot;SourceBackground&quot; in2=&quot;NormalMapFull&quot; scale=&quot;150&quot; xChannelSelector=&quot;R&quot; yChannelSelector=&quot;G&quot;></feDisplacementMap>
+
+    <!-- Background blur -->
+    <feGaussianBlur result=&quot;blur-out&quot; stdDeviation=&quot;1&quot;></feGaussianBlur>
+    <!-- <feColorMatrix
+          result=&quot;BG-dim&quot;
+          values=&quot;
+            0.7 0.0 0.0 0 0
+            0.0 0.7 0.0 0 0 
+            0.0 0.0 0.7 0 0 
+            0.0 0.0 0.0 1 0&quot;
+        /> -->
+
+    <!-- Contrast -->
+    <feComponentTransfer>
+      <feFuncR type=&quot;linear&quot; slope=&quot;.9&quot; intercept=&quot;0.05&quot;></feFuncR>
+      <feFuncG type=&quot;linear&quot; slope=&quot;.9&quot; intercept=&quot;0.05&quot;></feFuncG>
+      <feFuncB type=&quot;linear&quot; slope=&quot;.9&quot; intercept=&quot;0.05&quot;></feFuncB>
+    </feComponentTransfer>
+
+    <feComposite result=&quot;balls-final&quot; in2=&quot;SourceMask&quot; operator=&quot;in&quot;></feComposite>
+    <!-- #endregion -->
+
+    <!-- #region Fresnel-ish -->
+    <feMorphology in=&quot;SourceMask&quot; result=&quot;stroke-width&quot; radius=&quot;1.8&quot;></feMorphology>
+    <feGaussianBlur result=&quot;outline-smoothness&quot; stdDeviation=&quot;1&quot;></feGaussianBlur>
+    <feComposite result=&quot;bg-stroke-raw&quot; in=&quot;balls-final&quot; operator=&quot;out&quot;></feComposite>
+    <feColorMatrix result=&quot;bg-stroke&quot; values=&quot;
+            2 0 0 0 0 
+            0 2 0 0 0 
+            0 0 2 0 0 
+            0 0 0 0.3 0&quot;></feColorMatrix>
+
+    <!-- Composite outline with balls -->
+    <!-- in=&quot;bg-stroke&quot; -->
+    <feComposite result=&quot;outlined-balls&quot; in2=&quot;balls-final&quot; operator=&quot;over&quot;></feComposite>
+
+    <!-- #endregion -->
+
+    <feDropShadow dx=&quot;1&quot; dy=&quot;1&quot; stdDeviation=&quot;5&quot; flood-opacity=&quot;.3&quot;></feDropShadow>
+    <!-- compositing with bg -->
+    <!-- <feComposite in2=&quot;SourceBackground&quot;/> -->
+  </filter>
+
+  <filter
+    id=&quot;liquid-glass-new&quot;
+    x=&quot;-20%&quot;
+    y=&quot;-20%&quot;
+    width=&quot;140%&quot;
+    height=&quot;140%&quot;
+  >
+  <!-- 
+  | Unpacking Sources
+  -->
+
+    <!-- Unpack Upper channel - Background  (XXXX XXX0) -->
+    <feComponentTransfer result=&quot;SourceBackground&quot; in=&quot;SourceGraphic&quot;>
+      <feFuncR
+        type=&quot;discrete&quot;
+        tableValues=&quot;0.000 0.008 0.016 0.024 0.031 0.039 0.047 0.055 0.063 0.071 0.079 0.087 0.094 0.102 0.110 0.118 0.126 0.134 0.142 0.150 0.157 0.165 0.173 0.181 0.189 0.197 0.205 0.213 0.220 0.228 0.236 0.244 0.252 0.260 0.268 0.276 0.283 0.291 0.299 0.307 0.315 0.323 0.331 0.339 0.346 0.354 0.362 0.370 0.378 0.386 0.394 0.402 0.409 0.417 0.425 0.433 0.441 0.449 0.457 0.465 0.472 0.480 0.488 0.496 0.504 0.512 0.520 0.528 0.535 0.543 0.551 0.559 0.567 0.575 0.583 0.591 0.598 0.606 0.614 0.622 0.630 0.638 0.646 0.654 0.661 0.669 0.677 0.685 0.693 0.701 0.709 0.717 0.724 0.732 0.740 0.748 0.756 0.764 0.772 0.780 0.787 0.795 0.803 0.811 0.819 0.827 0.835 0.843 0.850 0.858 0.866 0.874 0.882 0.890 0.898 0.906 0.913 0.921 0.929 0.937 0.945 0.953 0.961 0.969 0.976 0.984 0.992 1.000&quot;
+      />
+      <feFuncG
+        type=&quot;discrete&quot;
+        tableValues=&quot;0.000 0.008 0.016 0.024 0.031 0.039 0.047 0.055 0.063 0.071 0.079 0.087 0.094 0.102 0.110 0.118 0.126 0.134 0.142 0.150 0.157 0.165 0.173 0.181 0.189 0.197 0.205 0.213 0.220 0.228 0.236 0.244 0.252 0.260 0.268 0.276 0.283 0.291 0.299 0.307 0.315 0.323 0.331 0.339 0.346 0.354 0.362 0.370 0.378 0.386 0.394 0.402 0.409 0.417 0.425 0.433 0.441 0.449 0.457 0.465 0.472 0.480 0.488 0.496 0.504 0.512 0.520 0.528 0.535 0.543 0.551 0.559 0.567 0.575 0.583 0.591 0.598 0.606 0.614 0.622 0.630 0.638 0.646 0.654 0.661 0.669 0.677 0.685 0.693 0.701 0.709 0.717 0.724 0.732 0.740 0.748 0.756 0.764 0.772 0.780 0.787 0.795 0.803 0.811 0.819 0.827 0.835 0.843 0.850 0.858 0.866 0.874 0.882 0.890 0.898 0.906 0.913 0.921 0.929 0.937 0.945 0.953 0.961 0.969 0.976 0.984 0.992 1.000&quot;
+      />
+      <feFuncB
+        type=&quot;discrete&quot;
+        tableValues=&quot;0.000 0.008 0.016 0.024 0.031 0.039 0.047 0.055 0.063 0.071 0.079 0.087 0.094 0.102 0.110 0.118 0.126 0.134 0.142 0.150 0.157 0.165 0.173 0.181 0.189 0.197 0.205 0.213 0.220 0.228 0.236 0.244 0.252 0.260 0.268 0.276 0.283 0.291 0.299 0.307 0.315 0.323 0.331 0.339 0.346 0.354 0.362 0.370 0.378 0.386 0.394 0.402 0.409 0.417 0.425 0.433 0.441 0.449 0.457 0.465 0.472 0.480 0.488 0.496 0.504 0.512 0.520 0.528 0.535 0.543 0.551 0.559 0.567 0.575 0.583 0.591 0.598 0.606 0.614 0.622 0.630 0.638 0.646 0.654 0.661 0.669 0.677 0.685 0.693 0.701 0.709 0.717 0.724 0.732 0.740 0.748 0.756 0.764 0.772 0.780 0.787 0.795 0.803 0.811 0.819 0.827 0.835 0.843 0.850 0.858 0.866 0.874 0.882 0.890 0.898 0.906 0.913 0.921 0.929 0.937 0.945 0.953 0.961 0.969 0.976 0.984 0.992 1.000&quot;
+      />
+    </feComponentTransfer>
+
+    <!-- Unpack Lower channel - Mask (0000 000X) -->
+    <feComponentTransfer in=&quot;SourceGraphic&quot;>
+      <feFuncR
+        type=&quot;discrete&quot;
+        tableValues=&quot;0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000&quot;
+      ></feFuncR>
+      <feFuncG
+        type=&quot;discrete&quot;
+        tableValues=&quot;0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000&quot;
+      ></feFuncG>
+      <feFuncB
+        type=&quot;discrete&quot;
+        tableValues=&quot;0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000 0.000 1.000&quot;
+      ></feFuncB>
+    </feComponentTransfer>
+    <!-- remove black -->
+    <feColorMatrix type=&quot;luminanceToAlpha&quot; />
+    <!-- FXAAAAAA -->
+    <feGaussianBlur stdDeviation=&quot;1&quot; />
+    <!-- alpha minus + sharpen -->
+    <feColorMatrix
+      values=&quot;
+        1 0 0 0 0
+        0 1 0 0 0
+        0 0 1 0 0 
+        0 0 0 2 0&quot;
+    />
+    <feComposite result=&quot;SourceMask&quot; />
+
+  <!-- 
+  | Lighting 
+  -->
+
+    <!-- Black -->
+    <feDiffuseLighting
+      in=&quot;SourceMask&quot;
+      diffuseConstant=&quot;1&quot;
+      surfaceScale=&quot;100&quot;
+    >
+      <feDistantLight azimuth=&quot;225&quot; elevation=&quot;180&quot; />
+    </feDiffuseLighting>
+    <feColorMatrix
+      type=&quot;luminanceToAlpha&quot;
+    />
+    <feColorMatrix
+      result=&quot;side-black&quot;
+      values=&quot;
+        0 0 0 0.0 0 
+        0 0 0 0.0 0 
+        0 0 0 0.0 0 
+        0 0 0 0.9 0&quot;
+    />
+
+    <!-- Yellow -->
+    <feDiffuseLighting
+      in=&quot;SourceMask&quot;
+      diffuseConstant=&quot;0.52&quot;
+      surfaceScale=&quot;100&quot;
+    >
+      <feDistantLight azimuth=&quot;45&quot; elevation=&quot;180&quot; />
+    </feDiffuseLighting>
+    <feColorMatrix
+      type=&quot;luminanceToAlpha&quot;
+    />
+    <feColorMatrix
+      result=&quot;side-yellow&quot;
+      values=&quot;
+        0 0 0 0 1
+        0 0 0 0 1 
+        0 0 0 0 0 
+        0 0 0 1 0&quot;
+    />
+
+    <!-- Red -->
+    <feDiffuseLighting
+      in=&quot;SourceMask&quot;
+      diffuseConstant=&quot;1&quot;
+      surfaceScale=&quot;100&quot;
+    >
+      <feDistantLight azimuth=&quot;315&quot; elevation=&quot;180&quot; />
+    </feDiffuseLighting>
+    <feColorMatrix
+      type=&quot;luminanceToAlpha&quot;
+    />
+    <feColorMatrix
+      result=&quot;side-red&quot;
+      values=&quot;
+        0 0 0 0 1 
+        0 0 0 0 0 
+        0 0 0 0 0 
+        0 0 0 1 0&quot;
+    />
+
+    <!-- Green -->
+    <feDiffuseLighting
+      result=&quot;diffuse-lighting-0&quot;
+      in=&quot;SourceMask&quot;
+      diffuseConstant=&quot;1&quot;
+      surfaceScale=&quot;100&quot;
+      style=&quot;&quot;
+    >
+      <feDistantLight azimuth=&quot;135&quot; elevation=&quot;180&quot; />
+    </feDiffuseLighting>
+    <feColorMatrix
+      result=&quot;color-matrix-0&quot;
+      in=&quot;diffuse-lighting-0&quot;
+      type=&quot;luminanceToAlpha&quot;
+    />
+    <feColorMatrix
+      result=&quot;side-green&quot;
+      in=&quot;color-matrix-0&quot;
+      values=&quot;
+        0 0 0 0 0 
+        0 0 0 0 1 
+        0 0 0 0 0 
+        0 0 0 1 0&quot;
+    />
+    <!-- Green -->
+
+  <!-- 
+  | Normal Map Creation 
+  -->
+
+    <!-- Combining sides -->
+    <feBlend
+      in=&quot;side-green&quot;
+      mode=&quot;screen&quot;
+    />
+    <feBlend
+      in=&quot;side-red&quot;
+      mode=&quot;screen&quot;
+    />
+    <feBlend
+      in=&quot;side-yellow&quot;
+      mode=&quot;screen&quot;
+    />
+    <feBlend
+      in=&quot;side-black&quot;
+      mode=&quot;multiply&quot;
+    />
+
+    <!-- Refraction Controls -->
+    <feMorphology
+      result=&quot;refraction-thickness&quot;
+      radius=&quot;5&quot;
+      operator=&quot;dilate&quot;
+    />
+    <feGaussianBlur
+      result=&quot;refraction-smoothness&quot;
+      in=&quot;refraction-thickness&quot;
+      stdDeviation=&quot;5&quot;
+    />
+    
+    <feComposite
+      result=&quot;balls-map&quot;
+      in2=&quot;SourceMask&quot;
+      operator=&quot;in&quot;
+    />
+    <feFlood result=&quot;normal-bg-color&quot; flood-color=&quot;#808000&quot; />
+    <feComposite
+      result=&quot;NormalMapFull&quot;
+      in=&quot;balls-map&quot;
+      in2=&quot;normal-bg-color&quot;
+      operator=&quot;over&quot;
+    />
+
+  <!-- 
+  | Compositing 
+  -->
+    <feDisplacementMap
+      result=&quot;displacement&quot;
+      in=&quot;SourceBackground&quot;
+      in2=&quot;NormalMapFull&quot;
+      scale=&quot;100&quot;
+      xChannelSelector=&quot;R&quot;
+      yChannelSelector=&quot;G&quot;
+    />
+
+    <!-- Background blur -->
+    <feGaussianBlur
+      result=&quot;blur-out&quot;
+      stdDeviation=&quot;1&quot;
+      in=&quot;displacement&quot;
+    />
+    <feColorMatrix
+      in=&quot;blur-out&quot;
+      values=&quot;
+        1 0 0 0 0 
+        0 1 0 0 0 
+        0 0 1 0 0 
+        0 0 0 1 0&quot;
+    />
+    <!-- Contrast 0.9 -->
+    <feComponentTransfer result=&quot;backdrop-processed&quot;>
+      <feFuncR type=&quot;linear&quot; slope=&quot;.9&quot; intercept=&quot;0.05&quot;></feFuncR>
+      <feFuncG type=&quot;linear&quot; slope=&quot;.9&quot; intercept=&quot;0.05&quot;></feFuncG>
+      <feFuncB type=&quot;linear&quot; slope=&quot;.9&quot; intercept=&quot;0.05&quot;></feFuncB>
+    </feComponentTransfer>
+    <feComposite
+      result=&quot;balls-final&quot;
+      in2=&quot;SourceMask&quot;
+      operator=&quot;in&quot;
+    />
+    <!-- #endregion Compositing -->
+  </filter>
+  
+  <!-- Fresnel-ish -->
+  <filter id=&quot;fresnel&quot;>
+    <feMorphology
+      in=&quot;SourceMask&quot;
+      result=&quot;stroke-width&quot;
+      radius=&quot;3&quot;
+    />
+    <feGaussianBlur
+      result=&quot;outline-smoothness&quot;
+      stdDeviation=&quot;2&quot;
+    />
+    <feComposite
+      result=&quot;bg-stroke-raw&quot;
+      in=&quot;SourceGraphic&quot;
+      operator=&quot;out&quot;
+      in2=&quot;outline-smoothness&quot;
+    />
+    <feColorMatrix
+      result=&quot;bg-stroke&quot;
+      values=&quot;
+        2 0 0 0 0.1 
+        0 2 0 0 0.1 
+        0 0 2 0 0.1 
+        0 0 0 0.69 0&quot;
+    />
+    <!-- fe blend -->
+    <feBlend
+      result=&quot;outlined-balls&quot;
+      in=&quot;SourceGraphic&quot;
+      mode=&quot;overlay&quot; />
+  </filter>
+
+</svg>
+
+<!--
+                  ..                                             
+               -+%@+                                             
+            .+@@@@@+                                             
+          -#@@@@@@@+                                             
+        :#@@@@@@@@@+                                             
+       *@@@@@@@@@@@*       ..:::.                                
+     :%@@@@@@@@@@@@*  :+#%@@@@@@@@@#*-.                          
+    :@@@@@@@+#@@@@@#*@@@@@@@@@@@@@@@@@@#=                        
+   :@@@@@@%: #@@@@@@@@@@@@@@@@@@@@@@@@@@@@+                      
+   %@@@@@%.  #@@@@@@@@@@%*=:....:-+%@@@@@@@@+.                   
+  +@@@@@@:   #@@@@@@@@#:            .*@@@@@@@@*.                 
+  %@@@@@*    #@@@@@@@-                :%@@@@@@@@*.               
+ :@@@@@@:    #@@@@@@-     .+%@@%+      :@@@@@@@@@@*.             
+ =@@@@@@     #@@@@@#     :@@@@@@@%.     *@@@@@@@@@@@*.           
+ +@@@@@%     #@@@@@*     +@@@@@@@@:     +@@@@@@@@@@@@@*.         
+ -@@@@@@.    +@@@@@%      *@@@@@@+      %@@@@@%+@@@@@@@@#:       
+ .@@@@@@-    .@@@@@@*      .-==-       +@@@@@@=  +@@@@@@@@#:     
+  #@@@@@%     =@@@@@@#.              .*@@@@@@#    .+@@@@@@@=     
+  -@@@@@@=     +@@@@@@@*:          :+@@@@@@@#       .+@@@@%      
+   *@@@@@@=     :%@@@@@@@@#*+==+*#@@@@@@@@@=          .+%@:      
+    #@@@@@@*      =%@@@@@@@@@@@@@@@@@@@@@+.      .       :       
+     #@@@@@@%:      :+#@@@@@@@@@@@@@@%*-       :%@+.             
+      +@@@@@@@*.        :=+*####*+=-.        :*@@@@@+.           
+       :%@@@@@@@#=                        .-#@@@@@@@@+           
+         =%@@@@@@@@#=:.               .:+#@@@@@@@@@#:            
+           -#@@@@@@@@@@%#*+=-----=+*#%@@@@@@@@@@@+.              
+             .+%@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@*-                 
+                .=*%@@@@@@@@@@@@@@@@@@@@@@#+:                    
+                    .:=+*#%%@@@@@@%%#*+-:                        
+                                                                 
+                                                                 
+-->
+  
+    <script id=&quot;rendered-js&quot; >
+// ¯\_(ツ)_/¯
+//# sourceURL=pen.js
+  </script>
+
+  
+</body>
+
+</html>
+"
+      sandbox="allow-downloads allow-forms allow-modals allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-same-origin allow-scripts allow-top-navigation-by-user-activation" allow="accelerometer *; ambient-light-sensor *; camera *; display-capture *; encrypted-media *; geolocation *; gyroscope *; microphone *; midi *; payment *; serial *; vr *; web-share *; xr-spatial-tracking *" allowTransparency="true"
+      allowpaymentrequest="true" allowfullscreen="true" class="result-iframe">
+      </iframe>
+  </div>
+
+</body>
+
+</html>
